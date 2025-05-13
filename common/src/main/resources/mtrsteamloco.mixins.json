@@ -50,7 +50,8 @@
     "RailAngleMixin",
     "ItemNodeModifierBaseMixin",
     "PathFinderMixin",
-    "ItemRailModifierMixin"
+    "ItemRailModifierMixin",
+    "PoseAccessor"
   ],
   "server": [
     

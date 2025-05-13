@@ -18,6 +18,10 @@ public class Matrix4f {
         this.impl = moj;
     }
 
+    public Matrix4f(Matrix3f mat3) {
+        this.impl = new org.joml.Matrix4f(mat3.asMoj());
+    } 
+
     public Matrix4f(Matrix4f other) {
         this.impl = new org.joml.Matrix4f(other.impl);
     }
@@ -38,6 +42,10 @@ public class Matrix4f {
 
     public void multiply(Matrix4f other) {
         impl.mul(other.impl);
+    }
+
+    public void multiply(Quaternionf q) {
+        impl.rotate(q.asMoj());
     }
 
     public void store(FloatBuffer buffer) {
@@ -123,6 +131,32 @@ public class Matrix4f {
         this.impl = moj;
     }
 
+    public Matrix4f(Matrix3f mat3) {
+        this();
+        float[] srcValues = new float[9];
+        FloatBuffer srcFloatBuffer = FloatBuffer.wrap(srcValues);
+        mat3.store(srcFloatBuffer);
+        float[] dstValues = new float[16];
+        dstValues[0] = srcValues[0];
+        dstValues[1] = srcValues[1];
+        dstValues[2] = srcValues[2];
+        dstValues[3] = 0.0F;
+        dstValues[4] = srcValues[3];
+        dstValues[5] = srcValues[4];
+        dstValues[6] = srcValues[5];
+        dstValues[7] = 0.0F;
+        dstValues[8] = srcValues[6];
+        dstValues[9] = srcValues[7];
+        dstValues[10] = srcValues[8];
+        dstValues[11] = 0.0F;
+        dstValues[12] = 0.0F;
+        dstValues[13] = 0.0F;
+        dstValues[14] = 0.0F;
+        dstValues[15] = 1.0F;
+        FloatBuffer dstFloatBuffer = FloatBuffer.wrap(dstValues);
+        load(dstFloatBuffer);
+    }
+
     public Matrix4f(Matrix4f other) {
         this.impl = other.impl.copy();
     }
@@ -143,6 +177,10 @@ public class Matrix4f {
 
     public void multiply(Matrix4f other) {
         impl.multiply(other.impl);
+    }
+
+    public void multiply(Quaternionf q) {
+        impl.multiply(q.asMoj());
     }
 
     public void store(FloatBuffer buffer) {

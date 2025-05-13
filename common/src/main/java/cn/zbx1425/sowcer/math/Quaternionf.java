@@ -11,7 +11,7 @@ public class Quaternionf{
     private final org.joml.Quaternionf impl;
 
     public Quaternionf(Vector3f axis, float angle) {
-        this.impl = new AxisAngle4f(angle, axis.asMoj());
+        this.impl = new org.joml.Quaternionf(new AxisAngle4f(angle, axis.asMoj()));
     }
 
     public Quaternionf(Quaternionf other) {

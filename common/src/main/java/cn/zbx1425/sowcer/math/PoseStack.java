@@ -3,13 +3,21 @@ package cn.zbx1425.sowcer.math;
 public class PoseStack implements Posture {
     private final com.mojang.blaze3d.vertex.PoseStack impl;
 
+    public PoseStack() {
+        this.impl = new com.mojang.blaze3d.vertex.PoseStack();
+    }
+
     public PoseStack(com.mojang.blaze3d.vertex.PoseStack impl) {
         this.impl = impl;
     }
 
     public PoseStack(Pose pose) {
-        this.impl = new com.mojang.blaze3d.vertex.PoseStack();
+        this();
+#if MC_VERSION >= "11903"
+        this.impl.last().pose().mul(pose.pose().asMoj());
+#else
         this.impl.last().pose().multiply(pose.pose().asMoj());
+#endif
         this.impl.last().normal().mul(pose.normal().asMoj());
     }
 

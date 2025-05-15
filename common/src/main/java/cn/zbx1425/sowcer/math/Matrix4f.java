@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-public class Matrix4f {
+public class Matrix4f implements Posture {
 
 #if MC_VERSION >= "11903"
 
@@ -372,6 +372,31 @@ public class Matrix4f {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    @Override
+    public Matrix4f getAsMatrix4f() {
+        return this;
+    }
+
+    @Override
+    public Matrix3f getAsMatrix3f() {
+        return new Matrix3f(this);
+    }
+
+    @Override
+    public Pose getAsPose() {
+        return new Pose(this);
+    }
+
+    @Override
+    public PoseStack getAsPoseStack() {
+        return new PoseStack(getAsPose());
+    }
+
+    @Override
+    public Matrices getAsMatrices() {
+        return new Matrices(this);
     }
 
     public static final Matrix4f IDENTITY = new Matrix4f();

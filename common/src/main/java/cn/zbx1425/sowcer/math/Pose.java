@@ -7,6 +7,16 @@ public class Pose implements Posture {
     private final Matrix4f pose;
     private final Matrix3f normal;
 
+    public Pose() {
+        this.pose = new Matrix4f();
+        this.normal = new Matrix3f();
+    }
+
+    public Pose(Pose pose) {
+        this.pose = new Matrix4f(pose.pose());
+        this.normal = new Matrix3f(pose.normal());
+    }
+
     public Pose(com.mojang.blaze3d.vertex.PoseStack.Pose pose) {
         this.pose = new Matrix4f(pose.pose());
         this.normal = new Matrix3f(pose.normal());
@@ -51,9 +61,25 @@ public class Pose implements Posture {
         normal.scale(f3 * f, f3 * f1, f3 * f2);
     }
 
+    public void scale(float factor) {
+        scale(factor, factor, factor);
+    }
+
     public void multiply(Quaternionf q) {
         pose.multiply(q);
         normal.multiply(q);
+    }
+
+    public void rotateX(float angle) {
+        multiply(new Quaternionf(Vector3f.XP, angle));
+    }
+
+    public void rotateY(float angle) {
+        multiply(new Quaternionf(Vector3f.YP, angle));
+    }
+
+    public void rotateZ(float angle) {
+        multiply(new Quaternionf(Vector3f.ZP, angle));
     }
 
     public com.mojang.blaze3d.vertex.PoseStack.Pose asMoj() {

@@ -139,6 +139,22 @@ public class Matrix3f implements Posture{
         scale(s, s, s);
     }
 
+    public void rotaetX(float angle) {
+        multiply(new Quaternionf(Vector3f.XP, angle));
+    }
+
+    public void rotateY(float angle) {
+        multiply(new Quaternionf(Vector3f.YP, angle));
+    }
+
+    public void rotateZ(float angle) {
+        multiply(new Quaternionf(Vector3f.ZP, angle));
+    }
+
+    public Vector3f transform(Vector3f v) {
+        return new Vector3f(impl.transform(v.asMoj()));
+    }
+
     @Override
     public Matrix3f getAsMatrix3f() {
         return this;

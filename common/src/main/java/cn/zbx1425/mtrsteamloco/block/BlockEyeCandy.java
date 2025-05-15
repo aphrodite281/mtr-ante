@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import cn.zbx1425.sowcer.math.Matrix4f;
+import cn.zbx1425.sowcer.math.Pose;
 import net.minecraft.world.level.block.state.StateDefinition;
 #if MC_VERSION < "12000"
 import net.minecraft.world.level.material.Material;
@@ -309,16 +309,16 @@ public class BlockEyeCandy extends BlockDirectionalMapper implements EntityBlock
             compoundTag.putBoolean("isEntrance", isEntrance);
         }
 
-        public Matrix4f getBaseMatrix() {
+        public Pose getBasePose() {
             final Direction facing = IBlock.getStatePropertySafe(getBlockState(), FACING);
-            final Matrix4f matrix = new Matrix4f();
+            final Pose pose = new Pose();
             BlockPos pos = getWorldPos();
-            matrix.translate(pos.getX() + 0.5F + translateX, pos.getY() + translateY, pos.getZ() + 0.5F + translateZ);
-            matrix.rotateX(rotateX);
-            matrix.rotateY(rotateY + (float) Math.toRadians(180F - facing.toYRot()));
-            matrix.rotateZ(rotateZ);
-            matrix.scale(scaleX, scaleY, scaleZ);
-            return matrix;
+            pose.translate(pos.getX() + 0.5F + translateX, pos.getY() + translateY, pos.getZ() + 0.5F + translateZ);
+            pose.rotateX(rotateX);
+            pose.rotateY(rotateY + (float) Math.toRadians(180F - facing.toYRot()));
+            pose.rotateZ(rotateZ);
+            pose.scale(scaleX, scaleY, scaleZ);
+            return pose;
         }
 
         public AABB getRenderBoundingBox() {

@@ -18,7 +18,6 @@ import net.minecraft.client.player.LocalPlayer;
 import mtr.path.PathData;
 import mtr.sound.TrainSoundBase;
 import cn.zbx1425.mtrsteamloco.data.TrainExtraSupplier;
-import cn.zbx1425.sowcer.math.Matrix4f;
 import cn.zbx1425.sowcer.math.Matrices;
 import net.minecraft.world.phys.Vec3;
 import mtr.render.TrainRendererBase;

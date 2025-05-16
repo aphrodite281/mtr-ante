@@ -3,7 +3,7 @@ package cn.zbx1425.mtrsteamloco.render.rail;
 import cn.zbx1425.mtrsteamloco.data.RailModelRegistry;
 import cn.zbx1425.sowcer.batch.BatchManager;
 import cn.zbx1425.sowcer.batch.ShaderProp;
-import cn.zbx1425.sowcer.math.Matrix4f;
+import cn.zbx1425.sowcer.math.*;
 import mtr.data.Rail;
 import mtr.data.RailAngle;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ public abstract class RailChunkBase implements Closeable {
 
     public Long chunkId;
     public AABB boundingBox;
-    public HashMap<BakedRail, ArrayList<Matrix4f>> containingRails = new HashMap<>();
+    public HashMap<BakedRail, ArrayList<Pose>> containingRails = new HashMap<>();
 
     public final String modelKey;
 

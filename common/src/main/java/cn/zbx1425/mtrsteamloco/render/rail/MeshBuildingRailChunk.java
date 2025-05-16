@@ -4,8 +4,7 @@ import cn.zbx1425.mtrsteamloco.data.RailModelRegistry;
 import cn.zbx1425.sowcer.batch.BatchManager;
 import cn.zbx1425.sowcer.batch.EnqueueProp;
 import cn.zbx1425.sowcer.batch.ShaderProp;
-import cn.zbx1425.sowcer.math.Matrix4f;
-import cn.zbx1425.sowcer.math.Vector3f;
+import cn.zbx1425.sowcer.math.*;
 import cn.zbx1425.sowcer.model.Model;
 import cn.zbx1425.sowcer.model.VertArrays;
 import cn.zbx1425.sowcer.vertex.VertAttrMapping;
@@ -53,9 +52,10 @@ public class MeshBuildingRailChunk extends RailChunkBase {
 
         float yMin = 256, yMax = -64;
         RawModel combinedModel = new RawModel();
-        for (Map.Entry<BakedRail, ArrayList<Matrix4f>> entry : containingRails.entrySet()) {
-            ArrayList<Matrix4f> railSpan = entry.getValue();
-            for (Matrix4f pieceMat : railSpan) {
+        for (Map.Entry<BakedRail, ArrayList<Pose>> entry : containingRails.entrySet()) {
+            ArrayList<Pose> railSpan = entry.getValue();
+            for (Pose pose : railSpan) {
+                Matrix4f pieceMat = pose.pose();
                 final Vector3f lightPos = pieceMat.getTranslationPart();
                 yMin = Math.min(yMin, lightPos.y());
                 yMax = Math.max(yMax, lightPos.y());

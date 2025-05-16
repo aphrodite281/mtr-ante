@@ -1,7 +1,7 @@
 package cn.zbx1425.sowcerext.reuse;
 
 import cn.zbx1425.sowcer.batch.BatchManager;
-import cn.zbx1425.sowcer.math.Matrix4f;
+import cn.zbx1425.sowcer.math.*;
 import cn.zbx1425.sowcer.shader.ShaderManager;
 import cn.zbx1425.sowcer.util.GlStateTracker;
 import cn.zbx1425.sowcer.util.DrawContext;
@@ -24,7 +24,7 @@ public class DrawScheduler {
         shaderManager.reloadShaders(resourceManager);
     }
 
-    public void enqueue(ModelCluster model, Matrix4f pose, int light) {
+    public void enqueue(ModelCluster model, Posture pose, int light) {
         drawCalls.add(new ClusterDrawCall(model, pose, light));
     }
 
@@ -60,11 +60,13 @@ public class DrawScheduler {
     private static class ClusterDrawCall {
         public ModelCluster model;
         public Matrix4f pose;
+        public Matrix3f normal;
         public int light;
 
-        public ClusterDrawCall(ModelCluster model, Matrix4f pose, int light) {
+        public ClusterDrawCall(ModelCluster model, Posture pose, int light) {
             this.model = model;
-            this.pose = pose;
+            this.pose = pose.getAsMatrix4f();
+            this.normal = pose.getNormalMatrix();
             this.light = light;
         }
     }

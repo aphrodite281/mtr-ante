@@ -72,11 +72,12 @@ public class InstancedRailChunk extends RailChunkBase {
         ByteBufferOutputStream byteArrayOutputStream = new ByteBufferOutputStream(byteBuf, false);
         LittleEndianDataOutputStream oStream = new LittleEndianDataOutputStream(byteArrayOutputStream);
 
-        for (Map.Entry<BakedRail, ArrayList<Matrix4f>> entry : containingRails.entrySet()) {
-            ArrayList<Matrix4f> railSpan = entry.getValue();
-            for (Matrix4f pieceMat : railSpan) {
+        for (Map.Entry<BakedRail, ArrayList<Pose>> entry : containingRails.entrySet()) {
+            ArrayList<Pose> railSpan = entry.getValue();
+            for (Pose pose : railSpan) {
                 try {
                     oStream.writeInt(entry.getKey().color);
+                    Matrix4f pieceMat = pose.pose();
 
                     final Vector3f lightPos = pieceMat.getTranslationPart();
                     yMin = Math.min(yMin, lightPos.y());

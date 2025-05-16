@@ -9,6 +9,7 @@ import cn.zbx1425.mtrsteamloco.render.rail.RailRenderDispatcher;
 import cn.zbx1425.mtrsteamloco.render.scripting.ScriptContextManager;
 import cn.zbx1425.mtrsteamloco.render.scripting.eyecandy.EyeCandyScriptContext;
 import cn.zbx1425.sowcer.math.Matrix4f;
+import cn.zbx1425.sowcer.math.Pose;
 import cn.zbx1425.sowcer.math.PoseStackUtil;
 import cn.zbx1425.sowcerext.model.ModelCluster;
 import cn.zbx1425.sowcerext.model.integration.BufferSourceProxy;
@@ -70,6 +71,7 @@ public class BlockEntityEyeCandyRenderer extends BlockEntityRendererMapper<Block
 
     public static void commit(@NotNull PoseStack matrices, @NotNull MultiBufferSource vertexConsumers) {
         Matrix4f worldPose = new Matrix4f(matrices.last().pose()).copy();
+        Pose pose = new Pose(matrices.last());
         HashSet<BlockEyeCandy.BlockEntityEyeCandy> temp = new HashSet<>(entitysToRender);
         for (BlockEyeCandy.BlockEntityEyeCandy blockEntity : temp) {
             if (blockEntity == null) continue;
@@ -106,14 +108,14 @@ public class BlockEntityEyeCandyRenderer extends BlockEntityRendererMapper<Block
             }
             if (prop == null) continue;
             
-            Matrix4f candyPose = worldPose.copy();
-            candyPose.mul(blockEntity.getBaseMatrix());
+            Pose candyPose = new Pose(pose);
+            candyPose.mul(blockEntity.getBasePose());
             if (prop.model != null) {
                 MainClient.drawScheduler.enqueue(prop.model, candyPose, lightToUse);
             }
             if (prop.script != null && blockEntity.scriptContext != null) {
                 synchronized (blockEntity.scriptContext) {
-                    blockEntity.scriptContext.commit(MainClient.drawScheduler, candyPose, worldPose, lightToUse);
+                    blockEntity.scriptContext.commit(MainClient.drawScheduler, candyPose.pose(), worldPose, lightToUse);
                 }
                 prop.script.tryCallRenderFunctionAsync(blockEntity.scriptContext);
             }

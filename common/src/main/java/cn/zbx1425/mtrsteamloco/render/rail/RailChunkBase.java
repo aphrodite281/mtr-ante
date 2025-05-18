@@ -24,7 +24,7 @@ public abstract class RailChunkBase implements Closeable {
 
     public Long chunkId;
     public AABB boundingBox;
-    public HashMap<BakedRail, ArrayList<Pose>> containingRails = new HashMap<>();
+    public HashMap<BakedRail, ArrayList<Posture>> containingRails = new HashMap<>();
 
     public final String modelKey;
 

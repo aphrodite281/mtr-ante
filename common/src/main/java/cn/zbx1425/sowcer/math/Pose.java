@@ -25,6 +25,9 @@ public class Pose implements Posture {
     public Pose(Matrix4f pose) {
         this.pose = pose;
         this.normal = new Matrix3f(pose);
+        // System.out.println("normal0: " + normal);
+        this.normal.normal();
+        // System.out.println("normal1: " + normal);
     }
 
     public Pose(Matrix4f pose, Matrix3f normal) {
@@ -68,6 +71,16 @@ public class Pose implements Posture {
     public void multiply(Quaternionf q) {
         pose.multiply(q);
         normal.multiply(q);
+    }
+
+    public void multiply(Pose pose) {
+        this.pose.multiply(pose.pose());
+        this.normal.multiply(pose.normal());
+    }
+
+    public void multiply(Matrix4f mat4) {
+        this.pose.multiply(mat4);
+        this.normal.multiply(new Matrix3f(mat4));
     }
 
     public void rotateX(float angle) {

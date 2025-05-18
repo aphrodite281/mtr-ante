@@ -5,8 +5,7 @@ import cn.zbx1425.sowcer.model.Model;
 import cn.zbx1425.sowcer.util.AttrUtil;
 import cn.zbx1425.sowcer.util.DrawContext;
 import cn.zbx1425.sowcer.vertex.VertAttrMapping;
-import cn.zbx1425.sowcer.math.Matrix4f;
-import cn.zbx1425.sowcer.math.Vector3f;
+import cn.zbx1425.sowcer.math.*;
 import cn.zbx1425.sowcer.vertex.VertAttrState;
 import cn.zbx1425.sowcer.vertex.VertAttrType;
 import cn.zbx1425.sowcerext.model.integration.BufferSourceProxy;
@@ -59,7 +58,7 @@ public class RawModel {
         }
     }
 
-    public void appendTransformed(RawModel nextModel, Matrix4f mat, int color, int light) {
+    public void appendTransformed(RawModel nextModel, Posture mat, int color, int light) {
         for (RawMesh nextMesh : nextModel.meshList.values()) {
             if (meshList.containsKey(nextMesh.materialProp)) {
                 RawMesh mesh = meshList.get(nextMesh.materialProp);

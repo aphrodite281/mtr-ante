@@ -30,7 +30,7 @@ public interface RailDrawCalls {
             this.matrix = matrix.copy();
             this.model = model;
             this.holder = null;
-            local = matrix.getTranslationPart();
+            local = matrix.transform(new Vector3f(0, 0, 0));
             pos = local.toBlockPos();
         }
 
@@ -38,7 +38,7 @@ public interface RailDrawCalls {
             this.matrix = matrix.copy();
             this.model = null;
             this.holder = holder;
-            local = matrix.getTranslationPart();
+            local = matrix.transform(new Vector3f(0, 0, 0));
             pos = local.toBlockPos();
         }
 

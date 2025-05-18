@@ -109,7 +109,7 @@ public class BlockEntityEyeCandyRenderer extends BlockEntityRendererMapper<Block
             if (prop == null) continue;
             
             Pose candyPose = new Pose(pose);
-            candyPose.mul(blockEntity.getBasePose());
+            candyPose.multiply(blockEntity.getBasePose());
             if (prop.model != null) {
                 MainClient.drawScheduler.enqueue(prop.model, candyPose, lightToUse);
             }

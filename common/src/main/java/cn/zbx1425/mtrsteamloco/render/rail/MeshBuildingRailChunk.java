@@ -52,16 +52,16 @@ public class MeshBuildingRailChunk extends RailChunkBase {
 
         float yMin = 256, yMax = -64;
         RawModel combinedModel = new RawModel();
-        for (Map.Entry<BakedRail, ArrayList<Pose>> entry : containingRails.entrySet()) {
-            ArrayList<Pose> railSpan = entry.getValue();
-            for (Pose pose : railSpan) {
-                Matrix4f pieceMat = pose.pose();
-                final Vector3f lightPos = pieceMat.getTranslationPart();
+        for (Map.Entry<BakedRail, ArrayList<Posture>> entry : containingRails.entrySet()) {
+            ArrayList<Posture> railSpan = entry.getValue();
+            for (Posture posture : railSpan) {
+                Pose pose = posture.getAsPose();
+                final Vector3f lightPos = pose.pose().transform(new Vector3f(0, 0, 0));
                 yMin = Math.min(yMin, lightPos.y());
                 yMax = Math.max(yMax, lightPos.y());
                 final BlockPos lightBlockPos = new BlockPos(Mth.floor(lightPos.x()), Mth.floor(lightPos.y() + 0.1), Mth.floor(lightPos.z()));
                 final int light = LightTexture.pack(world.getBrightness(LightLayer.BLOCK, lightBlockPos), world.getBrightness(LightLayer.SKY, lightBlockPos));
-                combinedModel.appendTransformed(railModel, pieceMat, entry.getKey().color, light);
+                combinedModel.appendTransformed(railModel, pose, entry.getKey().color, light);
             }
         }
         if (vertArrays != null) vertArrays.close();

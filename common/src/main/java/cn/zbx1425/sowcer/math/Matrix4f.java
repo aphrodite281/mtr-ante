@@ -26,6 +26,18 @@ public class Matrix4f implements Posture {
         this.impl = new org.joml.Matrix4f(other.impl);
     }
 
+    public Matrix4f(
+        float m00, float m01, float m02, float m03, 
+        float m10, float m11, float m12, float m13, 
+        float m20, float m21, float m22, float m23,
+        float m30, float m31, float m32, float m33) {
+        this.impl = new org.joml.Matrix4f(
+            m00, m01, m02, m03, 
+            m10, m11, m12, m13, 
+            m20, m21, m22, m23,
+            m30, m31, m32, m33);
+    }
+
     public Matrix4f copy() {
         return new Matrix4f(this);
     }
@@ -95,8 +107,9 @@ public class Matrix4f implements Posture {
     }
 
     public Vector3f transform(Vector3f src) {
-        org.joml.Vector3f srcCpy = new org.joml.Vector3f(src.impl);
-        return new Vector3f(impl.transformPosition(srcCpy));
+        org.joml.Vector4f dest = new org.joml.Vector4f(src.x(), src.y(), src.z(), 1.0f);
+        impl.transform(dest);
+        return new Vector3f(dest.x() / dest.w(), dest.y() / dest.w(), dest.z() / dest.w());
     }
 
     public Vector3f transform3(Vector3f src) {
@@ -156,6 +169,22 @@ public class Matrix4f implements Posture {
         FloatBuffer dstFloatBuffer = FloatBuffer.wrap(dstValues);
         load(dstFloatBuffer);
     }
+    
+    public Matrix4f(
+        float m00, float m01, float m02, float m03, 
+        float m10, float m11, float m12, float m13, 
+        float m20, float m21, float m22, float m23,
+        float m30, float m31, float m32, float m33) {
+        this();
+        float[] srcValues = new float[] {
+            m00, m01, m02, m03,
+            m10, m11, m12, m13,
+            m20, m21, m22, m23,
+            m30, m31, m32, m33
+        };
+        FloatBuffer srcFloatBuffer = FloatBuffer.wrap(srcValues);
+        load(srcFloatBuffer);
+    }
 
     public Matrix4f(Matrix4f other) {
         this.impl = other.impl.copy();
@@ -214,7 +243,7 @@ public class Matrix4f implements Posture {
     public Vector3f transform(Vector3f src) {
         com.mojang.math.Vector4f pos4 = new com.mojang.math.Vector4f(src.x(), src.y(), src.z(), 1.0F);
         pos4.transform(impl);
-        return new Vector3f(pos4.x(), pos4.y(), pos4.z());
+        return new Vector3f(pos4.x() / pos4.w(), pos4.y() / pos4.w(), pos4.z() / pos4.w());
     }
 
     public Vector3f transform3(Vector3f src) {
@@ -264,6 +293,20 @@ public class Matrix4f implements Posture {
     }
 
 #endif
+    public Matrix4f(
+        double m00, double m01, double m02, double m03, 
+        double m10, double m11, double m12, double m13, 
+        double m20, double m21, double m22, double m23,
+        double m30, double m31, double m32, double m33
+    ) {
+        this(
+            (float) m00, (float) m01, (float) m02, (float) m03,
+            (float) m10, (float) m11, (float) m12, (float) m13,
+            (float) m20, (float) m21, (float) m22, (float) m23,
+            (float) m30, (float) m31, (float) m32, (float) m33
+        );
+    }
+
 
     public void mul(Matrix4f other) {
         multiply(other);
@@ -336,6 +379,23 @@ public class Matrix4f implements Posture {
         return new Vector3f(x, y, z);
     }
 
+    public void shear(
+        float xy, float xz,
+        float yx, float yz,
+        float zx, float zy
+    ) {
+        multiply(new Matrix4f(
+            1, xy, xz, 0, 
+            yx, 1, yz, 0,
+            zx, zy, 1, 0,
+            0, 0, 0, 1
+        ));
+    }
+
+    public void translate(double x, double y, double z) {
+        translate((float) x, (float) y, (float) z);
+    }
+
     int index(int p_27642_, int p_27643_) {
       return p_27643_ * 4 + p_27642_;
     }
@@ -365,7 +425,7 @@ public class Matrix4f implements Posture {
         for (int i = 0; i < 4; i++) {
             sb.append("  ");
             for (int j = 0; j < 4; j++) {
-                sb.append(src[i * 4 + j]);
+                sb.append(src[j * 4 + i]);
                 sb.append(", ");
             }
             sb.append("\n");

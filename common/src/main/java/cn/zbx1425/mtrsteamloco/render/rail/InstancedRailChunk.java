@@ -6,8 +6,7 @@ import cn.zbx1425.mtrsteamloco.render.ByteBufferOutputStream;
 import cn.zbx1425.sowcer.batch.BatchManager;
 import cn.zbx1425.sowcer.batch.EnqueueProp;
 import cn.zbx1425.sowcer.batch.ShaderProp;
-import cn.zbx1425.sowcer.math.Matrix4f;
-import cn.zbx1425.sowcer.math.Vector3f;
+import cn.zbx1425.sowcer.math.*;
 import cn.zbx1425.sowcer.model.Model;
 import cn.zbx1425.sowcer.model.VertArrays;
 import org.msgpack.core.MessagePacker;
@@ -72,14 +71,15 @@ public class InstancedRailChunk extends RailChunkBase {
         ByteBufferOutputStream byteArrayOutputStream = new ByteBufferOutputStream(byteBuf, false);
         LittleEndianDataOutputStream oStream = new LittleEndianDataOutputStream(byteArrayOutputStream);
 
-        for (Map.Entry<BakedRail, ArrayList<Pose>> entry : containingRails.entrySet()) {
-            ArrayList<Pose> railSpan = entry.getValue();
-            for (Pose pose : railSpan) {
+        for (Map.Entry<BakedRail, ArrayList<Posture>> entry : containingRails.entrySet()) {
+            ArrayList<Posture> railSpan = entry.getValue();
+            for (Posture posture : railSpan) {
                 try {
                     oStream.writeInt(entry.getKey().color);
+                    Pose pose = posture.getAsPose();
                     Matrix4f pieceMat = pose.pose();
 
-                    final Vector3f lightPos = pieceMat.getTranslationPart();
+                    final Vector3f lightPos = pieceMat.transform(new Vector3f(0, 0, 0));
                     yMin = Math.min(yMin, lightPos.y());
                     yMax = Math.max(yMax, lightPos.y());
                     final BlockPos lightBlockPos = new BlockPos(Mth.floor(lightPos.x()), Mth.floor(lightPos.y() + 0.1), Mth.floor(lightPos.z()));

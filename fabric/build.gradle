@@ -32,6 +32,7 @@ configurations {
 
 dependencies {
 	// implementation "com.github.stuxuhai:jpinyin:1.1.7"
+	shadowCommon("org.apache.commons:commons-math3:+")
 	shadowCommon("com.github.stuxuhai:jpinyin:1.1.7")
 	modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 	modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
@@ -85,6 +86,7 @@ shadowJar {
 
 	relocate "me.shedaniel", "cn.zbx1425.mtrsteamloco.vendor.me.shedaniel"
 
+	relocate "org.apache.commons.math3", "vendor.cn.zbx1425.mtrsteamloco.org.apache.commons.math3"
 	relocate 'com.github.stuxuhai', 'vendor.cn.zbx1425.mtrsteamloco.com.github.stuxuhai'
 
 	configurations = [project.configurations.shadowCommon]

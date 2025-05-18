@@ -10,8 +10,7 @@ import cn.zbx1425.sowcer.vertex.VertAttrMapping;
 import cn.zbx1425.sowcer.vertex.VertAttrSrc;
 import cn.zbx1425.sowcer.vertex.VertAttrType;
 import cn.zbx1425.sowcerext.model.integration.FaceList;
-import cn.zbx1425.sowcer.math.Matrix4f;
-import cn.zbx1425.sowcer.math.Vector3f;
+import cn.zbx1425.sowcer.math.*;
 import org.lwjgl.opengl.GL11;
 
 import java.io.DataInputStream;
@@ -54,11 +53,14 @@ public class RawMesh {
         }
     }
 
-    public void appendTransformed(RawMesh nextMesh, Matrix4f mat, int color, int light) {
+    public void appendTransformed(RawMesh nextMesh, Posture posture, int color, int light) {
         if (nextMesh == this) throw new IllegalStateException("Mesh self-appending");
         int vertOffset = vertices.size();
+        Pose pose = posture.getAsPose();
+        Matrix4f model = pose.pose();
+        Matrix3f normal = pose.normal();
         for (Vertex vertex : nextMesh.vertices) {
-            Vertex newVertex = new Vertex(mat.transform(vertex.position), mat.transform3(vertex.normal));
+            Vertex newVertex = new Vertex(model.transform(vertex.position), normal.transform(vertex.normal));
             newVertex.u = vertex.u;
             newVertex.v = vertex.v;
             newVertex.color = color;

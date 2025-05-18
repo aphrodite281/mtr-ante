@@ -28,6 +28,18 @@ public class Matrix3f implements Posture{
         this.impl = new org.joml.Matrix3f(m.asMoj());
     }
 
+    public Matrix3f(
+        float m00, float m01, float m02,
+        float m10, float m11, float m12,
+        float m20, float m21, float m22
+    ) {
+        this.impl = new org.joml.Matrix3f(
+            m00, m01, m02,
+            m10, m11, m12,
+            m20, m21, m22
+        );
+    }
+
     public void store(FloatBuffer buffer) {
         buffer
         .put(0,  impl.m00())
@@ -75,6 +87,22 @@ public class Matrix3f implements Posture{
         return this.impl;
     }
 
+    public Vector3f transform(Vector3f v) {
+        return new Vector3f(impl.transform(v.asMoj()));
+    }
+
+    public void transpose() {
+        this.impl.transpose();
+    }
+
+    public void invert() {
+        this.impl.invert();
+    }
+
+    public void normal() {
+        this.impl.normal();
+    }
+
 #else
     private final com.mojang.math.Matrix3f impl;
 
@@ -96,6 +124,21 @@ public class Matrix3f implements Posture{
 
     public Matrix3f(Matrix4f m) {
         this.impl = new com.mojang.math.Matrix3f(m.asMoj());
+    }
+
+    public Matrix3f(
+        float m00, float m01, float m02,
+        float m10, float m11, float m12,
+        float m20, float m21, float m22
+    ) {
+        this();
+        float[] srcValues = new float[] {
+            m00, m01, m02,
+            m10, m11, m12,
+            m20, m21, m22
+        };
+        FloatBuffer srcFloatBuffer = FloatBuffer.wrap(srcValues);
+        load(srcFloatBuffer);
     }
 
     public void store(FloatBuffer buffer) {
@@ -133,7 +176,38 @@ public class Matrix3f implements Posture{
     public com.mojang.math.Matrix3f asMoj() {
         return this.impl;
     }
+
+    public Vector3f transform(Vector3f v) {
+        v = v.copy();
+        v.impl.transform(this.impl);
+        return v;
+    }
+
+    public void transpose() {
+        this.impl.transpose();
+    }
+
+    public void invert() {
+        this.impl.invert();
+    }
+
+    public void normal() {
+        invert();
+        transpose();
+    }
 #endif
+
+    public Matrix3f(
+        double m00, double m01, double m02,
+        double m10, double m11, double m12,
+        double m20, double m21, double m22
+    ) {
+        this(
+            (float) m00, (float) m01, (float) m02,
+            (float) m10, (float) m11, (float) m12,
+            (float) m20, (float) m21, (float) m22
+        );
+    }
 
     public void scale(float s) {
         scale(s, s, s);
@@ -151,8 +225,23 @@ public class Matrix3f implements Posture{
         multiply(new Quaternionf(Vector3f.ZP, angle));
     }
 
-    public Vector3f transform(Vector3f v) {
-        return new Vector3f(impl.transform(v.asMoj()));
+    @Override
+    public String toString() {
+        float[] src = new float[9];
+        FloatBuffer srcFloatBuffer = FloatBuffer.wrap(src);
+        store(srcFloatBuffer);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Matrix3f[\n");
+        for (int i = 0; i < 3; i++) {
+            sb.append("  ");
+            for (int j = 0; j < 3; j++) {
+                sb.append(src[j * 3 + i]);
+                sb.append(", ");
+            }
+            sb.append("\n");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override

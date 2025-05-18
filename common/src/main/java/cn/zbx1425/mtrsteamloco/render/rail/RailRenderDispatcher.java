@@ -61,7 +61,7 @@ public class RailRenderDispatcher {
                 chunkMap.get(chunkId).addRail(bakedRail);
             } else {
                 RailChunkBase newChunk;
-                if (isInstanced) {
+                if (false) {
                     newChunk = new InstancedRailChunk(chunkId, bakedRail.modelKey);
                 } else {
                     newChunk = new MeshBuildingRailChunk(chunkId, bakedRail.modelKey);
@@ -259,7 +259,7 @@ public class RailRenderDispatcher {
 #if DEBUG
             for (ArrayList<Matrix4f> rail : chunk.containingRails.values()) {
                 for (Matrix4f pieceMat : rail) {
-                    final Vector3f lightPos = pieceMat.getTranslationPart();
+                    final Vector3f lightPos = pieceMat.transform(new Vector3f(0, 0, 0));
                     final BlockPos lightBlockPos = new BlockPos(lightPos.x(), lightPos.y() + 0.1, lightPos.z());
                     LevelRenderer.renderLineBox(matrixStack, buffer, new AABB(lightBlockPos),
                             1.0f, isChunkEven ? 1.0f : 0.0f, isChunkEven ? 0.0f : 1.0f, 1.0f);

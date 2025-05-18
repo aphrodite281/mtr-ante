@@ -30,6 +30,7 @@ configurations {
 dependencies {
 	// implementation "com.github.stuxuhai:jpinyin:1.1.7"
 	shadowCommon("com.github.stuxuhai:jpinyin:1.1.7")
+	shadowCommon("org.apache.commons:commons-math3:+")
 	forge "net.minecraftforge:forge:${rootProject.forge_version}"
 	modApi "${rootProject.architectury_id}:architectury-forge:${rootProject.architectury_version}"
 
@@ -83,6 +84,7 @@ shadowJar {
 	}
 
 	relocate "me.shedaniel", "cn.zbx1425.mtrsteamloco.vendor.me.shedaniel"
+	relocate "org.apache.commons", "cn.zbx1425.mtrsteamloco.vendor.org.apache.commons"
 
 
 	configurations = [project.configurations.shadowCommon]

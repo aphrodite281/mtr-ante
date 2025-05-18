@@ -65,8 +65,9 @@ public class DrawScheduler {
 
         public ClusterDrawCall(ModelCluster model, Posture pose, int light) {
             this.model = model;
-            this.pose = pose.getAsMatrix4f();
-            this.normal = pose.getNormalMatrix();
+            Pose po = pose.getAsPose();
+            this.pose = po.pose();
+            this.normal = po.normal();
             this.light = light;
         }
     }

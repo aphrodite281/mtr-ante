@@ -82,7 +82,7 @@ public abstract class ItemRailModifierMixin {
 			final Rail rail1 = new Rail(posStart, facingStart, posEnd, facingEnd, isOneWay ? RailType.NONE : newRailType, transportMode);
 			final Rail rail2 = new Rail(posEnd, facingEnd, posStart, facingStart, newRailType, transportMode);
 
-            if (isValidContinuousMovement && railType == RailType.CABLE_CAR) {
+            if (isValidContinuousMovement && newRailType == RailType.CABLE_CAR) {
                 isValidContinuousMovement = ((RailExtraSupplier) (Object) rail1).isStraightOnly() && ((RailExtraSupplier) (Object) rail2).isStraightOnly();
             }
 

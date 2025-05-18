@@ -133,6 +133,7 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
 
 	@Inject(method = "setOffsets", at = @At("HEAD"), remap = false, cancellable = true)
 	public void setOffsets(UUID uuid, double x, double y, double z, float yaw, float pitch, double length, int width, boolean doorLeftOpen, boolean doorRightOpen, boolean hasPitchAscending, boolean hasPitchDescending, float riderOffset, float riderOffsetDismounting, boolean shouldSetOffset, boolean shouldSetYaw, Runnable clientPlayerCallback, CallbackInfo ci) {
+		if (positions == null) return;
 		prevYaw.put(uuid, yaw);
 		prevPitch.put(uuid, pitch);
 

@@ -3,8 +3,7 @@ package cn.zbx1425.sowcer.vertex;
 import cn.zbx1425.mtrsteamloco.render.ShadersModHandler;
 import cn.zbx1425.sowcer.ContextCapability;
 import cn.zbx1425.sowcer.util.AttrUtil;
-import cn.zbx1425.sowcer.math.Matrix4f;
-import cn.zbx1425.sowcer.math.Vector3f;
+import cn.zbx1425.sowcer.math.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -12,6 +11,7 @@ import org.lwjgl.opengl.GL33;
 import org.lwjgl.BufferUtils;
 import net.minecraft.client.Minecraft;
 import cn.zbx1425.mtrsteamloco.Main;
+import com.mojang.blaze3d.shaders.Uniform;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -33,9 +33,8 @@ public class VertAttrState {
     public Integer overlayUV;
     public Integer lightmapUV;
     public Vector3f normal;
-    public Function<Matrix4f, Matrix4f> matrixModel;
-    public boolean useMatixProcess = false;
-    public static Matrix4f nowMatrix = new Matrix4f();
+    public Matrix4f matrixModel;
+    public Matrix3f matrixNormal;
 
     public void applyGlobal() {
         for (VertAttrType attr : VertAttrType.values()) {
@@ -78,19 +77,18 @@ public class VertAttrState {
                     break;
                 case MATRIX_MODEL:
                     if (matrixModel == null) continue;
-                    nowMatrix = matrixModel.apply(nowMatrix);
+                    ShaderInstance shaderInstance = RenderSystem.getShader();
                     if (useCustomShader) {
                         ByteBuffer byteBuf = ByteBuffer.allocate(64);
                         FloatBuffer floatBuf = byteBuf.asFloatBuffer();
-                        nowMatrix.store(floatBuf);
+                        matrixModel.store(floatBuf);
                         GL33.glVertexAttrib4f(attr.location, floatBuf.get(0), floatBuf.get(1), floatBuf.get(2), floatBuf.get(3));
                         GL33.glVertexAttrib4f(attr.location + 1, floatBuf.get(4), floatBuf.get(5), floatBuf.get(6), floatBuf.get(7));
                         GL33.glVertexAttrib4f(attr.location + 2, floatBuf.get(8), floatBuf.get(9), floatBuf.get(10), floatBuf.get(11));
                         GL33.glVertexAttrib4f(attr.location + 3, floatBuf.get(12), floatBuf.get(13), floatBuf.get(14), floatBuf.get(15));
                     } else {
-                        ShaderInstance shaderInstance = RenderSystem.getShader();
                         if (shaderInstance != null && shaderInstance.MODEL_VIEW_MATRIX != null) {
-                            shaderInstance.MODEL_VIEW_MATRIX.set(nowMatrix.asMoj());
+                            shaderInstance.MODEL_VIEW_MATRIX.set(matrixModel.asMoj());
                             if (useCustomShader) {
                                 shaderInstance.MODEL_VIEW_MATRIX.upload();
                             } else {
@@ -149,21 +147,21 @@ public class VertAttrState {
         return this;
     }
 
-    public VertAttrState setModelMatrix(Matrix4f matrix) {
-        this.matrixModel = (matrixIn) -> {
-            // nowMatrix = matrix;    
-            return matrix;
-        };
+    public VertAttrState setModelMatrix(Posture posture) {
+        Pose pose = posture.getAsPose();
+        this.matrixModel = pose.pose();
+        this.matrixNormal = pose.normal();
         return this;
     }
 
+    @Deprecated
     public VertAttrState setMatixProcess(Function<Matrix4f, Matrix4f> matrixProcess) {
-        this.matrixModel = matrixModel;
         return this;
     }
 
+    @Deprecated
     public boolean useMatixProcess() {
-        return useMatixProcess;
+        return false;
     }
 
     public boolean hasAttr(VertAttrType attrType) {
@@ -181,7 +179,7 @@ public class VertAttrState {
             case UV_LIGHTMAP:
                 return lightmapUV != null;
             case MATRIX_MODEL:
-                return matrixModel != null;
+                return matrixModel != null && matrixNormal != null;
         }
         return false;
     }
@@ -209,6 +207,7 @@ public class VertAttrState {
                 break;
             case MATRIX_MODEL:
                 matrixModel = null;
+                matrixNormal = null;
                 break;
         }
     }
@@ -237,6 +236,7 @@ public class VertAttrState {
         clone.lightmapUV = this.lightmapUV;
         clone.normal = this.normal == null ? null : this.normal.copy();
         clone.matrixModel = this.matrixModel == null ? null : this.matrixModel;
+        clone.matrixNormal = this.matrixNormal == null ? null : this.matrixNormal;
         return clone;
     }
 }

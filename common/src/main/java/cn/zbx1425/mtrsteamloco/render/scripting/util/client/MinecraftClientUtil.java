@@ -252,6 +252,10 @@ public class MinecraftClientUtil {
         execute(() -> Minecraft.getInstance().setScreen(screen));
     }
 
+    public static Screen getPresentScreen() {
+        return Minecraft.getInstance().screen;
+    }
+
     public static void reloadResourcePacks() {
         execute(Minecraft.getInstance()::reloadResourcePacks);
     }

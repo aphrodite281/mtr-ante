@@ -22,8 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(Siding.class)
 public abstract class SidingMixin {
 
-    @Inject(method = "simulateTrain", at = @At("TAIL"), remap = false)
-    private void onSimulateTrain(DataCache dataCache, RailwayDataDriveTrainModule railwayDataDriveTrainModule, List<Map<UUID, Long>> trainPositions, SignalBlocks signalBlocks, Map<Player, Set<TrainServer>> trainsInPlayerRange, Set<TrainServer> trainsToSync, Map<Long, List<ScheduleEntry>> schedulesForPlatform, Map<Long, Map<BlockPos, TrainDelay>> trainDelays, CallbackInfo ci) {
+    // @Inject(method = "simulateTrain", at = @At("TAIL"), remap = false)
+    private void __onSimulateTrain(DataCache dataCache, RailwayDataDriveTrainModule railwayDataDriveTrainModule, List<Map<UUID, Long>> trainPositions, SignalBlocks signalBlocks, Map<Player, Set<TrainServer>> trainsInPlayerRange, Set<TrainServer> trainsToSync, Map<Long, List<ScheduleEntry>> schedulesForPlatform, Map<Long, Map<BlockPos, TrainDelay>> trainDelays, CallbackInfo ci) {
         for (TrainServer train : trainsToSync) {
             if (!((TrainExtraSupplier) train).isConfigsChanged()) continue;
             trainsToSync.add(train);

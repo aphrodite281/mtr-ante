@@ -69,6 +69,7 @@ public abstract class TrainClientMixin extends Train implements IGui{
 
     @Inject(method = "copyFromTrain", at = @At("TAIL"), remap = false)
     private void copyFromTrainTail(Train other, CallbackInfo ci) {
+		
         ((TrainExtraSupplier) (Object) this).setCustomConfigs(((TrainExtraSupplier) (Object) other).getCustomConfigs());
     }
 
@@ -319,7 +320,7 @@ public abstract class TrainClientMixin extends Train implements IGui{
 			}
 		}
 
-		simulateTrain(world, 0, null);
+		simulateTrain(world, ticksElapsed, null);
 
 		if (depot == null || routeIds.isEmpty()) {
 			final Siding siding = ClientData.DATA_CACHE.sidingIdMap.get(sidingId);

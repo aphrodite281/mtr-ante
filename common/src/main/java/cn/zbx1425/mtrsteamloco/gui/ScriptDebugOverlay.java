@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class ScriptDebugOverlay {
 
+    public static final OrderedMap<String, Object> STATIC = new OrderedMap<>();
+
 #if MC_VERSION >= "12000"
     public synchronized static void render(GuiGraphics vdStuff) {
         PoseStack matrices = vdStuff.pose();
@@ -49,6 +51,11 @@ public class ScriptDebugOverlay {
         int y = 0;
         Font font = Minecraft.getInstance().font;
         int lineHeight = Mth.ceil(font.lineHeight * 1.2f);
+
+        for (Map.Entry<String, Object> entry : STATIC.entryList()) {
+            y = drawText(vdStuff, font, entry.getKey() + ": " + entry.getValue(), 20, y, 0xFFFFFFFF);
+        }
+
         for (Map.Entry<ScriptHolderBase, List<AbstractScriptContext>> entry : contexts.entrySet()) {
             ScriptHolderBase holder = entry.getKey();
             if (holder.failTime > 0) {
@@ -84,7 +91,6 @@ public class ScriptDebugOverlay {
 
         matrices.popPose();
     }
-
 
 #if MC_VERSION >= "12000"
     private static int drawText(GuiGraphics guiGraphics, Font font, String text, int x, int y, int color) {

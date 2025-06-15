@@ -62,6 +62,7 @@ public class MainFabricClient implements ClientModInitializer {
 							.then(ClientCommandManager.literal("clearDebugInfo")
                                     .executes(context -> {
                                         ScriptContextManager.clearDebugInfo();
+										cn.zbx1425.mtrsteamloco.gui.ScriptDebugOverlay.STATIC.clear();
                                         return 1;
                                     }))
 							.then(ClientCommandManager.literal("stat")

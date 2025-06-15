@@ -13,6 +13,10 @@ plugins {
 
 apply from: "build_dep_ver.gradle"
 
+ext {
+    graaljsVersion = "24.2.1"
+}
+
 rootProject.ext.assetExcludeFont = rootProject.properties.containsKey("assetExcludeFont")
 
 architectury {
@@ -45,6 +49,8 @@ configure(subprojects.findAll {it.name != 'rhino'}) {
 
 		implementation project(":rhino")
 		shadowCommon project(":rhino")
+		// shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
+		// shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
 	}
 
 	build.finalizedBy(mergeJars)

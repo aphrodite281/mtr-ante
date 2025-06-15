@@ -150,8 +150,8 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
 		final float riderOffsetNew = doorLeftOpen && percentageX < 0 || doorRightOpen && percentageX > 1 ? riderOffsetDismounting : riderOffset;
 		int currentRidingCar = Mth.clamp((int) Math.floor(percentagesZ.get(uuid)), 0, positions.length - 2);
 		Matrix4f mat = new Matrix4f();
-		mat.rotateX((pitch < 0 ? hasPitchAscending : hasPitchDescending) ? (float) pitch : 0);
-		mat.rotateY(yaw);//(reversed ? (float)Math.PI : 0)
+		mat.rotateY(yaw);//
+		mat.rotateX((pitch < 0 ? hasPitchAscending : hasPitchDescending) ? -pitch : 0);
 		mat.translate(0, -1, 0);
 		mat.rotateZ((reversed ? 1 : -1) * getRoll(currentRidingCar));
 		mat.translate(0, 1, 0);
@@ -162,7 +162,7 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
 		riderPositions.put(uuid, playerOffset.add(x, y, z));
 
 		if (isClientPlayer) {
-			prevRotation = new Rotation(x, y, z, yaw, (pitch < 0 ? hasPitchAscending : hasPitchDescending) ? (float) pitch : 0, getRoll(currentRidingCar), reversed);
+			prevRotation = new Rotation(x, y, z, yaw, (pitch < 0 ? hasPitchAscending : hasPitchDescending) ? pitch : 0, getRoll(currentRidingCar), reversed);
 
 			final double moveX = x + playerOffset.x;
 			final double moveY = y + playerOffset.y;

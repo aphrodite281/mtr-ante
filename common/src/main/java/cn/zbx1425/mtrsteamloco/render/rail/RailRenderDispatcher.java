@@ -81,7 +81,9 @@ public class RailRenderDispatcher {
         HashMap<Long, RailChunkBase> chunkMap = railChunkMap.get(bakedRail.modelKey);
         if (chunkMap == null) return;
         for (long chunkId : bakedRail.coveredChunks.keySet()) {
-            chunkMap.get(chunkId).removeRail(bakedRail);
+            RailChunkBase chunk = chunkMap.get(chunkId);
+            if (chunk == null) continue;
+            chunk.removeRail(bakedRail);
         }
         bakedRail.dispose();
     }

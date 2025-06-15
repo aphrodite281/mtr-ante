@@ -41,8 +41,7 @@ public class BakedRail {
             scriptContext = new RailScriptContext(this);
         }
 
-        if (!genChunkMap) return; 
-        if (!modelKey.equals("null")) {
+        if (!modelKey.equals("null") && genChunkMap) {
             RailExtraSupplier supplier = (RailExtraSupplier) rail;
             final boolean reverse = supplier.getRenderReversed();
             final float interval = prop.repeatInterval;

@@ -11,10 +11,8 @@ import cn.zbx1425.sowcer.util.GlStateTracker;
 import cn.zbx1425.sowcerext.model.integration.BufferSourceProxy;
 import com.mojang.blaze3d.vertex.PoseStack;
 import cn.zbx1425.sowcer.math.Matrix4f;
-import mtr.data.Rail;
 import net.minecraft.client.player.LocalPlayer;
 import mtr.entity.EntitySeat;
-import mtr.data.IGui;
 import net.minecraft.resources.ResourceLocation;
 import cn.zbx1425.mtrsteamloco.render.block.BlockEntityEyeCandyRenderer;
 import cn.zbx1425.mtrsteamloco.render.block.BlockEntityDirectNodeRenderer;
@@ -170,6 +168,7 @@ public class RenderTrainsMixin extends EntityRendererMapper<EntitySeat> implemen
             method = "render(Lmtr/entity/EntitySeat;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V")
     private static void renderTail(EntitySeat entity, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers, CallbackInfo ci) {
         // Already once per frame, since TAIL
+        Rolling.update();
         Minecraft.getInstance().level.getProfiler().popPush("NTERailwayData");
         Matrix4f viewMatrix = new Matrix4f(matrices.last().pose());
         MainClient.railRenderDispatcher.prepareDraw();

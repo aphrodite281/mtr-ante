@@ -96,6 +96,7 @@ public class RailwayDataMixin implements IPacket {
 	@Shadow(remap = false) private static String KEY_USE_TIME_AND_WIND_SYNC = "use_time_and_wind_sync";
 
     public void simulateTrains() {
+
         RAIL_UPDATE_DISTANCE = world.getServer().getPlayerList().getViewDistance() * 16;
 		List<? extends Player> players = world.players();
 		players.forEach(player -> {
@@ -150,6 +151,9 @@ public class RailwayDataMixin implements IPacket {
 		railwayDataRailActionsModule.tick();
 		railwayDataRouteFinderModule.tick();
 		updateNearbyTrains.tick();
+		if (sidings.size() > 0) {
+			
+		}
 		updateNearbyLifts.tick();
 
 		if (MTR.isGameTickInterval(SCHEDULE_UPDATE_TICKS)) {

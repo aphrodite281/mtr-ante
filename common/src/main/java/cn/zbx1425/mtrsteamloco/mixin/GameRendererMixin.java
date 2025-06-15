@@ -65,8 +65,8 @@ public class GameRendererMixin {
         PoseStack poseStack,
         CallbackInfo ci
     ) {
-        simulateTrains(Minecraft.getInstance());
-        Rolling.update();
+        // simulateTrains(Minecraft.getInstance());
+        // Rolling.update();
     }
 
     @Inject(
@@ -98,7 +98,7 @@ public class GameRendererMixin {
 		final float lastFrameDuration = MTRClient.getLastFrameDuration();
 		final float newLastFrameDuration = client.isPaused() || RenderTrainsAccessor.getLastRenderedTick() == MTRClient.getGameTick() ? 0 : lastFrameDuration;
         ClientData.TRAINS.forEach(train -> {
-            ((TrainAccessor) train).invokeSimulateTrain(world, newLastFrameDuration, null);
+            // ((TrainAccessor) train).invokeSimulateTrain(world, newLastFrameDuration, null);
         });
     }
 }

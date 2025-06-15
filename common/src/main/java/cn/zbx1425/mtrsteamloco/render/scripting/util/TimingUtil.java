@@ -2,6 +2,7 @@ package cn.zbx1425.mtrsteamloco.render.scripting.util;
 
 import cn.zbx1425.mtrsteamloco.render.RenderUtil;
 import cn.zbx1425.mtrsteamloco.render.scripting.AbstractScriptContext;
+import net.minecraft.client.Minecraft;
 
 @SuppressWarnings("unused")
 public class TimingUtil {
@@ -23,5 +24,9 @@ public class TimingUtil {
 
     public static double delta() {
         return frameDeltaForScript;
+    }
+
+    public static String gameTime() {
+        return Long.toString(Minecraft.getInstance().level.getGameTime());
     }
 }

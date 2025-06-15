@@ -17,6 +17,6 @@ public interface TrainAccessor {
     @Accessor(value = "distances", remap = false)
     List<Double> getDistances();
 
-    @Invoker(remap = false) @Final @Mutable
-    void invokeSimulateTrain(Level world, float ticksElapsed, Depot depot);
+//     @Invoker(remap = false) @Final @Mutable
+//     void invokeSimulateTrain(Level world, float ticksElapsed, Depot depot);
 }

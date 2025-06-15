@@ -55,7 +55,7 @@ public class EyeCandyScriptContext extends AbstractScriptContext {
 
     @Override
     public boolean isBearerAlive() {
-        return !disposeForReload && !entity.isRemoved() && !disposed;
+        return !disposeForReload && !entity.isRemoved() && !disposed && entity.scriptContext == this;
     }
 
     public void drawModel(ModelCluster model, Matrices poseStack) {

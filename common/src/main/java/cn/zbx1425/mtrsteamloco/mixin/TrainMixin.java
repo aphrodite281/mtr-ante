@@ -345,8 +345,7 @@ public abstract class TrainMixin implements TrainExtraSupplier{
 			isRailBlocked(stopIndex) ||
 			(isRepeat() && stopIndex >= repeatIndex2 && distances.size() > repeatIndex1 ? 
 				path.get(repeatIndex2).isOppositeRail(path.get(repeatIndex1)) : 
-				path.get(stopIndex).isOppositeRail(path.get(stopIndex + 1)));
-		cn.zbx1425.mtrsteamloco.gui.ScriptDebugOverlay.STATIC.put("mustStop" + this, isCurrentlyManual + " " + isRailBlocked(stopIndex) + "result" + result + " " + System.currentTimeMillis());
+				(stopIndex >= distances.size() - 1 || path.get(stopIndex).isOppositeRail(path.get(stopIndex + 1))));
 		return result;
 	}
 
@@ -431,7 +430,6 @@ public abstract class TrainMixin implements TrainExtraSupplier{
 									}
 								}
 							}
-							cn.zbx1425.mtrsteamloco.gui.ScriptDebugOverlay.STATIC.put("nextStoppingIndex", nextStoppingIndex);
 						}
 
 						final double stoppingDistance = distances.get(nextStoppingIndex) - railProgress;

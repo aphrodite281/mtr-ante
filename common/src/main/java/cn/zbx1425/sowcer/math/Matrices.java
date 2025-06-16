@@ -2,7 +2,7 @@ package cn.zbx1425.sowcer.math;
 
 import java.util.Stack;
 
-public class Matrices {
+public class Matrices implements Posture {
 
 
     private final Stack<Matrix4f> stack = new Stack<>();
@@ -73,5 +73,30 @@ public class Matrices {
     public void setIdentity() {
         stack.pop();
         stack.push(new Matrix4f());
+    }
+
+    @Override
+    public PoseStack getAsPoseStack() {
+        return new PoseStack(getAsPose());
+    }
+
+    @Override
+    public Pose getAsPose() {
+        return new Pose(last());
+    }
+
+    @Override
+    public Matrix4f getAsMatrix4f() {
+        return last();
+    }
+
+    @Override
+    public Matrix3f getAsMatrix3f() {
+        return new Matrix3f(last());
+    }
+
+    @Override
+    public Matrices getAsMatrices() {
+        return this;
     }
 }

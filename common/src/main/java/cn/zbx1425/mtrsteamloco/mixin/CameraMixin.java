@@ -58,7 +58,7 @@ public abstract class CameraMixin {
         Vector3f pos = new Vector3f(getPosition());
         pos = Rolling.applyRolling(pos, eyeHeight);
         setPosition(pos.toVec3());
-        roll = Rolling.getRollQuaternion();
+        roll = Rolling.getRollQuaternion().asMoj();
     }
 
 #if MC_VERSION >= "11903"

@@ -23,10 +23,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mtr.render.RenderTrains;
-import cn.zbx1425.sowcer.math.PoseStackUtil;
+import cn.zbx1425.sowcer.math.*;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import cn.zbx1425.sowcer.math.Matrix4f;
-import cn.zbx1425.sowcer.math.Vector3f;
 import cn.zbx1425.mtrsteamloco.data.Rolling;
 import cn.zbx1425.mtrsteamloco.data.Rolling.Rotation;
 
@@ -46,6 +44,8 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
     private float[] roll = new float[0];
 	private Vec3[] positions;
 	private boolean reversed;
+	private boolean hasPitchAscending = false;
+	private boolean hasPitchDescending = false;
 
     @Override
     public float getRoll(int index) {
@@ -67,7 +67,6 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
 	public void setReversed(boolean reversed) {
 		this.reversed = reversed;
 	}
-
 
 	@Shadow(remap = false) private float clientPrevYaw;
 	@Shadow(remap = false) private float oldPercentageX;
@@ -139,6 +138,8 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
 
 		prevYaw.put(uuid, yaw);
 		prevPitch.put(uuid, pitch);
+		this.hasPitchAscending = hasPitchAscending;
+		this.hasPitchDescending = hasPitchDescending;
 
 		final LocalPlayer clientPlayer = Minecraft.getInstance().player;
 		if (clientPlayer == null) {
@@ -263,11 +264,11 @@ public abstract class VehicleRidingClientMixin implements VehicleRidingClientExt
 			Float pitch = prevPitch.get(playerId);
 			if (yaw != null && pitch != null) {
 				int currentRidingCar = Mth.clamp((int) Math.floor(percentagesZ.get(playerId)), 0, positions.length - 2);
-				PoseStackUtil.rotX(matrices, pitch);
+				float p = (pitch < 0 ? hasPitchAscending : hasPitchDescending) ? -pitch : 0;
 				PoseStackUtil.rotY(matrices, yaw);
+				PoseStackUtil.rotX(matrices, p);
 				PoseStackUtil.rotZ(matrices, (reversed? 1 : -1) * getRoll(currentRidingCar));
 				PoseStackUtil.rotY(matrices, -yaw);
-				PoseStackUtil.rotX(matrices, -pitch);
 			}
 			matrices.translate(-vec3.x, -vec3.y, -vec3.z);
 			matrices.translate(playerPositionOffset.x, playerPositionOffset.y, playerPositionOffset.z);

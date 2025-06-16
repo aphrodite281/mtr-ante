@@ -1,18 +1,10 @@
 package cn.zbx1425.mtrsteamloco.data;
 
 import net.minecraft.client.Minecraft;
-import cn.zbx1425.sowcer.math.PoseStackUtil;
-import cn.zbx1425.sowcer.math.Vector3f;
-import cn.zbx1425.sowcer.math.Matrix4f;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.blaze3d.vertex.PoseStack;
 import cn.zbx1425.mtrsteamloco.ClientConfig;
-#if MC_VERSION >= "11903"
-import org.joml.Quaternionf;
-import org.joml.AxisAngle4d;
-#else
-import com.mojang.math.Quaternion;
-#endif
+import cn.zbx1425.sowcer.math.*;
 
 public class Rolling {
     private static Rotation rotation = Rotation.IDENTITY;
@@ -35,7 +27,7 @@ public class Rolling {
         if (!ClientConfig.enableRolling) return;
         if (rotation.isIdentity()) return;
         
-        poseStack.mulPose(getRollQuaternion(true));
+        poseStack.mulPose(getRollQuaternion(true).asMoj());
     }
 
     public static Vector3f applyRolling(Vector3f pos, float eyeHeight) {
@@ -46,8 +38,8 @@ public class Rolling {
 
 
         Matrix4f mat = new Matrix4f();
-        mat.rotateX(rot.pitch);
         mat.rotateY(rot.yaw);
+        mat.rotateX(-rot.pitch);
         mat.rotateZ(rot.reversed? rot.roll : -rot.roll);
 
         pos.add(0, -eyeHeight, 0);
@@ -56,45 +48,44 @@ public class Rolling {
         return pos;
     }
 
-
-
-#if MC_VERSION >= "11903"
     public static Quaternionf getRollQuaternion() {
         return getRollQuaternion(false);
     }
 
     public static Quaternionf getRollQuaternion(boolean reversed) {
-        if (rotation.isIdentity() || !ClientConfig.enableRolling) return new Quaternionf();
+        if (rotation.isIdentity()) return new Quaternionf(new Vector3f(0, 0, 0), 0);
+
+        Rotation rot = rotation;
+
+        float roll = reversed != rot.reversed ? rot.roll : -rot.roll;
+        float pitch = reversed ? rot.pitch : -rot.pitch;
+
+        if (ClientConfig.enableRolling) {
+            return new Quaternionf()
+            .rotateY(rot.yaw)
+               .rotateX(pitch)
+               .rotateZ(roll)
+            .rotateY(-rot.yaw);
+        } else {
+            return new Quaternionf().rotateY(rot.yaw)
+                .rotateX(pitch)
+            .rotateY(-rot.yaw);
+        }
+    }
+
+    public static Quaternionf _getRollQuaternion(boolean reversed) {
+        if (rotation.isIdentity() || !ClientConfig.enableRolling) return new Quaternionf(new Vector3f(0, 0, 0), 0);
 
         Rotation rot = rotation;
 
         Matrix4f mat = new Matrix4f();
-        mat.rotateX(rot.pitch);
         mat.rotateY(rot.yaw);
+        mat.rotateX(rot.pitch);
         Vector3f fp = mat.transform(new Vector3f(0, 0, 1));
-        Quaternionf q = new Quaternionf(new AxisAngle4d(reversed != rot.reversed ? rot.roll : -rot.roll, fp.x(), fp.y(), fp.z()));
+        Quaternionf q = new Quaternionf(fp, reversed != rot.reversed ? rot.roll : -rot.roll);
 
         return q;
     }
-#else
-
-    public static Quaternion getRollQuaternion() {
-        return getRollQuaternion(false);
-    }
-
-    public static Quaternion getRollQuaternion(boolean reversed) {
-        if (rotation.isIdentity() || !ClientConfig.enableRolling) return Quaternion.ONE.copy();
-        Rotation rot = rotation;
-
-        Matrix4f mat = new Matrix4f();
-        mat.rotateX(rot.pitch);
-        mat.rotateY(rot.yaw);
-        Vector3f fp = mat.transform(new Vector3f(0, 0, 1));
-        Quaternion q = new Quaternion(fp.asMoj(), reversed != rot.reversed ? rot.roll : -rot.roll, false);
-
-        return q;
-    }
-#endif
 
     public static class Rotation {
         public final Vector3f pos;

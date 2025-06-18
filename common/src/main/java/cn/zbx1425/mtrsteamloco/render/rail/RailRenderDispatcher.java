@@ -157,15 +157,15 @@ public class RailRenderDispatcher {
 
         Vec3 cameraBlockPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vector3f cameraPos = new Vector3f(cameraBlockPos);
-        List<RailChunkBase> railChunkList = new ArrayList<>(this.railChunkList);
-        for (BakedRail rail : railRefMap.values()) {
-            if (rail.scriptContext == null) continue;
-            RailModelProperties properties = rail.getProperties();
-            if (properties == null) continue;
-            if (properties.script == null) continue;
-            properties.script.tryCallRenderFunctionAsync(rail.scriptContext);
-            railChunkList.addAll(rail.scriptContext.chunks.values());
-        }
+        // List<RailChunkBase> railChunkList = new ArrayList<>(this.railChunkList);
+        // for (BakedRail rail : railRefMap.values()) {
+        //     if (rail.scriptContext == null) continue;
+        //     RailModelProperties properties = rail.getProperties();
+        //     if (properties == null) continue;
+        //     if (properties.script == null) continue;
+        //     properties.script.tryCallRenderFunctionAsync(rail.scriptContext);
+        //     railChunkList.addAll(rail.scriptContext.chunks.values());
+        // }
         railChunkList.sort(Comparator.comparingDouble(chunk -> chunk.getCameraDistManhattanXZ(cameraBlockPos)));
 
         int buffersRebuilt = 0;

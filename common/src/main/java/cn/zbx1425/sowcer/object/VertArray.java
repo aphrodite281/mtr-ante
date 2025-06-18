@@ -76,7 +76,7 @@ public class VertArray implements Closeable {
 
     @Override
     public void close() {
-        EXECTOR.schedule(() -> _close(), 40, TimeUnit.SECONDS);
+        EXECTOR.schedule(() -> _close(), 10, TimeUnit.SECONDS);
     }
 
     private void _close() {

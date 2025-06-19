@@ -56,6 +56,7 @@ public class VertArray implements Closeable {
     }
 
     public void draw() {
+        if (indexBuf == null || id == 0 || indexBuf.vertexCount == 0) return;
         if (instanceBuf == null) {
             GL33.glDrawElements(GL33.GL_TRIANGLES, indexBuf.vertexCount, indexBuf.indexType, 0L);
         } else {
@@ -76,15 +77,15 @@ public class VertArray implements Closeable {
 
     @Override
     public void close() {
-        EXECTOR.schedule(() -> _close(), 10, TimeUnit.SECONDS);
+        EXECTOR.schedule(() -> _close(id), 10, TimeUnit.SECONDS);
+        id = 0;
     }
 
-    private void _close() {
+    private void _close(int id) {
         if (RenderSystem.isOnRenderThread()) {
             GL33.glDeleteVertexArrays(id);
-            id = 0;
         } else {
-            RenderSystem.recordRenderCall(this::_close);
+            RenderSystem.recordRenderCall(() -> _close(id));
         }
     }
 }

@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'graalvm'
-          java-version: '17'
+          java-version: '17.0.12'
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
         cache: 'gradle'

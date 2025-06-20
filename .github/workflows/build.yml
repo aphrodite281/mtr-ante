@@ -24,9 +24,6 @@ jobs:
           distribution: 'graalvm'
           java-version: '17.0.12'
           cache: 'gradle'
-          cache-dependency-path: | # optional
-            sub-project/*.gradle*
-            sub-project/**/gradle-wrapper.properties
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
       # - name: Setup Gradle

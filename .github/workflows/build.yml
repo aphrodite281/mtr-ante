@@ -29,8 +29,6 @@ jobs:
           path: |
             ~/.gradle/wrapper/dists
             ~/.gradle/caches
-            ./build
-            ./*/build
             ./bin
             ./*/bin
           key: gradle-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}-${{ matrix.minecraft }}

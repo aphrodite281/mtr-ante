@@ -205,17 +205,17 @@ jobs:
       contents: write
       pages: write
       id-token: write 
-    needs: build
+    # needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Download current artifact
-        uses: actions/download-artifact@v4
-        with:
-          path: ./docs/artifacts
-          merge-multiple: true
+      # - name: Download current artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     path: ./docs/artifacts
+      #     merge-multiple: true
       - name: Display structure
         run: ls -R ./docs/
       - name: Setup Pages

@@ -33,6 +33,7 @@ public class EyeCandyScriptContext extends AbstractScriptContext {
 
     public void commit(DrawScheduler drawScheduler, Matrix4f basePose, Matrix4f worldPose, int light) {
         drawCalls.commit(drawScheduler, basePose, worldPose, light);
+        scriptResult.commit(drawScheduler, basePose, worldPose, light);
     }
 
     @Override

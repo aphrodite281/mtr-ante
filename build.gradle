@@ -51,12 +51,14 @@ configure(subprojects) {
 		compileOnly("org.graalvm.polyglot:polyglot:${graaljsVersion}")
 		compileOnly("org.graalvm.polyglot:js:${graaljsVersion}")
 		compileOnly("com.oracle.truffle:truffle-api:1.0.0-rc7")
-		if (project.hasProperty('shadowGraalvm') && project.property('shadowGraalvm').toBoolean()) {
-			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
-			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
-			shadowCommon("org.graalvm.icu4j:icu4j:${graaljsVersion}")
-			shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
-		}
+		shadowCommon("com.oracle.truffle:truffle-api:1.0.0-rc7")
+		shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
+		shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
+		shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
+		shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
+
+		// if (project.hasProperty('shadowGraalvm') && project.property('shadowGraalvm').toBoolean()) {
+		// }
 	}
 
 	build.finalizedBy(mergeJars)

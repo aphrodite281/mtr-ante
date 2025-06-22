@@ -85,11 +85,12 @@ shadowJar {
 	}
 
 	relocate "me.shedaniel", "cn.zbx1425.mtrsteamloco.vendor.me.shedaniel"
-	// relocate 'org.graalvm', 'vendor.cn.zbx1425.mtrsteamloco.org.graalvm'
-	// relocate 'com.oracle', 'vendor.cn.zbx1425.mtrsteamloco.com.oracle'
+	relocate 'org.graalvm', 'vendor.cn.zbx1425.mtrsteamloco.org.graalvm'
+	relocate 'com.oracle', 'vendor.cn.zbx1425.mtrsteamloco.com.oracle'
 
 	configurations = [project.configurations.shadowCommon]
 	archiveClassifier = "dev-shadow"
+	mergeServiceFiles()
 }
 
 static boolean matchInnerClass(String path, String... names) {

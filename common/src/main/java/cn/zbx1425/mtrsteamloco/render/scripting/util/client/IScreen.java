@@ -4,8 +4,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import cn.zbx1425.mtrsteamloco.Main;
 import com.mojang.blaze3d.systems.RenderSystem;
-import vendor.cn.zbx1425.mtrsteamloco.org.mozilla.javascript.Scriptable;
-import vendor.cn.zbx1425.mtrsteamloco.org.mozilla.javascript.NativeObject;
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -23,6 +21,7 @@ import net.minecraft.client.gui.components.Widget;
 import me.shedaniel.clothconfig2.api.*;
 import cn.zbx1425.mtrsteamloco.gui.entries.*;
 import net.minecraft.client.gui.components.Button;
+import org.graalvm.polyglot.proxy.ProxyObject;
 
 import java.util.*;
 import java.nio.file.Path;
@@ -72,7 +71,7 @@ public interface IScreen {
 
     public static class WithTexture extends Screen {
         public GraphicsTexture texture;
-        public Scriptable state = new NativeObject();
+        public ProxyObject state = ProxyObject.fromMap(new HashMap<>()); 
 
         public InitFunction initFunction = (screen, width, height) -> {};
         public KeyPressResponder keyPressResponder = (screen, p_96552_, p_96553_, p_96554_) -> false;

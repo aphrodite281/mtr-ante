@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
 import java.util.Locale;
 
 public class ResourceUtil {
@@ -45,8 +45,35 @@ public class ResourceUtil {
         if (expectExtension != null && !relative.endsWith(expectExtension)) {
             relative += expectExtension;
         }
-        String resolvedPath = FileSystems.getDefault().getPath(baseFile.getPath()).getParent().resolve(relative)
-                .normalize().toString().replace('\\', '/');
-        return new ResourceLocation(baseFile.getNamespace(), resolvedPath);
+
+        String base = baseFile.getPath();
+        String[] baseParts = base.split("/");
+        String[] relativeParts = relative.split("/");
+        Deque<String> stack = new LinkedList<>();
+        for (String part : baseParts) {
+            if (part.isEmpty()) throw new IllegalArgumentException("Invalid base file path: " + base);
+            stack.push(part);
+        }
+        stack.pop();
+        for (String part : relativeParts) {
+            if (part.equals(".")) continue;
+            if (part.equals("..")) {
+                if (stack.isEmpty()) {
+                    throw new IllegalArgumentException("Out of range: " + relative + " relative to "   + base);
+                } else {
+                    stack.pop();
+                }
+                continue;
+            }
+            stack.push(part);
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.removeLast()).append("/");
+        }
+        String path = sb.toString();
+        if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
+
+        return new ResourceLocation(baseFile.getNamespace(), path);
     }
 }

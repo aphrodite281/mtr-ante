@@ -11,11 +11,12 @@ plugins {
 	id "base"
 }
 
-apply from: "build_dep_ver.gradle"
 
 ext {
     graaljsVersion = "24.2.1"
 }
+
+apply from: "build_dep_ver.gradle"
 
 rootProject.ext.assetExcludeFont = rootProject.properties.containsKey("assetExcludeFont")
 
@@ -23,7 +24,7 @@ architectury {
 	minecraft = minecraft_version
 }
 
-configure(subprojects.findAll {it.name != 'rhino'}) {
+configure(subprojects) {
 	apply plugin: "dev.architectury.loom"
 
 	loom {
@@ -47,10 +48,15 @@ configure(subprojects.findAll {it.name != 'rhino'}) {
 		implementation files("../checkouts/mtr-common.jar")
 		implementation "org.msgpack:msgpack-core:${rootProject.messagepack_version}"
 
-		implementation project(":rhino")
-		shadowCommon project(":rhino")
-		// shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
-		// shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
+		compileOnly("org.graalvm.polyglot:polyglot:${graaljsVersion}")
+		compileOnly("org.graalvm.polyglot:js:${graaljsVersion}")
+		compileOnly("com.oracle.truffle:truffle-api:1.0.0-rc7")
+		if (project.hasProperty('shadowGraalvm') && project.property('shadowGraalvm').toBoolean()) {
+			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
+			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
+			shadowCommon("org.graalvm.icu4j:icu4j:${graaljsVersion}")
+			shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
+		}
 	}
 
 	build.finalizedBy(mergeJars)
@@ -117,9 +123,7 @@ build {
 		from "checkouts/mtr-forge.jar"
 		into "forge/run/mods"
 	}
-}
 
-task setupFiles() {
 	copy {
 		outputs.upToDateWhen { false }
 		from "common/src/main/BuildConfigTemplate.java"
@@ -137,7 +141,7 @@ tasks.named('build') {
     mustRunAfter 'setupLibrary'  // 强制顺序
 }
 
-configure(allprojects.findAll {it.name != 'rhino'}) {
+configure(allprojects) {
 	apply plugin: "architectury-plugin"
 
 	version = rootProject.mod_version + "+" + minecraft_version
@@ -147,6 +151,7 @@ configure(allprojects.findAll {it.name != 'rhino'}) {
 		maven { url = "https://maven.terraformersmc.com/" }
 		maven { url = "https://maven.parchmentmc.org/" }
 		maven { url "https://maven.shedaniel.me"}
+		maven { url "https://repo1.maven.org/maven2/" }
 	}
 
 	tasks.withType(JavaCompile) {
@@ -166,17 +171,6 @@ configure(allprojects.findAll {it.name != 'rhino'}) {
 		}
 
         options.compilerArgs += ['-Xplugin:Manifold', '-AMC_VERSION=' + minecraft_version_int]
-	}
-
-	afterEvaluate {
-		for (def task in it.tasks) {
-			if (task != rootProject.tasks.setupFiles) {
-				task.dependsOn rootProject.tasks.setupFiles
-			}
-		}
-		if (System.env.GITHUB_ACTIONS) {
-			rootProject.tasks.build.dependsOn rootProject.tasks.setupLibrary
-		}
 	}
 }
 

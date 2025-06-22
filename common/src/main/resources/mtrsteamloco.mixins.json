@@ -51,7 +51,8 @@
     "ItemNodeModifierBaseMixin",
     "PathFinderMixin",
     "ItemRailModifierMixin",
-    "RailwayDataMixin"
+    "RailwayDataMixin",
+    "FQGraal"
   ],
   "server": [
     

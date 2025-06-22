@@ -22,9 +22,9 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vendor.cn.zbx1425.mtrsteamloco.org.mozilla.javascript.Context;
 import cn.zbx1425.mtrsteamloco.CustomResources;
-import vendor.cn.zbx1425.mtrsteamloco.org.mozilla.javascript.Scriptable;
+import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Context;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -43,9 +43,8 @@ import java.util.List;
 public class ScriptResourceUtil {
 
     protected static Context activeContext;
-    protected static Scriptable activeScope;
-    private static final Stack<ResourceLocation> scriptLocationStack = new Stack<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger("MTR-ANTE JS");
+    protected static final Stack<ResourceLocation> scriptLocationStack = new Stack<>();
+    protected static final Logger LOGGER = LoggerFactory.getLogger("MTR-ANTE JS");
 
     public static final boolean ANTE_FLAG = true;
 
@@ -53,9 +52,17 @@ public class ScriptResourceUtil {
         Main.LOGGER.info("NTE version: " + getNTEVersion() + " (int " + getNTEVersionInt() + ") (protocol " + getNTEProtoVersion() + ")");
     }
 
-    public static void executeScript(Context rhinoCtx, Scriptable scope, ResourceLocation scriptLocation, String script) {
-        scriptLocationStack.push(scriptLocation);
-        rhinoCtx.evaluateString(scope, script, scriptLocation.toString(), 1, null);
+    public static void executeScript(Context ctx, String script, ResourceLocation identifier) throws IOException {
+        activeContext = ctx;
+
+        scriptLocationStack.push(identifier);
+
+        Source source = Source.newBuilder("js", readString(identifier), identifier.getPath())
+                .mimeType("application/javascript")
+                .cached(true)
+                .build();
+        ctx.eval(source);
+
         scriptLocationStack.pop();
     }
 
@@ -69,11 +76,14 @@ public class ScriptResourceUtil {
         } else {
             identifier = idRelative(pathOrIdentifier.toString());
         }
-        executeScript(activeContext, activeScope, identifier, ResourceUtil.readResource(manager(), identifier));
+        
+        executeScript(activeContext, readString(identifier), identifier);
     }
 
     public static void print(Object... objects) {
+        if (objects.length == 0) objects = new Object[] {"null"};
         StringBuilder sb = new StringBuilder();
+        sb.append("[ANTE-JS] ");
         for (Object object : objects) {
             sb.append(object.toString());
             sb.append(" ");
@@ -136,7 +146,7 @@ public class ScriptResourceUtil {
         }
     }
 
-    private static final FontRenderContext FONT_CONTEXT = new FontRenderContext(new AffineTransform(), true, false);
+    protected static final FontRenderContext FONT_CONTEXT = new FontRenderContext(new AffineTransform(), true, false);
 
     public static FontRenderContext getFontRenderContext() {
         return FONT_CONTEXT;

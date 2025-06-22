@@ -46,7 +46,6 @@ public class PacketScreen {
         public static void receiveScreenS2C(FriendlyByteBuf packet) {
             Minecraft minecraftClient = Minecraft.getInstance();
             String screenName = packet.readUtf();
-            System.out.println("received screen: " + screenName);
             BlockPos pos0 = packet.readBlockPos();
             final BlockPos pos1;
             final Rail rail;

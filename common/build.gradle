@@ -1,3 +1,7 @@
+plugins {
+	id "com.github.johnrengelman.shadow"
+}
+
 dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 	modApi "${rootProject.architectury_id}:architectury:${rootProject.architectury_version}"

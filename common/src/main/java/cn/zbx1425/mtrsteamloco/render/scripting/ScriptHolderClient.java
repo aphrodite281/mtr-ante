@@ -3,6 +3,7 @@ package cn.zbx1425.mtrsteamloco.render.scripting;
 import cn.zbx1425.mtrsteamloco.Main;
 import cn.zbx1425.mtrsteamloco.MainClient;
 import cn.zbx1425.mtrsteamloco.render.scripting.util.client.*;
+import cn.zbx1425.mtrsteamloco.render.scripting.util.*;
 import cn.zbx1425.sowcer.math.Matrices;
 import mtr.mappings.UtilitiesClient;
 import cn.zbx1425.sowcer.math.Matrix4f;
@@ -17,7 +18,6 @@ import mtr.client.ClientData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import vendor.cn.zbx1425.mtrsteamloco.org.mozilla.javascript.*;
 import mtr.block.IBlock;
 import net.minecraft.world.entity.player.Player;
 import cn.zbx1425.mtrsteamloco.render.scripting.util.WrappedEntity;
@@ -28,7 +28,9 @@ import cn.zbx1425.mtrsteamloco.data.ConfigResponder;
 import net.minecraft.network.chat.Component;
 import com.google.gson.JsonObject;
 import cn.zbx1425.mtrsteamloco.CustomResources;
+import org.graalvm.polyglot.Value;
 import com.google.gson.GsonBuilder;
+import cn.zbx1425.sowcerext.reuse.ModelManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,32 +45,34 @@ public class ScriptHolderClient extends ScriptHolderBase {
         super("client");
     }
 
-    protected void appendImporter(Scriptable scope, Context rhinoCtx) {
-        scope.put("Resources", scope, new NativeJavaClass(scope, ScriptResourceUtilClient.class));
-        scope.put("GraphicsTexture", scope, new NativeJavaClass(scope, GraphicsTexture.class));
-        scope.put("SoundHelper", scope, new NativeJavaClass(scope, SoundHelper.class));
-        scope.put("ParticleHelper", scope, new NativeJavaClass(scope, ParticleHelper.class));
-        scope.put("TickableSound", scope, new NativeJavaClass(scope, TickableSound.class));
-        scope.put("IScreen", scope, new NativeJavaClass(scope, IScreen.class));
-        scope.put("ConfigResponder", scope, new NativeJavaClass(scope, ConfigResponder.class));
-        scope.put("ClientConfig", scope, new NativeJavaClass(scope, ClientConfig.class));
-        scope.put("MinecraftClient", scope, new NativeJavaClass(scope, MinecraftClientUtil.class));
+    protected void appendImporter() {
+        super.appendImporter();
 
-        scope.put("DrawCall", scope, new NativeJavaClass(scope, AbstractDrawCalls.DrawCall.class));
-        scope.put("ClusterDrawCall", scope, new NativeJavaClass(scope, AbstractDrawCalls.ClusterDrawCall.class));
-        scope.put("WorldDrawCall", scope, new NativeJavaClass(scope, AbstractDrawCalls.WorldDrawCall.class));
+        inject(ScriptResourceUtilClient.class, "Resources");
+        inject(GraphicsTexture.class, "GraphicsTexture");
+        inject(SoundHelper.class, "SoundHelper");
+        inject(ParticleHelper.class, "ParticleHelper");
+        inject(TickableSound.class, "TickableSound");
+        inject(IScreen.class, "IScreen");
+        inject(ConfigResponder.class, "ConfigResponder");
+        inject(ClientConfig.class, "ClientConfig");
+        inject(MinecraftClientUtil.class, "MinecraftClient");
 
-        scope.put("ModelManager", scope, Context.toObject(MainClient.modelManager, scope));
-        scope.put("RawModel", scope, new NativeJavaClass(scope, RawModel.class));
-        scope.put("RawMesh", scope, new NativeJavaClass(scope, RawMesh.class));
-        scope.put("RawMeshBuilder", scope, new NativeJavaClass(scope, RawMeshBuilder.class));
-        scope.put("ModelCluster", scope, new NativeJavaClass(scope, ModelCluster.class));
-        scope.put("DynamicModelHolder", scope, new NativeJavaClass(scope, DynamicModelHolder.class));
+        inject(AbstractDrawCalls.DrawCall.class, "DrawCall");
+        inject(AbstractDrawCalls.ClusterDrawCall.class, "ClusterDrawCall");
+        inject(AbstractDrawCalls.WorldDrawCall.class, "WorldDrawCall");
 
-        scope.put("MTRClientData", scope, new NativeJavaClass(scope, ClientData.class));
-        scope.put("IBlock", scope, new NativeJavaClass(scope, IBlock.class));
-        scope.put("UtilitiesClient", scope, new NativeJavaClass(scope, UtilitiesClient.class));
-        scope.put("IDrawing", scope, new NativeJavaClass(scope, IDrawing.class));
+        eval("var ModelManager = Java.type('" + MainClient.class.getName() + "').modelManager;");
+        inject(RawModel.class, "RawModel");
+        inject(RawMesh.class, "RawMesh");
+        inject(RawMeshBuilder.class, "RawMeshBuilder");
+        inject(ModelCluster.class, "ModelCluster");
+        inject(DynamicModelHolder.class, "DynamicModelHolder");
+
+        inject(ClientData.class, "MTRClientData");
+        inject(IBlock.class, "IBlock");
+        inject(UtilitiesClient.class, "UtilitiesClient");
+        inject(IDrawing.class, "IDrawing");
 
         try {
             String[] classesToLoad = {
@@ -81,13 +85,58 @@ public class ScriptHolderClient extends ScriptHolderBase {
             };
             for (String classToLoad : classesToLoad) {
                 Class<?> classToLoadClass = Class.forName("cn.ussshenzhou.madparticle." + classToLoad);
-                scope.put(classToLoad.substring(classToLoad.lastIndexOf(".") + 1), scope,
-                        new NativeJavaClass(scope, classToLoadClass));
+                inject(classToLoadClass, classToLoad.substring(classToLoad.lastIndexOf(".") + 1));
             }
-            scope.put("foundMadParticle", scope, true);
+            inject("foundMadParticle", true);
         } catch (ClassNotFoundException ignored) {
+            inject("foundMadParticle", false);
             // Main.LOGGER.warn("MadParticle", ignored);
-            scope.put("foundMadParticle", scope, false);
         }
+
+        /*
+        injects.put("Resources", new ScriptResourceUtil());
+        injects.put("GraphicsTexture", GraphicsTexture.class);
+        injects.put("SoundHelper", SoundHelper.class);
+        injects.put("ParticleHelper", ParticleHelper.class);
+        injects.put("TickableSound", TickableSound.class);
+        injects.put("IScreen", IScreen.class);
+        injects.put("ConfigResponder", ConfigResponder.class);
+        injects.put("ClientConfig", ClientConfig.class);
+        injects.put("MinecraftClient", MinecraftClientUtil.class);
+
+        injects.put("DrawCall", AbstractDrawCalls.DrawCall.class);
+        injects.put("ClusterDrawCall", AbstractDrawCalls.ClusterDrawCall.class);
+        injects.put("WorldDrawCall", AbstractDrawCalls.WorldDrawCall.class);
+
+        injects.put("ModelManager", MainClient.modelManager);
+        injects.put("RawModel", RawModel.class);
+        injects.put("RawMesh", RawMesh.class);
+        injects.put("RawMeshBuilder", RawMeshBuilder.class);
+        injects.put("ModelCluster", ModelCluster.class);
+        injects.put("DynamicModelHolder", DynamicModelHolder.class);
+
+        injects.put("MTRClientData", ClientData.class);
+        injects.put("IBlock", IBlock.class);
+        injects.put("UtilitiesClient", UtilitiesClient.class);
+        injects.put("IDrawing", IDrawing.class);
+
+        try {
+            String[] classesToLoad = {
+                    "util.AddParticleHelper",
+                    "particle.MadParticleOption",
+                    "particle.SpriteFrom",
+                    "command.inheritable.InheritableBoolean",
+                    "particle.ParticleRenderTypes",
+                    "particle.ChangeMode"
+            };
+            for (String classToLoad : classesToLoad) {
+                Class<?> classToLoadClass = Class.forName("cn.ussshenzhou.madparticle." + classToLoad);
+                injects.put(classToLoad.substring(classToLoad.lastIndexOf(".") + 1), classToLoadClass);
+            }
+            injects.put("foundMadParticle", true);
+        } catch (ClassNotFoundException ignored) {
+            injects.put("foundMadParticle", false);
+            // Main.LOGGER.warn("MadParticle", ignored);
+        }*/
     }
 }

@@ -11,7 +11,6 @@ import net.minecraft.util.Mth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import cn.zbx1425.mtrsteamloco.render.scripting.rail.RailScriptContext;
 
 public class BakedRail {
 
@@ -25,7 +24,6 @@ public class BakedRail {
 
     public String modelKey;
     public int color;
-    public RailScriptContext scriptContext;
 
     public BakedRail(Rail rail) {
         this(rail, true);
@@ -36,10 +34,6 @@ public class BakedRail {
         modelKey = RailRenderDispatcher.getModelKeyForRender(rail);
         RailModelProperties prop = getProperties();
         color = AttrUtil.argbToBgr(rail.railType.color | 0xFF000000);
-
-        if (prop.script != null) {
-            scriptContext = new RailScriptContext(this);
-        }
 
         if (!modelKey.equals("null") && genChunkMap) {
             RailExtraSupplier supplier = (RailExtraSupplier) rail;
@@ -62,9 +56,6 @@ public class BakedRail {
     }
 
     public void dispose() {
-        if (scriptContext != null) {
-            scriptContext.dispose();
-        }
     }
 
     public RailModelProperties getProperties() {

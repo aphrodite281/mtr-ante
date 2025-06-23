@@ -11,7 +11,7 @@ dependencies {
 
 architectury {
 	injectInjectables = false
-	common("fabric", "forge")
+	common("fabric")// , "forge"
 }
 
 loom {
@@ -19,25 +19,4 @@ loom {
 		defaultRefmapName = "mixins.mtrsteamloco.refmap.json"
 	}
 	accessWidenerPath = file("src/main/resources/mtrsteamloco.accesswidener")
-}
-
-shadowJar {
-	mergeServiceFiles()
-
-	relocate 'org.graalvm', 'vendor.cn.zbx1425.mtrsteamloco.org.graalvm'
-	relocate 'com.oracle', 'vendor.cn.zbx1425.mtrsteamloco.com.oracle'
-}
-
-remapJar {
-	input.set shadowJar.archiveFile
-	dependsOn shadowJar
-	archiveClassifier = null
-}
-
-transformProductionFabric {
-	dependsOn remapJar
-}
-
-transformProductionForge {
-	dependsOn remapJar
 }

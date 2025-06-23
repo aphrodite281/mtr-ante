@@ -85,6 +85,8 @@ shadowJar {
 	}
 
 	relocate "me.shedaniel", "cn.zbx1425.mtrsteamloco.vendor.me.shedaniel"
+	relocate 'org.graalvm', 'cn.zbx1425.mtrsteamloco.vendor.org.graalvm'
+	relocate 'com.oracle', 'cn.zbx1425.mtrsteamloco.vendor.com.oracle'
 
 	configurations = [project.configurations.shadowCommon]
 	archiveClassifier = "dev-shadow"

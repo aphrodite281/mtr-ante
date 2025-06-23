@@ -10,22 +10,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(com.oracle.truffle.js.lang.JavaScriptLanguage.class)
-public abstract class FQGraal extends com.oracle.truffle.api.TruffleLanguage<com.oracle.truffle.js.runtime.JSRealm> {
-    static {
-        System.out.println("FQGraal static");
-    }
-
-    @Override
-    protected boolean isThreadAccessAllowed(Thread thread, boolean singleThreaded) {
-        return true;
-    }
-
-/*
+@Mixin(com.oracle.truffle.api.TruffleLanguage.class)
+public abstract class FQGraal {
     @Inject(method = "isThreadAccessAllowed", at = @At("HEAD"), cancellable = true, remap = false)
     protected void isThreadAccessAllowed(Thread thread, boolean singleThreaded, CallbackInfoReturnable<Boolean> cir) {
         cir.cancel();
         cir.setReturnValue(true);
-        System.out.println("FQGraal isThreadAccessAllowed");
-    }*/
+        // System.out.println("FQGraal isThreadAccessAllowed");
+    }
 }

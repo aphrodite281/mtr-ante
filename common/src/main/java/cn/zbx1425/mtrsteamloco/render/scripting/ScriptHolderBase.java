@@ -219,7 +219,7 @@ public abstract class ScriptHolderBase {
         }
 
         return SCRIPT_THREAD.submit(() -> {
-            long start = System.currentTimeMillis();
+            long start = System.nanoTime();
             failTime = 0;
             try {                
                 Object[] allArgs = new Object[3 + args.length];
@@ -239,7 +239,7 @@ public abstract class ScriptHolderBase {
                 failTime = System.currentTimeMillis();
                 failException = ex;
             }
-            scriptCtx.lastExecuteDuration = System.currentTimeMillis() - start;
+            scriptCtx.lastExecuteDuration = System.nanoTime() - start;
         });
     }
 

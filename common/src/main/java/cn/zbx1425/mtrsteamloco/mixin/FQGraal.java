@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(com.oracle.truffle.js.lang.JavaScriptLanguage.class)
-public abstract class FQGraal extends com.oracle.truffle.api.TruffleLanguage {
+public abstract class FQGraal extends com.oracle.truffle.api.TruffleLanguage<com.oracle.truffle.js.runtime.JSRealm> {
     static {
         System.out.println("FQGraal static");
     }

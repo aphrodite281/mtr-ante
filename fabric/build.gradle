@@ -88,8 +88,8 @@ shadowJar {
 	relocate "me.shedaniel", "cn.zbx1425.mtrsteamloco.vendor.me.shedaniel"
 
 	relocate 'com.github.stuxuhai', 'vendor.cn.zbx1425.mtrsteamloco.com.github.stuxuhai'
-	relocate 'org.graalvm', 'cn.zbx1425.mtrsteamloco.vendor.org.graalvm'
-	relocate 'com.oracle', 'cn.zbx1425.mtrsteamloco.vendor.com.oracle'
+	// relocate 'org.graalvm', 'cn.zbx1425.mtrsteamloco.vendor.org.graalvm'
+	// relocate 'com.oracle', 'cn.zbx1425.mtrsteamloco.vendor.com.oracle'
 
 	configurations = [project.configurations.shadowCommon]
 	archiveClassifier = "dev-shadow"

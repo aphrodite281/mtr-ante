@@ -32,22 +32,12 @@ remapJar {
 	input.set shadowJar.archiveFile
 	dependsOn shadowJar
 	archiveClassifier = null
-	
-	// Ensure this task completes before providing artifacts to other projects
-	doLast {
-		// Explicitly wait for the task to complete
-	}
 }
 
-// Configure artifact generation to depend on remapJar
-configurations {
-	namedElements.outgoing.artifact(tasks.remapJar.outputs.files.singleFile) {
-		builtBy tasks.remapJar
-	}
-	transformProductionFabric.outgoing.artifact(tasks.remapJar.outputs.files.singleFile) {
-		builtBy tasks.remapJar
-	}
-	transformProductionForge.outgoing.artifact(tasks.remapJar.outputs.files.singleFile) {
-		builtBy tasks.remapJar
-	}
+transformProductionFabric {
+	dependsOn remapJar
+}
+
+transformProductionForge {
+	dependsOn remapJar
 }

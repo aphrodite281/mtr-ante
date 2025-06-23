@@ -60,6 +60,7 @@ processResources {
 }
 
 shadowJar {
+	mergeServiceFiles() 
 
 	exclude "*.bmp"
 	exclude '**/*.kotlin_metadata'
@@ -92,7 +93,6 @@ shadowJar {
 
 	configurations = [project.configurations.shadowCommon]
 	archiveClassifier = "dev-shadow"
-	mergeServiceFiles() 
 }
 
 static boolean matchInnerClass(String path, String... names) {

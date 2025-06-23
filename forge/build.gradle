@@ -57,6 +57,7 @@ processResources {
 }
 
 shadowJar {
+	mergeServiceFiles()
 
 	exclude "fabric.mod.json"
 	exclude "*.bmp"
@@ -89,7 +90,6 @@ shadowJar {
 
 	configurations = [project.configurations.shadowCommon]
 	archiveClassifier = "dev-shadow"
-	mergeServiceFiles()
 }
 
 static boolean matchInnerClass(String path, String... names) {

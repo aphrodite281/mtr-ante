@@ -35,7 +35,7 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
       - name: Build ${{ matrix.minecraft }}
-        run: ./gradlew setupLibrary build -PbuildVersion="${{ matrix.minecraft }}" --no-daemon
+        run: ./gradlew clean setupLibrary build -PbuildVersion="${{ matrix.minecraft }}" --no-daemon
       - name: Get commit SHA
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT

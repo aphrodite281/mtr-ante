@@ -16,5 +16,6 @@ public abstract class FQGraal {
     protected void isThreadAccessAllowed(Thread thread, boolean singleThreaded, CallbackInfoReturnable<Boolean> cir) {
         cir.cancel();
         cir.setReturnValue(true);
+        System.out.println("FQGraal isThreadAccessAllowed");
     }
 }

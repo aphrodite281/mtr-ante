@@ -56,6 +56,7 @@ configure(subprojects) {
 		shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
 		shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
 		shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
+		shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
 
 		// if (project.hasProperty('shadowGraalvm') && project.property('shadowGraalvm').toBoolean()) {
 		// }

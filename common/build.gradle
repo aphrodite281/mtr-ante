@@ -20,3 +20,14 @@ loom {
 	}
 	accessWidenerPath = file("src/main/resources/mtrsteamloco.accesswidener")
 }
+
+shadowJar {
+	relocate 'org.graalvm', 'vendor.cn.zbx1425.mtrsteamloco.org.graalvm'
+	relocate 'com.oracle', 'vendor.cn.zbx1425.mtrsteamloco.com.oracle'
+}
+
+remapJar {
+	input.set shadowJar.archiveFile
+	dependsOn shadowJar
+	archiveClassifier = null
+}

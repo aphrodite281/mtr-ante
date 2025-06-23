@@ -120,6 +120,42 @@ public abstract class ScriptHolderBase {
                     value -> true,
                     value -> (byte) Math.round(value)
                 )
+                .targetTypeMapping(
+                    Double.class,
+                    String.class,
+                    value -> true,
+                    value -> Double.toString(value)
+                )
+                .targetTypeMapping(
+                    Integer.class,
+                    String.class,
+                    value -> true,
+                    value -> Integer.toString(value)
+                )
+                .targetTypeMapping(
+                    Float.class,
+                    String.class,
+                    value -> true,
+                    value -> Float.toString(value)
+                )
+                .targetTypeMapping(
+                    Long.class,
+                    String.class,
+                    value -> true,
+                    value -> Long.toString(value)
+                )
+                .targetTypeMapping(
+                    Short.class,
+                    String.class,
+                    value -> true,
+                    value -> Short.toString(value)
+                )
+                .targetTypeMapping(
+                    Byte.class,
+                    String.class,
+                    value -> true,
+                    value -> Byte.toString(value)
+                )
                 .build()
             )
             .option("js.nashorn-compat", "true")

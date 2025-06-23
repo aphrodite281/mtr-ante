@@ -58,7 +58,8 @@ configure(subprojects) {
 		shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
 		shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
 		shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
-
+		shadowCommon("org.graalvm.sdk:nativeimage:${graaljsVersion}")
+		shadowCommon("org.graalvm.nativeimage:svm:${graaljsVersion}")
 		// if (project.hasProperty('shadowGraalvm') && project.property('shadowGraalvm').toBoolean()) {
 		// }
 	}

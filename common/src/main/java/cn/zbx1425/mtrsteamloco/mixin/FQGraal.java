@@ -10,11 +10,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-@Mixin(targets = "com.oracle.truffle.polyglot.PolyglotContextImpl", remap = false)
+@Mixin(com.oracle.truffle.api.TruffleLanguage.class)
 public abstract class FQGraal {
-    @Inject(method = "checkAllThreadAccesses", at = @At("HEAD"), cancellable = true, remap = false)
-    private void checkAllThreadAccesses(Thread enteringThread, boolean singleThread, CallbackInfo ci) {// throws PolyglotThreadAccessException
-        System.out.println("checkAllThreadAccesses");
-        ci.cancel();
+    @Inject(method = "isThreadAccessAllowed", at = @At("HEAD"), cancellable = true, remap = false)
+    protected void isThreadAccessAllowed(Thread thread, boolean singleThreaded, CallbackInfoReturnable<Boolean> cir) {
+        System.out.println("isThreadAccessAllowed");
+        cir.cancel();
+        cir.setReturnValue(true);
     }
 }

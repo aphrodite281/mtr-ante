@@ -66,7 +66,7 @@ public abstract class ScriptHolderBase {
         this.key = key;
         this.functionNames = functionNames;
 
-        context = Context.newBuilder()  
+        context = Context.newBuilder("js")  
             .allowCreateThread(true)  
             .allowCreateProcess(true)
             .allowHostClassLoading(true)  

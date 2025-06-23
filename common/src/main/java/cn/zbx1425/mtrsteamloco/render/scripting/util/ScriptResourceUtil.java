@@ -61,6 +61,7 @@ public class ScriptResourceUtil {
                 .mimeType("application/javascript")
                 .cached(true)
                 .build();
+                
         ctx.eval(source);
 
         scriptLocationStack.pop();

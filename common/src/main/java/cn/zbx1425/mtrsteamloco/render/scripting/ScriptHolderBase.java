@@ -125,7 +125,7 @@ public abstract class ScriptHolderBase {
             .option("js.nashorn-compat", "true")
             .option("js.ecmascript-version", "latest")
             .option("js.foreign-object-prototype", "true")
-            .option("log.file", "")
+            .option("log.file", "./logs/latest.log")
             .build();
 
         globalBindings = context.getBindings("js");    

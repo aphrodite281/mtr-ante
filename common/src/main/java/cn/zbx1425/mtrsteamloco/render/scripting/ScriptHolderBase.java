@@ -145,10 +145,6 @@ public abstract class ScriptHolderBase {
             registerFunction(fn);
             registerFunction(fn + contextTypeName);
         }
-
-        // SCRIPT_THREAD.submit(() -> {
-        //     context.enter();
-        // });
     }
 
     public void reload(ResourceManager resourceManager) throws Exception {
@@ -222,7 +218,7 @@ public abstract class ScriptHolderBase {
             return null;
         }
 
-        // return SCRIPT_THREAD.submit(() -> {
+        return SCRIPT_THREAD.submit(() -> {
             long start = System.currentTimeMillis();
             try {                
                 Object[] allArgs = new Object[3 + args.length];
@@ -241,10 +237,9 @@ public abstract class ScriptHolderBase {
                 Main.LOGGER.error("Error in ANTE Resource Pack JavaScript", ex);
                 failTime = System.currentTimeMillis();
                 failException = ex;
-            } finally {
             }
-        // });
-        scriptCtx.lastExecuteTime = System.currentTimeMillis() - start;
+            scriptCtx.lastExecuteTime = System.currentTimeMillis() - start;
+        });
         return null;
     }
 
@@ -285,12 +280,8 @@ public abstract class ScriptHolderBase {
 
     public void close() {
         if (context != null) {
-            // context.leave();
             context.close();
             context = null;
-            // SCRIPT_THREAD.submit(() -> {
-                
-            // });
         }
     }
 }

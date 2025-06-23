@@ -56,6 +56,7 @@ public class ScriptDebugOverlay {
             y = drawText(vdStuff, font, entry.getKey() + ": " + entry.getValue(), 20, y, 0xFFFFFFFF);
         }
 
+        boolean outOfBounds = false;
         for (Map.Entry<ScriptHolderBase, List<AbstractScriptContext>> entry : contexts.entrySet()) {
             ScriptHolderBase holder = entry.getKey();
             if (holder.failTime > 0) {
@@ -68,7 +69,7 @@ public class ScriptDebugOverlay {
             }
             for (AbstractScriptContext context : entry.getValue()) {
                 y = drawText(vdStuff, font,
-                    String.format("#%08X (%.2f ms)", context.hashCode(), context.lastExecuteDuration / 1000.0),
+                    String.format("#%08X (%.2f ms)", context.hashCode(), context.lastExecuteDuration / 1e6),
                     10, y, 0xFFCCCCFF);
                 List<Map.Entry<String, Object>> debugInfos = context.getDebugInfo().entryList();
                 for (Map.Entry<String, Object> debugInfo : debugInfos) {
@@ -85,8 +86,14 @@ public class ScriptDebugOverlay {
                         y = drawText(vdStuff, font, debugInfo.getKey() + ": " + debugInfo.getValue(), 20, y, 0xFFFFFFFF);
                     }
                     y += Mth.ceil(font.lineHeight * 0.2f);
+                    if (y > Minecraft.getInstance().getWindow().getGuiScaledHeight()) {
+                        outOfBounds = true;
+                        break;
+                    }
                 }
+                if (outOfBounds) break;
             }
+            if (outOfBounds) break;
         }
 
         matrices.popPose();

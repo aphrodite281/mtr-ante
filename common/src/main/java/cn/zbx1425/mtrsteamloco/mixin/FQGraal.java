@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class FQGraal {
     @Inject(method = "isThreadAccessAllowed", at = @At("HEAD"), cancellable = true, remap = false)
     protected void isThreadAccessAllowed(Thread thread, boolean singleThreaded, CallbackInfoReturnable<Boolean> cir) {
-        System.out.println("isThreadAccessAllowed");
         cir.cancel();
         cir.setReturnValue(true);
     }

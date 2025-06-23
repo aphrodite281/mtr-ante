@@ -240,11 +240,10 @@ public abstract class ScriptHolderBase {
             }
             scriptCtx.lastExecuteTime = System.currentTimeMillis() - start;
         });
-        return null;
     }
 
     public void tryCallFunctionAsync(String function, AbstractScriptContext scriptCtx, Runnable callback, Object... args) {
-        // if (!(scriptCtx.scriptStatus == null || scriptCtx.scriptStatus.isDone())) return;
+        if (!(scriptCtx.scriptStatus == null || scriptCtx.scriptStatus.isDone())) return;
         if (scriptCtx.disposed) return;
         List<Value> functions = this.functions.get(function);
         if (functions == null) functions = new ArrayList<>();

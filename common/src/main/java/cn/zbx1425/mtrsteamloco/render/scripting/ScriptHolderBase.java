@@ -220,7 +220,6 @@ public abstract class ScriptHolderBase {
 
         return SCRIPT_THREAD.submit(() -> {
             long start = System.nanoTime();
-            failTime = 0;
             try {                
                 Object[] allArgs = new Object[3 + args.length];
                 allArgs[0] = scriptCtx;
@@ -234,6 +233,8 @@ public abstract class ScriptHolderBase {
                 
                 if (finishCallback != null) finishCallback.run();
 
+                failException = null;
+                failTime = 0;
             } catch (Exception ex) {
                 Main.LOGGER.error("Error in ANTE Resource Pack JavaScript", ex);
                 failTime = System.currentTimeMillis();

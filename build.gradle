@@ -13,7 +13,7 @@ plugins {
 
 
 ext {
-    graaljsVersion = "24.2.1"
+    graaljsVersion = "22.0.0.2"
 }
 
 apply from: "build_dep_ver.gradle"

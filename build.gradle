@@ -63,7 +63,8 @@ configure(subprojects) {
 			shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
 
 			shadowCommon("org.graalvm.nativeimage:svm:${graaljsVersion}")
-			shadowCommon("org.graalvm.nativeimage:svm:+")
+			shadowCommon("org.graalvm.nativeimage:svm-hosted-native-windows-amd64:${graaljsVersion}")
+
 		// }
 	}
 

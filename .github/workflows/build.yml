@@ -45,7 +45,7 @@ jobs:
       - name: Capture release artifacts individually
         uses: actions/upload-artifact@v4
         with:
-          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
+          name: MTR-ANTE-${{ github.run_number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
           path: build/*.jar
           compression-level: 9
   upload-collectively:
@@ -72,7 +72,7 @@ jobs:
       - name: Capture release artifacts collectively
         uses: actions/upload-artifact@v4
         with:
-          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}
+          name: MTR-ANTE-${{ github.run_number }}-${{ env.MOD_VERSION }}
           path: artifacts/*.jar
           compression-level: 9
   github-release:
@@ -108,7 +108,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}
+          name: MTR-ANTE-${{ github.run_number }}-${{ env.MOD_VERSION }}
           path: artifacts
           merge-multiple: true
 
@@ -161,7 +161,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
+          name: MTR-ANTE-${{ github.run_number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
           path: artifacts
           merge-multiple: true
       - name: Show structure of downloaded files

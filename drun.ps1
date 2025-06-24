@@ -1,7 +1,7 @@
 # 获取最新构建ID（增强错误处理）
 try {
     # 捕获gh命令输出并转换为对象
-    $runList = gh run list --workflow=build --json databaseId,status,updatedAt --limit 1 2>&1 | ConvertFrom-Json
+    $runList = gh run list --workflow=build --json databaseId,status,updatedAt,number --limit 1 2>&1 | ConvertFrom-Json
     
     # 验证结果有效性
     if (-not $runList -or -not $runList.databaseId) {
@@ -9,7 +9,7 @@ try {
     }
     
     $runId = $runList.databaseId
-    Write-Host " Build ID: $runId (Status: $($runList.status), Updated: $($runList.updatedAt))" -ForegroundColor Green
+    Write-Host " Build ID: $runId (Status: $($runList.status), Updated: $($runList.updatedAt), Number: $($runList.number))" -ForegroundColor Green
 }
 catch {
     Write-Host " Error fetching build ID: $_" -ForegroundColor Red

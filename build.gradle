@@ -53,18 +53,18 @@ configure(subprojects) {
 		compileOnly("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 		// if (project.hasProperty('shadowGraal') && project.property('shadowGraal').toBoolean()) {
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
-			shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
-
-
 			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
 			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
-			shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
-			shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
-			shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
 
-			shadowCommon("org.graalvm.nativeimage:svm:${graaljsVersion}")
-			shadowCommon("org.graalvm.nativeimage:svm-hosted-native-windows-amd64:${graaljsVersion}")
+			// shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
+			
+			// shadowCommon("org.graalvm.truffle:truffle-nfi-native-linux-aarch64:${graaljsVersion}")
+			// shadowCommon("org.graalvm.truffle:truffle-nfi-native-darwin-amd64:${graaljsVersion}")
 
+			
+			// shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
+			// shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
+			// shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
 		// }
 	}
 

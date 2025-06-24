@@ -58,6 +58,7 @@ processResources {
 
 shadowJar {
 	mergeServiceFiles()
+	append 'META-INF/MANIFEST.MF'
 
 	exclude "fabric.mod.json"
 	exclude "*.bmp"

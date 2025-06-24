@@ -55,6 +55,7 @@ configure(subprojects) {
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
 			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
+			shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
 
 			shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 			

@@ -35,8 +35,8 @@ public abstract class ScriptHolderBase {
     private static ExecutorService SCRIPT_THREAD = Executors.newSingleThreadExecutor();
 
     static {
+        // 去你大爷的 Native
         System.setProperty("org.graalvm.nativeimage.imagecode", "buildtime");
-        System.out.println("imagecode");
     }
 
     public final String side;

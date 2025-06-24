@@ -11,11 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(com.oracle.truffle.api.TruffleLanguage.class)
-public abstract class FQGraal {
-    @Inject(method = "isThreadAccessAllowed", at = @At("HEAD"), cancellable = true, remap = false)
-    protected void isThreadAccessAllowed(Thread thread, boolean singleThreaded, CallbackInfoReturnable<Boolean> cir) {
+public abstract class FQTruffleLanguage {
+    @Inject(method = "initializeLibgraal", at = @At("HEAD"), cancellable = true, remap = false)
+    protected void isThreadAccessAllowed(CallbackInfoReturnable<Long> cir) {
         cir.cancel();
-        cir.setReturnValue(true);
-        // System.out.println("FQGraal isThreadAccessAllowed");
+        cir.setReturnValue(0L);
     }
 }

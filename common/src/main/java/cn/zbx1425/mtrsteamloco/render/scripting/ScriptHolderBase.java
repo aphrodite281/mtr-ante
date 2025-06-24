@@ -29,6 +29,8 @@ import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.lang.reflect.Method;
 
+import org.graalvm.nativeimage.ImageInfo;
+
 public abstract class ScriptHolderBase {
 
     private static ExecutorService SCRIPT_THREAD = Executors.newSingleThreadExecutor();
@@ -67,8 +69,8 @@ public abstract class ScriptHolderBase {
         this.functionNames = functionNames;
 
         context = Context.newBuilder("js")  
-            .allowNativeAccess(false)
-            .option("engine.WarnInterpreterOnly", "false")
+            // .allowNativeAccess(false)
+            // .option("engine.WarnInterpreterOnly", "false")
             .allowCreateThread(true)  
             .allowCreateProcess(true)
             .allowHostClassLoading(true)  

@@ -52,8 +52,7 @@
     "PathFinderMixin",
     "ItemRailModifierMixin",
     "RailwayDataMixin",
-    "FQTruffleLanguage",
-    "FQLibGraal"
+    "FQTruffleLanguage"
   ],
   "server": [
     

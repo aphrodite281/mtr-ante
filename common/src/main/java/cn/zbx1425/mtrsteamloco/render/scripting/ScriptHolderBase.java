@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import cn.zbx1425.mtrsteamloco.Main;
 
 import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
 import org.graalvm.polyglot.HostAccess;
 import org.graalvm.polyglot.io.IOAccess;
 import org.graalvm.polyglot.EnvironmentAccess;
@@ -29,11 +30,14 @@ import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.lang.reflect.Method;
 
-import org.graalvm.nativeimage.ImageInfo;
-
 public abstract class ScriptHolderBase {
 
     private static ExecutorService SCRIPT_THREAD = Executors.newSingleThreadExecutor();
+
+    static {
+        System.setProperty("org.graalvm.nativeimage.imagecode", "buildtime");
+        System.out.println("imagecode");
+    }
 
     public final String side;
     private Context context; 

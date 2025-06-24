@@ -12,9 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(com.oracle.truffle.api.TruffleLanguage.class)
 public abstract class FQTruffleLanguage {
-    @Inject(method = "initializeLibgraal", at = @At("HEAD"), cancellable = true, remap = false)
-    protected void isThreadAccessAllowed(CallbackInfoReturnable<Long> cir) {
+    @Inject(method = "isThreadAccessAllowed", at = @At("HEAD"), cancellable = true, remap = false)
+    protected void isThreadAccessAllowed(CallbackInfoReturnable<Boolean> cir) {
         cir.cancel();
-        cir.setReturnValue(0L);
+        cir.setReturnValue(true);
     }
 }

@@ -36,9 +36,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build ${{ matrix.minecraft }}
         run: ./gradlew clean setupLibrary build -PbuildVersion="${{ matrix.minecraft }}" --no-daemon
-      - name: Get commit SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Get Mod Version
         run: |
           MOD_VERSION=$(grep "mod_version=" gradle.properties | cut -d'=' -f2)
@@ -47,7 +45,7 @@ jobs:
       - name: Capture release artifacts individually
         uses: actions/upload-artifact@v4
         with:
-          name: MTR-ANTE-${{ steps.vars.outputs.sha_short }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
+          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
           path: build/*.jar
           compression-level: 9
   upload-collectively:
@@ -65,9 +63,7 @@ jobs:
           merge-multiple: true
       - name: Display structure of downloaded files
         run: ls -R artifacts
-      - name: Get commit SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Get Mod Version
         run: |
           MOD_VERSION=$(grep "mod_version=" gradle.properties | cut -d'=' -f2)
@@ -76,7 +72,7 @@ jobs:
       - name: Capture release artifacts collectively
         uses: actions/upload-artifact@v4
         with:
-          name: MTR-ANTE-${{ steps.vars.outputs.sha_short }}-${{ env.MOD_VERSION }}
+          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}
           path: artifacts/*.jar
           compression-level: 9
   github-release:
@@ -103,9 +99,7 @@ jobs:
           echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Get commit SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Get Mod Version
         run: |
           MOD_VERSION=$(grep "mod_version=" gradle.properties | cut -d'=' -f2)
@@ -114,7 +108,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          name: MTR-ANTE-${{ steps.vars.outputs.sha_short }}-${{ env.MOD_VERSION }}
+          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}
           path: artifacts
           merge-multiple: true
 
@@ -128,7 +122,7 @@ jobs:
           files: artifacts/*.jar
           body: |
             更新日期: ${{ env.CUR_DATE }}
-            工作流: [${{ env.SHA_SHORT }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            工作流: [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
             更新内容:
             ${{ steps.read_changelog.outputs.content }}
@@ -155,9 +149,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get commit SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Get Mod Version
         run: |
           MOD_VERSION=$(grep "mod_version=" gradle.properties | cut -d'=' -f2)
@@ -169,7 +161,7 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
-          name: MTR-ANTE-${{ steps.vars.outputs.sha_short }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
+          name: MTR-ANTE-${{ github.number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
           path: artifacts
           merge-multiple: true
       - name: Show structure of downloaded files

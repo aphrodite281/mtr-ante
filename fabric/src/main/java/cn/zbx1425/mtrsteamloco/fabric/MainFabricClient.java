@@ -25,7 +25,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptContextManager;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptContextManager;
 
 public class MainFabricClient implements ClientModInitializer {
 

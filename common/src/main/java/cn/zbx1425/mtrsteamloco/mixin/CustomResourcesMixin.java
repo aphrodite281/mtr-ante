@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import mtr.client.ICustomResources;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
 import mtr.mappings.Utilities;
 import mtr.mappings.UtilitiesClient;
 import net.minecraft.client.Minecraft;

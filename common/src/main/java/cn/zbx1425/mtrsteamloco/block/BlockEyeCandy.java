@@ -2,7 +2,7 @@ package cn.zbx1425.mtrsteamloco.block;
 
 import cn.zbx1425.mtrsteamloco.Main;
 import cn.zbx1425.mtrsteamloco.network.PacketScreen;
-import cn.zbx1425.mtrsteamloco.render.scripting.eyecandy.EyeCandyScriptContext;
+import cn.zbx1425.mtrsteamloco.scripting.eyecandy.EyeCandyScriptContext;
 import cn.zbx1425.sowcer.math.Vector3f;
 import mtr.mappings.BlockDirectionalMapper;
 import mtr.mappings.BlockEntityClientSerializableMapper;
@@ -53,7 +53,7 @@ import net.minecraft.world.phys.Vec3;
 import mtr.mappings.Utilities;
 import mtr.SoundEvents;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyRegistry;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyProperties;
 import cn.zbx1425.mtrsteamloco.data.ShapeSerializer;
 import cn.zbx1425.mtrsteamloco.data.ConfigResponder;

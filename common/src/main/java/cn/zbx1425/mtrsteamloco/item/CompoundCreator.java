@@ -39,7 +39,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
 import cn.zbx1425.mtrsteamloco.render.rail.BakedRail;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
 import cn.zbx1425.mtrsteamloco.data.RailModelProperties;
 import cn.zbx1425.mtrsteamloco.data.RailModelRegistry;
 

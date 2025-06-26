@@ -8,7 +8,7 @@ import mtr.data.TrainClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.player.Player;
-import cn.zbx1425.mtrsteamloco.render.scripting.util.TimingUtil;
+import cn.zbx1425.mtrsteamloco.scripting.util.TimingUtil;
 
 public class RenderUtil {
 

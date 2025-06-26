@@ -9,7 +9,7 @@ import cn.zbx1425.sowcerext.model.RawModel;
 import cn.zbx1425.sowcerext.model.Vertex;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
 
 import java.io.Closeable;
 import java.io.IOException;

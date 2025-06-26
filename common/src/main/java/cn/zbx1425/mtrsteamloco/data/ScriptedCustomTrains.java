@@ -2,9 +2,9 @@ package cn.zbx1425.mtrsteamloco.data;
 
 import cn.zbx1425.mtrsteamloco.Main;
 import cn.zbx1425.mtrsteamloco.render.integration.MtrModelRegistryUtil;
-import cn.zbx1425.mtrsteamloco.render.scripting.train.ScriptedTrainRenderer;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderClient;
+import cn.zbx1425.mtrsteamloco.scripting.train.ScriptedTrainRenderer;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderClient;
 import cn.zbx1425.sowcerext.util.ResourceUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

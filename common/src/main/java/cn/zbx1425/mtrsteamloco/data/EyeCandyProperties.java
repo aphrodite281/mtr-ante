@@ -1,6 +1,6 @@
 package cn.zbx1425.mtrsteamloco.data;
 
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
 import cn.zbx1425.sowcerext.model.ModelCluster;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Component;

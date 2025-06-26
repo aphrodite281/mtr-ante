@@ -24,7 +24,7 @@ import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import cn.zbx1425.mtrsteamloco.gui.ScriptDebugOverlay;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptContextManager;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptContextManager;
 
 public class ClientProxy {
 

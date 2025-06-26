@@ -6,7 +6,7 @@ import cn.zbx1425.mtrsteamloco.render.RailPicker;
 import cn.zbx1425.mtrsteamloco.render.RenderUtil;
 import cn.zbx1425.mtrsteamloco.render.ShadersModHandler;
 import cn.zbx1425.mtrsteamloco.render.rail.RailRenderDispatcher;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptContextManager;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptContextManager;
 import cn.zbx1425.sowcer.util.GlStateTracker;
 import cn.zbx1425.sowcerext.model.integration.BufferSourceProxy;
 import com.mojang.blaze3d.vertex.PoseStack;

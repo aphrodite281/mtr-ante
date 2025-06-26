@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import cn.zbx1425.mtrsteamloco.block.BlockEyeCandy;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
-import cn.zbx1425.mtrsteamloco.render.scripting.train.ScriptedTrainRenderer;
+import cn.zbx1425.mtrsteamloco.scripting.train.ScriptedTrainRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.client.Minecraft;

@@ -1,10 +1,10 @@
 package cn.zbx1425.mtrsteamloco.gui;
 
 import cn.zbx1425.mtrsteamloco.ClientConfig;
-import cn.zbx1425.mtrsteamloco.render.scripting.AbstractScriptContext;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptContextManager;
-import cn.zbx1425.mtrsteamloco.render.scripting.ScriptHolderBase;
-import cn.zbx1425.mtrsteamloco.render.scripting.util.client.GraphicsTexture;
+import cn.zbx1425.mtrsteamloco.scripting.AbstractScriptContext;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptContextManager;
+import cn.zbx1425.mtrsteamloco.scripting.ScriptHolderBase;
+import cn.zbx1425.mtrsteamloco.scripting.util.client.GraphicsTexture;
 import com.google.common.base.Splitter;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,7 +20,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
-import cn.zbx1425.mtrsteamloco.render.scripting.util.OrderedMap;
+import cn.zbx1425.mtrsteamloco.scripting.util.OrderedMap;
 
 import java.util.HashMap;
 import java.util.List;

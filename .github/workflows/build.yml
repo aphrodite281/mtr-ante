@@ -37,14 +37,9 @@ jobs:
       - name: Update serial number
         if: ${{ !startsWith(github.event.head_commit.message, 'rel') }}
         run: |
-          if grep -q "mod_version[[:space:]]*=" gradle.properties; then
-            sed -i "s/^$[[:space:]]*mod_version[[:space:]]*=[[:space:]]*$$.*$$/\1\2-$RUN_NUMBER/" gradle.properties
-            echo "Updated gradle.properties:"
-            cat gradle.properties
-          else
-            echo "Error: mod_version not found in gradle.properties"
-            exit 1
-          fi
+          sed -i "/^mod_version[[:space:]]*=/s/\(.*\)$/\1-123/" gradle.properties
+          cat gradle.properties
+          grep "mod_version=" gradle.properties | cut -d'=' -f2
 
       - name: Build ${{ matrix.minecraft }}
         run: ./gradlew clean setupLibrary build -PbuildVersion="${{ matrix.minecraft }}" --no-daemon

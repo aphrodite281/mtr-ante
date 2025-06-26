@@ -52,14 +52,14 @@ configure(subprojects) {
 		compileOnly("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 		compileOnly("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 		
-		compileOnly("org.graalvm.compiler:compiler:${graaljsVersion}")
+		// compileOnly("org.graalvm.compiler:compiler:${graaljsVersion}")
 		// compileOnly("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 
 
 		// if (project.hasProperty('shadowGraal') && project.property('shadowGraal').toBoolean()) {
 			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
 			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
-			shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
+			// shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
 
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 			shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
@@ -72,7 +72,7 @@ configure(subprojects) {
 			
 			// shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
 			// shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
-			shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
+			// shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
 		// }
 	}
 

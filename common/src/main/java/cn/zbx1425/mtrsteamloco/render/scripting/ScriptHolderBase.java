@@ -45,6 +45,10 @@ public abstract class ScriptHolderBase {
         } else {
             layer = ModuleLayer.boot();
         }
+        Module compilerModule = layer.findModule("jdk.graal.compiler").or(() -> layer.findModule("jdk.internal.vm.compiler")).orElse(null);
+        System.out.println("compilerModule" + compilerModule);
+        Class<?> hotspotCompilationSupport = Class.forName(compilerModule, "jdk.graal.compiler.truffle.hotspot.HotSpotTruffleCompilationSupport");
+        System.out.println("compilerModule.getLayer()" + compilerModule.getLayer());
     }
 
     public final String side;

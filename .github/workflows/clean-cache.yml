@@ -1,0 +1,10 @@
+name: Clean Cache
+
+on: workflow_dispatch
+
+jobs:
+  clean-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old caches
+        uses: actions/cache/delete@main

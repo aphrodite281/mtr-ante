@@ -38,6 +38,8 @@ public abstract class ScriptHolderBase {
         // 去你大爷的 Native
         System.setProperty("org.graalvm.nativeimage.imagecode", "buildtime");
         Module runtimeModule = com.oracle.truffle.runtime.hotspot.HotSpotTruffleRuntimeAccess.class.getModule();
+        Module m1 = jdk.graal.compiler.truffle.hotspot.HotSpotTruffleCompilationSupport.class.getModule();
+        System.out.println("m1" +  m1);
         System.out.println("runtimeModule isNamed: " + runtimeModule.isNamed());
         ModuleLayer layer;
         if (runtimeModule.isNamed()) {
@@ -45,9 +47,9 @@ public abstract class ScriptHolderBase {
         } else {
             layer = ModuleLayer.boot();
         }
-        Module compilerModule = layer.findModule("jdk.graal.compiler").or(() -> layer.findModule("jdk.internal.vm.compiler")).orElse(null);
+        Module compilerModule = layer.findModule("jdk.graal.compiler.truffle.hotspot").or(() -> layer.findModule("jdk.internal.vm.compiler")).orElse(null);
         System.out.println("compilerModule" + compilerModule);
-        Class<?> hotspotCompilationSupport = Class.forName(compilerModule, "jdk.internal.vm.compiler.HotSpotTruffleCompilationSupport");
+        Class<?> hotspotCompilationSupport = Class.forName(compilerModule, "jdk.graal.compiler.truffle.hotspot.HotSpotTruffleCompilationSupport");
         System.out.println("compilerModule.getLayer()" + compilerModule.getLayer());
         System.out.println("support" + hotspotCompilationSupport);
     }

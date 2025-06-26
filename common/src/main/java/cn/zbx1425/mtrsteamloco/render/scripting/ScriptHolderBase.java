@@ -34,18 +34,18 @@ public abstract class ScriptHolderBase {
 
     private static ExecutorService SCRIPT_THREAD = Executors.newSingleThreadExecutor();
 
-    static {
-        // 去你大爷的 Native
-        System.setProperty("org.graalvm.nativeimage.imagecode", "buildtime");
+    // static {
+    //     // 去你大爷的 Native
+    //     System.setProperty("org.graalvm.nativeimage.imagecode", "buildtime");
        
-        Class<?> hotspotCompilationSupport = null;
-        try {
-            hotspotCompilationSupport = Class.forName("jdk.graal.compiler.truffle.hotspot.HotSpotTruffleCompilationSupport");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("support" + hotspotCompilationSupport);
-    }
+    //     Class<?> hotspotCompilationSupport = null;
+    //     try {
+    //         hotspotCompilationSupport = Class.forName("jdk.graal.compiler.truffle.hotspot.HotSpotTruffleCompilationSupport");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     System.out.println("support" + hotspotCompilationSupport);
+    // }
 
     public final String side;
     private Context context; 

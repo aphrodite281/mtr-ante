@@ -47,12 +47,15 @@ jobs:
       - name: Get Mod Version
         run: |
           MOD_VERSION=$(grep "mod_version=" gradle.properties | cut -d'=' -f2)
+          if [[ ! "${{ github.event.head_commit.message }}" == rel* ]]; then
+            MOD_VERSION="${MOD_VERSION}-${{ github.run_number }}"
+          fi
           echo "MOD_VERSION=$MOD_VERSION"
           echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
       - name: Capture release artifacts individually
         uses: actions/upload-artifact@v4
         with:
-          name: MTR-ANTE-${{ github.run_number }}-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
+          name: MTR-ANTE-${{ env.MOD_VERSION }}+${{ matrix.minecraft }}
           path: build/*.jar
           compression-level: 9
   upload-collectively:
@@ -79,7 +82,7 @@ jobs:
       - name: Capture release artifacts collectively
         uses: actions/upload-artifact@v4
         with:
-          name: MTR-ANTE-${{ github.run_number }}-${{ env.MOD_VERSION }}
+          name: MTR-ANTE-${{ env.MOD_VERSION }}-${{ github.run_number }}
           path: artifacts/*.jar
           compression-level: 9
   github-release:

@@ -20,7 +20,7 @@ public abstract class FQHotSpotTruffleRuntimeAccess {
             // HotSpotThreadLocalHandshake.initializePendingOffset();
             // HotSpotFastThreadLocal.ensureLoaded();
 
-            Class<?> clazz = Class.forName("jdk.graal.compiler.truffle.hotspot.HotSpotTruffleCompilationSupport");
+            Class<?> clazz = Class.forName("org.graalvm.compiler.truffle.compiler.hotspot.HotSpotTruffleCompilationSupport");
             com.oracle.truffle.compiler.TruffleCompilationSupport compilationSupport = (com.oracle.truffle.compiler.TruffleCompilationSupport) (Object) clazz.getConstructor().newInstance();
             com.oracle.truffle.runtime.hotspot.HotSpotTruffleRuntime rt = new com.oracle.truffle.runtime.hotspot.HotSpotTruffleRuntime(compilationSupport);
             // registerVirtualThreadMountHooks();

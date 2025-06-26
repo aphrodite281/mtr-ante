@@ -52,7 +52,8 @@
     "PathFinderMixin",
     "ItemRailModifierMixin",
     "RailwayDataMixin",
-    "FQTruffleLanguage"
+    "FQTruffleLanguage",
+    "FQHotSpotTruffleRuntimeAccess"
   ],
   "server": [
     

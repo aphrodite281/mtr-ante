@@ -37,7 +37,7 @@ public abstract class ScriptHolderBase {
     static {
         // 去你大爷的 Native
         System.setProperty("org.graalvm.nativeimage.imagecode", "buildtime");
-        Module runtimeModule = com.oracle.truffle.runtime.hotspot.class.getModule();
+        Module runtimeModule = com.oracle.truffle.runtime.hotspot.HotSpotTruffleRuntimeAccess.class.getModule();
         System.out.println("runtimeModule isNamed: " + runtimeModule.isNamed());
         ModuleLayer layer;
         if (runtimeModule.isNamed()) {

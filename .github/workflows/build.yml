@@ -37,7 +37,7 @@ jobs:
       - name: Update serial number
         if: ${{ !startsWith(github.event.head_commit.message, 'rel') }}
         run: |
-          sed -i "/^mod_version[[:space:]]*=/s/\(.*\)$/\1-123/" gradle.properties
+          sed -i "/^mod_version[[:space:]]*=/s/\(.*\)$/\1-${{ github.run_number }}/" gradle.properties
           cat gradle.properties
           grep "mod_version=" gradle.properties | cut -d'=' -f2
 

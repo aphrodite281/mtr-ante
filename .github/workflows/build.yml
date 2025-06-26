@@ -47,7 +47,7 @@ jobs:
       - name: Get Mod Version
         run: |
           MOD_VERSION=$(grep "mod_version=" gradle.properties | cut -d'=' -f2)
-          if [[ ! "${{ github.event.head_commit.message }}" == rel* ]]; then
+          if [[ "${{ github.event.head_commit.message }}" == rel* ]]; then
             MOD_VERSION="${MOD_VERSION}-${{ github.run_number }}"
           fi
           echo "MOD_VERSION=$MOD_VERSION"

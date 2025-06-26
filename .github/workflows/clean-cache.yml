@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete old caches
-        uses: actions/cache/delete@main
+        uses: actions/cache/delete@v3

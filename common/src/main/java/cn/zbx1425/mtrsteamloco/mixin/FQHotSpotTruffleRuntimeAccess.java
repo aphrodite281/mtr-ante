@@ -26,7 +26,7 @@ public abstract class FQHotSpotTruffleRuntimeAccess {
             // registerVirtualThreadMountHooks();
             compilationSupport.registerRuntime(rt);
             cir.setReturnValue(rt);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             cir.setReturnValue(new com.oracle.truffle.api.impl.DefaultTruffleRuntime("ANTE Shield"));
         }

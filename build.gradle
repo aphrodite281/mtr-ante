@@ -12,7 +12,7 @@ plugins {
 }
 
 ext {
-    graaljsVersion = "23.0.8"// 22.3.0 24.2.1 23.0.8
+    graaljsVersion = "23.1.7"// 22.3.0 24.2.1 23.0.8
 }
 
 apply from: "build_dep_ver.gradle"
@@ -51,6 +51,7 @@ configure(subprojects) {
 		compileOnly("org.graalvm.polyglot:js:${graaljsVersion}")
 		compileOnly("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 		compileOnly("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
+		
 		// compileOnly("org.graalvm.compiler:compiler:${graaljsVersion}")
 		// compileOnly("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 
@@ -62,6 +63,7 @@ configure(subprojects) {
 
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 			shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
+
 			// shadowCommon("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 			
 			// shadowCommon("org.graalvm.truffle:truffle-nfi-native-linux-aarch64:${graaljsVersion}")

@@ -10,6 +10,7 @@
   - [直线节点](direct-node.md)
   - [自定义轨道模型](railmodel.md)
 - JavaScript 支持
+  - [新引擎-GraalJS](js-graal.md)
   - [普遍内容](js-general.md)
   - [资源与环境](js-resources-env.md)
   - [模型处理](js-model-processing.md)

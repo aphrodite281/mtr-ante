@@ -46,14 +46,19 @@ public interface IScreen {
     }
 
 #if MC_VERSION >= "11903"
-    public static Button newButton(int x, int y, int width, int height, Component text, Button.OnPress onPress) {
-        return new Button.Builder(text, onPress).pos(x, y).size(width, height).build();
+    public static Button newButton(int x, int y, int width, int height, Component text, OnPress onPress) {
+        return new Button.Builder(text, btn -> onPress.onPress(btn)).pos(x, y).size(width, height).build();
     }
 #else
-    public static Button newButton(int x, int y, int width, int height, Component text, Button.OnPress onPress) {
-        return new Button(x, y, width, height, text, onPress);
+    public static Button newButton(int x, int y, int width, int height, Component text, OnPress onPress) {
+        return new Button(x, y, width, height, text, btn -> onPress.onPress(btn));
     }
 #endif
+
+    @FunctionalInterface
+    public static interface OnPress {
+        public void onPress(Button var1);
+    }
 
     public static int getGuiScaledHeight() {
         return Minecraft.getInstance().getWindow().getGuiScaledHeight();

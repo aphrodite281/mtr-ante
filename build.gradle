@@ -59,12 +59,12 @@ configure(subprojects) {
 		// if (project.hasProperty('shadowGraal') && project.property('shadowGraal').toBoolean()) {
 			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
 			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
-			shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
+			// shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
 
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 			// shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 
-			shadowCommon("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
+			// shadowCommon("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 			
 			// shadowCommon("org.graalvm.truffle:truffle-nfi-native-linux-aarch64:${graaljsVersion}")
 			// shadowCommon("org.graalvm.truffle:truffle-nfi-native-darwin-amd64:${graaljsVersion}")

@@ -20,6 +20,8 @@ public abstract class FQHotSpotTruffleRuntimeAccess {
     @Inject(method = "createRuntime", at = @At("HEAD"), cancellable = true, remap = false)
     private static void onCreateRuntime(CallbackInfoReturnable<com.oracle.truffle.api.TruffleRuntime> cir) {
         cir.cancel();
+        cir.setReturnValue(new com.oracle.truffle.api.impl.DefaultTruffleRuntime("ANTE Shield"));   
+        if (true) return;
         try {
             // HotSpotThreadLocalHandshake.initializePendingOffset();
             // HotSpotFastThreadLocal.ensureLoaded();

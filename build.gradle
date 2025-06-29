@@ -52,7 +52,7 @@ configure(subprojects) {
 		compileOnly("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 		compileOnly("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 		
-		// compileOnly("org.graalvm.compiler:compiler:${graaljsVersion}")
+		compileOnly("org.graalvm.compiler:compiler:${graaljsVersion}")
 		// compileOnly("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 
 
@@ -64,8 +64,8 @@ configure(subprojects) {
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
 			shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 
-			shadowCommon(files("./lib/jvmci-api.jar"))
-			shadowCommon(files("./lib/jvmci-hotspot.jar"))
+			// shadowCommon(files("./lib/jvmci-api.jar"))
+			// shadowCommon(files("./lib/jvmci-hotspot.jar"))
 
 			// shadowCommon("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 			

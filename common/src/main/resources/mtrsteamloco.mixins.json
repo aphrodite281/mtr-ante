@@ -53,7 +53,8 @@
     "ItemRailModifierMixin",
     "RailwayDataMixin",
     "FQTruffleLanguage",
-    "FQHotSpotTruffleRuntimeAccess"
+    "FQHotSpotTruffleRuntimeAccess",
+    "FQGraalServices"
   ],
   "server": [
     

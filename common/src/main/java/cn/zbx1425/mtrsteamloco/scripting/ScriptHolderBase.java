@@ -68,8 +68,8 @@ public abstract class ScriptHolderBase {
         this.functionNames = functionNames;
 
         context = Context.newBuilder("js")  
-            // .allowNativeAccess(false)
-            // .option("engine.WarnInterpreterOnly", "false")
+            .allowNativeAccess(false)
+            .option("engine.WarnInterpreterOnly", "false")
             .allowCreateThread(true)  
             .allowCreateProcess(true)
             .allowHostClassLoading(true)  

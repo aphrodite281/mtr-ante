@@ -13,19 +13,19 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(com.oracle.truffle.runtime.hotspot.HotSpotTruffleRuntimeAccess.class)
 public abstract class FQHotSpotTruffleRuntimeAccess {
-    static {
-        try {
-            System.loadLibrary("jvmcicompiler");
-        } catch (UnsatisfiedLinkError e) {
-            e.printStackTrace();
-        }
-    }
+    // static {
+    //     try {
+    //         System.loadLibrary("jvmcicompiler");
+    //     } catch (UnsatisfiedLinkError e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     @Inject(method = "createRuntime", at = @At("HEAD"), cancellable = true, remap = false)
     private static void onCreateRuntime(CallbackInfoReturnable<com.oracle.truffle.api.TruffleRuntime> cir) {
         cir.cancel();
-        // cir.setReturnValue(new com.oracle.truffle.api.impl.DefaultTruffleRuntime("ANTE Shield"));   
-        // if (true) return;
+        cir.setReturnValue(new com.oracle.truffle.api.impl.DefaultTruffleRuntime("ANTE Shield"));   
+        if (true) return;
         try {
             // HotSpotThreadLocalHandshake.initializePendingOffset();
             // HotSpotFastThreadLocal.ensureLoaded();

@@ -62,10 +62,10 @@ configure(subprojects) {
 			shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
 
 			shadowCommon("org.graalvm.truffle:truffle-api:${graaljsVersion}")
+			shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 
 			shadowCommon(files("./lib/jvmci-api.jar"))
 			shadowCommon(files("./lib/jvmci-hotspot.jar"))
-			// shadowCommon("org.graalvm.truffle:truffle-runtime:${graaljsVersion}")
 
 			// shadowCommon("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 			

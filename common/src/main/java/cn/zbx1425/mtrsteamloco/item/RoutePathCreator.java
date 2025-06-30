@@ -56,7 +56,7 @@ public class RoutePathCreator extends ItemWithCreativeTabBase {
             for (int i = 0; i < nodes.size(); i++) {
                 boolean currentError = i == message.index;
                 inError = inError || currentError;
-                list.add(Text.literal("-> (" + nodes.get(i).toShortString() + ')').withStyle(Style.EMPTY.withColor(inError ? (currentError ? 0xff0000 : 0xffff00): 0x000000)));
+                list.add(Text.literal("-> (" + nodes.get(i).toShortString() + ')').withStyle(Style.EMPTY.withColor(inError ? (currentError ? 0xff0000 : 0xffff00): 0xffffff)));
             }
         }
     }

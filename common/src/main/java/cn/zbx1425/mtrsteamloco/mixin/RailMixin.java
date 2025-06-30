@@ -277,6 +277,16 @@ public abstract class RailMixin implements RailExtraSupplier {
         PacketUpdateRail.sendUpdateC2S((Rail) (Object) this, posStart, posEnd);
     }
 
+    @Override
+    public BlockPos getPosStart() {
+        return posStart;
+    }
+
+    @Override
+    public BlockPos getPosEnd() {
+        return posEnd;
+    }
+
     private Vec3 max(Vec3 a, Vec3 b) {
         return new Vec3(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
     }

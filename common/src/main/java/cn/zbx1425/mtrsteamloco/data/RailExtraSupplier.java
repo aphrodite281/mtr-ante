@@ -1,5 +1,6 @@
 package cn.zbx1425.mtrsteamloco.data;
 
+import net.minecraft.core.BlockPos;
 import mtr.data.Rail;
 import mtr.data.RailType;
 import net.minecraft.util.Mth;
@@ -68,6 +69,10 @@ public interface RailExtraSupplier {
     boolean couldSwitchModeTo(int mode);
 
     void sendUpdateC2S();
+
+    BlockPos getPosStart();
+
+    BlockPos getPosEnd();
 
     static float getVTheta(Rail rail, double verticalCurveRadius) {
         double H = Math.abs(((RailExtraSupplier) rail).getHeight());

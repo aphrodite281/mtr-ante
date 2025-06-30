@@ -70,6 +70,7 @@ public class Main {
 	public static final RegistryObject<ItemWithCreativeTabBase> COMPOUND_CREATOR = new RegistryObject<>(() -> new CompoundCreator());
 	public static final RegistryObject<ItemWithCreativeTabBase> DISPLACEMENT_TOOL = new RegistryObject<>(() -> new DisplacementTool());
 	public static final RegistryObject<ItemWithCreativeTabBase> RAIL_PATH_EDITOR = new RegistryObject<>(() -> new RailPathEditor());
+	public static final RegistryObject<ItemWithCreativeTabBase> ROUTE_PATH_CREATOR = new RegistryObject<>(() -> new RoutePathCreator());
 
 	public static final SoundEvent SOUND_EVENT_BELL = RegistryUtilities.createSoundEvent(new ResourceLocation("mtrsteamloco:bell"));
 
@@ -91,6 +92,7 @@ public class Main {
 			registries.registerItem("compound_creator", COMPOUND_CREATOR);
 			registries.registerItem("displacement_tool", DISPLACEMENT_TOOL);
 			registries.registerItem("rail_path_editor", RAIL_PATH_EDITOR);
+			registries.registerItem("route_path_creator", ROUTE_PATH_CREATOR);
 
 			registries.registerSoundEvent("bell", SOUND_EVENT_BELL);
 			PARTICLE_STEAM_SMOKE = registries.createParticleType(true);

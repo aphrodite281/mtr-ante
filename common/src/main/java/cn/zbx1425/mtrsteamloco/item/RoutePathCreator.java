@@ -33,6 +33,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import cn.zbx1425.mtrsteamloco.network.PacketScreen;
 import net.minecraft.server.level.ServerPlayer;
+import cn.zbx1425.mtrsteamloco.mixin.PathDataAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +144,15 @@ CompoundTag {
                 compoundTag.remove("last_pos");
                 return InteractionResult.SUCCESS;
             }
-            PathData pathData = new PathData(rail, pid, dwellTime, getPos(rail, true), getPos(rail, false), 0);
+            PathData pathData = new PathData(rail, pid, rail.railType == RailType.TURN_BACK ? 1 : dwellTime, getPos(rail, true), getPos(rail, false), 0);
+            if (path.size() > 0) {
+                PathData lastPath = path.get(path.size() - 1);
+                if (lastPath.isOppositeRail(pathData)) {
+                    ((PathDataAccessor) (Object) pathData).setDwellTime(0);
+                    if (lastPath.dwellTime == 0) ((PathDataAccessor) (Object) lastPath).setDwellTime(1);
+                }
+            }
+
             path.add(pathData);
             
             boolean lastTurnBack = false;
@@ -154,7 +163,7 @@ CompoundTag {
                 if (i >= 1) {
                     PathData prev = path.get(i - 1);
                     if (getPos(rai, true).equals(getPos(prev.rail, false)) && getPos(rai, false).equals(getPos(prev.rail, true))) {
-                        if (rai.railType == RailType.TURN_BACK || rai.railType == RailType.PLATFORM) {
+                        // if (rai.railType == RailType.TURN_BACK || rai.railType == RailType.PLATFORM) {
                             if (lastTurnBack) {
                                 if (player != null) {
                                     player.displayClientMessage(Text.translatable("gui.mtrsteamloco.rail_path_creator.error.repeatedly_turn_back"), true);
@@ -169,12 +178,12 @@ CompoundTag {
                                 }
                                 lastTurnBack = true;
                             }
-                        } else {
-                            if (player != null) {
-                                player.displayClientMessage(Text.translatable("gui.mtrsteamloco.rail_path_creator.error.illegal_turn_back"), true);
-                            }
-                            return InteractionResult.SUCCESS;
-                        }
+                        // } else {
+                        //     if (player != null) {
+                        //         player.displayClientMessage(Text.translatable("gui.mtrsteamloco.rail_path_creator.error.illegal_turn_back"), true);
+                        //     }
+                        //     return InteractionResult.SUCCESS;
+                        // }
                         
                     } else {
                         lastTurnBack = false;

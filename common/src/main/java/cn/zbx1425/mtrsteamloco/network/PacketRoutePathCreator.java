@@ -34,14 +34,19 @@ public class PacketRoutePathCreator {
     }
 
     public static void receiveRouteC2S(MinecraftServer server, ServerPlayer player, FriendlyByteBuf packet) {
-        RailwayData rd = RailwayData.getInstance(player.level);
+#if MC_VERSION >= "12000"
+        ServerLevel level = (ServerLevel) (Object) player.level();
+#else
+        ServerLevel level = player.level;
+#endif
+        RailwayData rd = RailwayData.getInstance(level);
         if (rd != null) {
             FriendlyByteBuf np = new FriendlyByteBuf(packet.copy());
             Route route = new Route(packet);
             server.execute(() -> {
                 rd.routes.add(route);
                 rd.dataCache.sync();
-                for (Player p : player.level.players()) {
+                for (Player p : level.players()) {
                     if (p instanceof ServerPlayer sp) Registry.sendToPlayer(sp, ROUTE_S2C, np);
                 }
             });

@@ -59,60 +59,60 @@ import java.util.List;
 public interface IGraphics{
 
 #if MC_VERSION >= "12000"
-    static void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, float x, float y, int light) {
+    default void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, float x, float y, int light) {
         drawStringWithFont(gg.pose(), textRenderer, immediate, text, x, y, light);
 	}
 
-	static void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
+	default void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
 		drawStringWithFont(gg.pose(), textRenderer, immediate, text, horizontalAlignment, verticalAlignment, horizontalAlignment, x, y, maxWidth, maxHeight, scale, textColor, shadow, light, drawingCallback);
 	}
 
-	static void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
+	default void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
 		drawStringWithFont(gg.pose(), textRenderer, immediate, text, horizontalAlignment, verticalAlignment, xAlignment, x, y, maxWidth, maxHeight, scale, textColor, textColor, 2, shadow, light, drawingCallback);
 	}
 
-	static void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColorCjk, int textColor, float fontSizeRatio, boolean shadow, int light, DrawingCallback drawingCallback) {
+	default void drawStringWithFont(GuiGraphics gg, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColorCjk, int textColor, float fontSizeRatio, boolean shadow, int light, DrawingCallback drawingCallback) {
 		drawStringWithFont(gg.pose(), textRenderer, immediate, text, horizontalAlignment, verticalAlignment, xAlignment, x, y, maxWidth, maxHeight, scale, textColorCjk, textColor, fontSizeRatio, shadow, light, drawingCallback);
 	}
 
-	static void drawLine(GuiGraphics matrices, MultiBufferSource vertexConsumers, float x1, float y1, float z1, float x2, float y2, float z2, int r, int g, int b) {
+	default void drawLine(GuiGraphics matrices, MultiBufferSource vertexConsumers, float x1, float y1, float z1, float x2, float y2, float z2, int r, int g, int b) {
         drawLine(matrices.pose(), vertexConsumers, x1, y1, z1, x2, y2, z2, r, g, b);
 	}
 
-	static void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, Direction facing, int color, int light) {
+	default void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, Direction facing, int color, int light) {
 		drawTexture(gg.pose(), vertexConsumer, x1, y1, z1, x2, y2, z2, 0, 0, 1, 1, facing, color, light);
 	}
 
-	static void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x, float y, float width, float height, Direction facing, int light) {
+	default void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x, float y, float width, float height, Direction facing, int light) {
 		drawTexture(gg.pose(), vertexConsumer, x, y, 0, x + width, y + height, 0, 0, 0, 1, 1, facing, -1, light);
 	}
 
-	static void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x, float y, float width, float height, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
+	default void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x, float y, float width, float height, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
 		drawTexture(gg.pose(), vertexConsumer, x, y, 0, x + width, y + height, 0, u1, v1, u2, v2, facing, color, light);
 	}
 
-	static void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
+	default void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
 		drawTexture(gg.pose(), vertexConsumer, x1, y2, z1, x2, y2, z2, x2, y1, z2, x1, y1, z1, u1, v1, u2, v2, facing, color, light);
 	}
 
-	static void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
+	default void drawTexture(GuiGraphics gg, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
         drawTexture(gg.pose(), vertexConsumer, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u1, v1, u2, v2, facing, color, light);
 	}
 #endif
 
-	static void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, float x, float y, int light) {
+	default void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, float x, float y, int light) {
 		drawStringWithFont(matrices, textRenderer, immediate, text, IGui.HorizontalAlignment.CENTER, IGui.VerticalAlignment.CENTER, x, y, -1, -1, 1, IGui.ARGB_WHITE, true, light, null);
 	}
 
-	static void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
+	default void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
 		drawStringWithFont(matrices, textRenderer, immediate, text, horizontalAlignment, verticalAlignment, horizontalAlignment, x, y, maxWidth, maxHeight, scale, textColor, shadow, light, drawingCallback);
 	}
 
-	static void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
+	default void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColor, boolean shadow, int light, DrawingCallback drawingCallback) {
 		drawStringWithFont(matrices, textRenderer, immediate, text, horizontalAlignment, verticalAlignment, xAlignment, x, y, maxWidth, maxHeight, scale, textColor, textColor, 2, shadow, light, drawingCallback);
 	}
 
-	static void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColorCjk, int textColor, float fontSizeRatio, boolean shadow, int light, DrawingCallback drawingCallback) {
+	default void drawStringWithFont(PoseStack matrices, Font textRenderer, MultiBufferSource.BufferSource immediate, String text, IGui.HorizontalAlignment horizontalAlignment, IGui.VerticalAlignment verticalAlignment, IGui.HorizontalAlignment xAlignment, float x, float y, float maxWidth, float maxHeight, float scale, int textColorCjk, int textColor, float fontSizeRatio, boolean shadow, int light, DrawingCallback drawingCallback) {
 		final Style style = Style.EMPTY;
 
 		while (text.contains("||")) {
@@ -191,14 +191,14 @@ public interface IGraphics{
 		}
 	}
 
-	static void drawLine(PoseStack matrices, MultiBufferSource vertexConsumers, float x1, float y1, float z1, float x2, float y2, float z2, int r, int g, int b) {
+	default void drawLine(PoseStack matrices, MultiBufferSource vertexConsumers, float x1, float y1, float z1, float x2, float y2, float z2, int r, int g, int b) {
 		final VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.lines());
 		final PoseStack.Pose pose = matrices.last();
 		vertexConsumer.vertex(pose.pose(), x1, y1, z1).color(r, g, b, 0xFF).normal(pose.normal(), 0, 1, 0).endVertex();
 		vertexConsumer.vertex(pose.pose(), x2, y2, z2).color(r, g, b, 0xFF).normal(pose.normal(), 0, 1, 0).endVertex();
 	}
 
-	static void drawRectangle(VertexConsumer vertexConsumer, double x1, double y1, double x2, double y2, int color) {
+	default void drawRectangle(VertexConsumer vertexConsumer, double x1, double y1, double x2, double y2, int color) {
 		final int a = (color >> 24) & 0xFF;
 		final int r = (color >> 16) & 0xFF;
 		final int g = (color >> 8) & 0xFF;
@@ -212,23 +212,23 @@ public interface IGraphics{
 		vertexConsumer.vertex(x2, y1, 0).color(r, g, b, a).endVertex();
 	}
 
-	static void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, Direction facing, int color, int light) {
+	default void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, Direction facing, int color, int light) {
 		drawTexture(matrices, vertexConsumer, x1, y1, z1, x2, y2, z2, 0, 0, 1, 1, facing, color, light);
 	}
 
-	static void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x, float y, float width, float height, Direction facing, int light) {
+	default void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x, float y, float width, float height, Direction facing, int light) {
 		drawTexture(matrices, vertexConsumer, x, y, 0, x + width, y + height, 0, 0, 0, 1, 1, facing, -1, light);
 	}
 
-	static void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x, float y, float width, float height, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
+	default void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x, float y, float width, float height, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
 		drawTexture(matrices, vertexConsumer, x, y, 0, x + width, y + height, 0, u1, v1, u2, v2, facing, color, light);
 	}
 
-	static void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
+	default void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
 		drawTexture(matrices, vertexConsumer, x1, y2, z1, x2, y2, z2, x2, y1, z2, x1, y1, z1, u1, v1, u2, v2, facing, color, light);
 	}
 
-	static void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
+	default void drawTexture(PoseStack matrices, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4, float u1, float v1, float u2, float v2, Direction facing, int color, int light) {
 		final Vec3i vec3i = facing.getNormal();
 		final PoseStack.Pose pose = matrices.last();
 		final int a = (color >> 24) & 0xFF;
@@ -244,7 +244,7 @@ public interface IGraphics{
 		vertexConsumer.vertex(pose.pose(), x4, y4, z4).color(r, g, b, a).uv(u1, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.normal(), vec3i.getX(), vec3i.getY(), vec3i.getZ()).endVertex();
 	}
 
-	static void setPositionAndWidth(AbstractWidget widget, int x, int y, int widgetWidth) {
+	default void setPositionAndWidth(AbstractWidget widget, int x, int y, int widgetWidth) {
 		UtilitiesClient.setWidgetX(widget, x);
 		UtilitiesClient.setWidgetY(widget, y);
 		widget.setWidth(Mth.clamp(widgetWidth, 0, 380 - (widget instanceof WidgetBetterTextField ? IGui.TEXT_FIELD_PADDING : 0)));
@@ -256,45 +256,45 @@ public interface IGraphics{
 	}
 
 #if MC_VERSION >= "12000"
-    static void drawText(GuiGraphics guiGraphics, Font font, FormattedCharSequence text, int x, int y, int color) {
+    default void drawText(GuiGraphics guiGraphics, Font font, FormattedCharSequence text, int x, int y, int color) {
         guiGraphics.drawString(font, text, x, y, color);
     }
 
-    static void blit(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height) {
+    default void blit(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int width, int height) {
         guiGraphics.blit(texture, x, y, width, height, 0, 0, 1, 1, 1, 1);
     }
 
-    static void fill(GuiGraphics guiGraphics, int x, int y, int width, int height, int color) {
+    default void fill(GuiGraphics guiGraphics, int x, int y, int width, int height, int color) {
         guiGraphics.fill(x, y, width, height, color);
     }
 
-    static void drawCenteredString(GuiGraphics guiGraphics, Font font, String text, int x, int y, int color) {
+    default void drawCenteredString(GuiGraphics guiGraphics, Font font, String text, int x, int y, int color) {
         guiGraphics.drawCenteredString(font, text, x, y, color);
     }
 
-    static void renderDirtBackground(Screen screen, GuiGraphics guiGraphics) {
+    default void renderDirtBackground(Screen screen, GuiGraphics guiGraphics) {
         screen.renderDirtBackground(guiGraphics);
     }
 #else
-    static void drawText(PoseStack matrices, Font font, FormattedCharSequence text, int x, int y, int color) {
+    default void drawText(PoseStack matrices, Font font, FormattedCharSequence text, int x, int y, int color) {
         font.drawShadow(matrices, text, x, y, color);
     }
 
-    static void blit(PoseStack matrices, ResourceLocation texture, int x, int y, int width, int height) {
+    default void blit(PoseStack matrices, ResourceLocation texture, int x, int y, int width, int height) {
         RenderSystem.setShaderTexture(0, texture);
         GuiComponent.blit(matrices, x, y, width, height, 0, 0, 1, 1, 1, 1);
     }
 
-	static void fill(PoseStack matrices, int x, int y, int width, int height, int color) {
+	default void fill(PoseStack matrices, int x, int y, int width, int height, int color) {
 		GuiComponent.fill(matrices, x, y, width, height, color);
 	}
 
 #if MC_VERSION >= "11904"
-    static void renderDirtBackground(Screen screen, PoseStack matrices) {
+    default void renderDirtBackground(Screen screen, PoseStack matrices) {
         screen.renderDirtBackground(matrices);
     }
 #else 
-    static void renderDirtBackground(Screen screen, PoseStack matrices) {
+    default void renderDirtBackground(Screen screen, PoseStack matrices) {
         screen.renderDirtBackground(0);
     }
 #endif

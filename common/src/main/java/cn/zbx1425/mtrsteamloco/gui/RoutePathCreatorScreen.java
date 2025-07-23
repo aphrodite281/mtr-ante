@@ -219,15 +219,11 @@ public class RoutePathCreatorScreen extends Screen implements IGraphics {
                 //getPos(data.rail, true).toShortString() + " -> " + getPos(data.rail, false).toShortString()  + '\n' + 
                 //data.rail.railType.name() + " " + 
                 (tb0 ? "▲▲▲    \n": (tb1 ? " \n" : "")) + 
-                data.rail.railType.speedLimit + "km/h \n" + 
+                data.rail.railType + ":" + data.rail.railType.speedLimit + "km/h \n" + 
                 String.format("%.1f", data.rail.getLength()) + "m " + (data.dwellTime * 0.5f) + "s" + 
                 (tb1 ? "\n    ▼▼▼": (tb0 ? "\n " : ""))
             ),
-            () -> {
-                if (tb0) selectPart(index, index - 1);
-                else if (tb1) selectPart(index, index + 1);
-                else selectPart(index);
-            }
+            () -> selectPart(index)
         );
         return label;
     }
@@ -309,13 +305,18 @@ public class RoutePathCreatorScreen extends Screen implements IGraphics {
             .build()
         );
 
-        common.addEntry(ButtonListEntry.createCenteredInstance(Text.literal("创建路线"), btn -> {
-            Route route = new Route(TransportMode.TRAIN);
-            route.name = tag.getString("route_name");
-            route.color = tag.getInt("route_color");
-            ((IRoute) (Object) route).setPathData(pathData);
-            PacketRoutePathCreator.sendRouteC2S(route);
-        }));
+        if (pathData.size() > 2 && pathData.get(pathData.size() - 1).rail.railType == RailType.PLATFORM && (!pathData.get(pathData.size() - 2).isOppositeRail(pathData.get(pathData.size() - 1)))) {
+            common.addEntry(ButtonListEntry.createCenteredInstance(Text.literal("创建路线"), btn -> {
+                Route route = new Route(TransportMode.TRAIN);
+                route.name = tag.getString("route_name");
+                route.color = tag.getInt("route_color");
+                ((IRoute) (Object) route).setPathData(pathData);
+                PacketRoutePathCreator.sendRouteC2S(route);
+            }));
+        } else {
+            common.addEntry(entryBuilder.startTextDescription(Text.translatable("gui.mtrsteamloco.route_path_creator.action_screen.illegal_path")).build());
+        }
+        
 
         minecraft.setScreen(builder.build());
     }
@@ -362,7 +363,7 @@ public class RoutePathCreatorScreen extends Screen implements IGraphics {
 #else
     public void render(PoseStack ctx, int mouseX, int mouseY, float partialTick) {
 #endif
-        IGraphics.renderDirtBackground(this, ctx);
+        renderDirtBackground(this, ctx);
         drawCenteredString(ctx, minecraft.font, "Route Path Creator Screen", width / 2, 10, 0xFFFFFF);
         drawCenteredString(ctx, minecraft.font, selectedParts + " " + partPerPage() + " " + maxPage(), width / 2, height - 10, 0xFFFFFF);
 

@@ -104,6 +104,6 @@ public abstract class RouteMixin implements IRoute{
 
     @Inject(method = "messagePackLength", at = @At("TAIL"), cancellable = true, remap = false)
     private void messagePackLength(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(cir.getReturnValue() + pathData.size() <= 0 ? 0 : 1);
+        cir.setReturnValue(cir.getReturnValue() + (pathData.size() <= 0 ? 0 : 1));
     }
 }

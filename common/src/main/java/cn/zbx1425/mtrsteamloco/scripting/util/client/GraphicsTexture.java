@@ -63,6 +63,16 @@ public class GraphicsTexture implements Closeable {
     }
 
     public synchronized void upload(BufferedImage image) {
+        if (image == null) {
+            Main.LOGGER.warn("BufferedImage is null, skipping upload GraphicsTexture");
+            return;
+        }
+
+        if (image.getWidth() != width || image.getHeight() != height) {
+            Main.LOGGER.warn("BufferedImage size does not match GraphicsTexture size: expect(" + width + "," + height + ") actual(" + image.getWidth() + "," + image.getHeight() + ")," + "skipping upload GraphicsTexture");
+            return;
+        }
+
         if (isClosed || dynamicTexture.getPixels() == null) {
             Main.LOGGER.info("GraphicsTexture already closed");
             return;

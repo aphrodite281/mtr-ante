@@ -13,7 +13,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 #endif
 import net.minecraft.network.chat.Component;
 
-public class WidgetLabel extends AbstractWidget {
+public class WidgetLabel extends AbstractWidget implements IGraphics {
 
     public boolean alignR = false;
     public boolean centre = true;
@@ -43,7 +43,7 @@ public class WidgetLabel extends AbstractWidget {
         String[] lines = this.getMessage().getString().split("\n");
         this.height = lines.length * 10;
         if (mouseX >= this.getX() && mouseX < this.getX() + this.getWidth() && mouseY >= this.getY() && mouseY < this.getY() + this.getHeight()) {
-            IGraphics.fill(ctx, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight(), 0x88a8a9ad);
+            fill(ctx, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight(), 0x88a8a9ad);
         }
         for (int i = 0; i < lines.length; ++i) {
             int textWidth = Minecraft.getInstance().font.width(lines[i]);

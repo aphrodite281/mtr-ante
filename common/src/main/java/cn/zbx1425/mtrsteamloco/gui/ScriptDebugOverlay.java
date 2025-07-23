@@ -69,7 +69,7 @@ public class ScriptDebugOverlay {
             }
             for (AbstractScriptContext context : entry.getValue()) {
                 y = drawText(vdStuff, font,
-                    String.format("#%08X (%.2f ms)", context.hashCode(), context.lastExecuteDuration / 1e6),
+                    String.format("#%08X (%.4f ms)", context.hashCode(), context.lastExecuteDuration / 1e6),
                     10, y, 0xFFCCCCFF);
                 List<Map.Entry<String, Object>> debugInfos = context.getDebugInfo().entryList();
                 for (Map.Entry<String, Object> debugInfo : debugInfos) {

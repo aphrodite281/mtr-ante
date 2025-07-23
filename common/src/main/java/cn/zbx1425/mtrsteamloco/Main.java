@@ -108,6 +108,8 @@ public class Main {
 					PacketUpdateTrainCustomConfigs::receiveUpdateC2S);
 			mtr.Registry.registerNetworkReceiver(PacketReplaceRailNode.C2S, 
 					PacketReplaceRailNode::receiveUpdateC2S);
+			mtr.Registry.registerNetworkReceiver(PacketRoutePathCreator.ROUTE_C2S,
+					PacketRoutePathCreator::receiveRouteC2S);
 
 			mtr.Registry.registerPlayerJoinEvent(PacketVersionCheck::sendVersionCheckS2C);
 		}

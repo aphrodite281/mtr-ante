@@ -64,6 +64,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.StringUtils;
+import cn.zbx1425.mtrsteamloco.item.RoutePathCreator;
 
 import java.util.*;
 
@@ -73,6 +74,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderTrains.class)
 public class RenderTrainsMixin extends EntityRendererMapper<EntitySeat> implements IGui{
@@ -222,6 +224,14 @@ public class RenderTrainsMixin extends EntityRendererMapper<EntitySeat> implemen
             boolean railAccepted = MainClient.railRenderDispatcher.registerRail(rail);
             if (railAccepted) ci.cancel();
         }
+    }
+
+    @Inject(method = "isHoldingRailRelated", at = @At("TAIL"), remap = false, cancellable = true) 
+    private static void onIsHoldingRailRelated(Player player, CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(
+            cir.getReturnValue() ||
+            Utilities.isHolding(player, item -> item instanceof RoutePathCreator)
+        );
     }
 
 }

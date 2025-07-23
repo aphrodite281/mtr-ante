@@ -53,7 +53,10 @@
     "ItemRailModifierMixin",
     "RailwayDataMixin",
     "FQTruffleLanguage",
-    "FQHotSpotTruffleRuntimeAccess"
+    "FQHotSpotTruffleRuntimeAccess",
+    "RouteMixin",
+    "DepotMixin",
+    "PathDataAccessor"
   ],
   "server": [
     

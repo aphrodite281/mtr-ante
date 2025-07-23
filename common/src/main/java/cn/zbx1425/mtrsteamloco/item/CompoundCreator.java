@@ -56,7 +56,7 @@ public class CompoundCreator extends ItemNodeModifierBase {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!world.isClientSide) {
-            PacketScreen.sendScreenBlockS2C((ServerPlayer) player, "compound_creator", BlockPos.ZERO);
+            PacketScreen.sendScreenS2C((ServerPlayer) player, "compound_creator");
         }
         return InteractionResultHolder.success(stack);
     }
@@ -68,7 +68,7 @@ public class CompoundCreator extends ItemNodeModifierBase {
         } else {
             Player player = ctx.getPlayer();
             if (player instanceof ServerPlayer serverPlayer) {
-                PacketScreen.sendScreenBlockS2C(serverPlayer, "compound_creator", BlockPos.ZERO);
+                PacketScreen.sendScreenS2C(serverPlayer, "compound_creator");
             }
         }
         return InteractionResult.SUCCESS;

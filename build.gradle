@@ -56,7 +56,7 @@ configure(subprojects) {
 		// compileOnly("org.graalvm.truffle:truffle-compiler:${graaljsVersion}")
 
 
-		// if (project.hasProperty('shadowGraal') && project.property('shadowGraal').toBoolean()) {
+		if (!project.hasProperty('excludeGraal') || !project.property('excludeGraal').toBoolean()) {
 			shadowCommon("org.graalvm.polyglot:polyglot:${graaljsVersion}")
 			shadowCommon("org.graalvm.polyglot:js:${graaljsVersion}")
 			// shadowCommon("org.graalvm.compiler:compiler:${graaljsVersion}")
@@ -76,7 +76,7 @@ configure(subprojects) {
 			// shadowCommon("org.graalvm.shadowed:icu4j:${graaljsVersion}")
 			// shadowCommon("org.graalvm.regex:regex:${graaljsVersion}")
 			// shadowCommon("org.graalvm.sdk:graal-sdk:${graaljsVersion}")
-		// }
+		}
 	}
 
 	build.finalizedBy(mergeJars)

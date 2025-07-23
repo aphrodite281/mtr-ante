@@ -43,7 +43,7 @@ public class WidgetLabel extends AbstractWidget implements IGraphics {
         String[] lines = this.getMessage().getString().split("\n");
         this.height = lines.length * 10;
         if (mouseX >= this.getX() && mouseX < this.getX() + this.getWidth() && mouseY >= this.getY() && mouseY < this.getY() + this.getHeight()) {
-            fill(ctx, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight(), 0x88a8a9ad);
+            IFill(ctx, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight(), 0x88a8a9ad);
         }
         for (int i = 0; i < lines.length; ++i) {
             int textWidth = Minecraft.getInstance().font.width(lines[i]);

@@ -35,9 +35,9 @@ public class PacketRoutePathCreator {
 
     public static void receiveRouteC2S(MinecraftServer server, ServerPlayer player, FriendlyByteBuf packet) {
 #if MC_VERSION >= "12000"
-        ServerLevel level = (ServerLevel) (Object) player.level();
+        Level level = player.level();
 #else
-        ServerLevel level = player.level;
+        Level level = player.level;
 #endif
         RailwayData rd = RailwayData.getInstance(level);
         if (rd != null) {

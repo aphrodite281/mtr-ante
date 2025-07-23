@@ -264,7 +264,7 @@ public interface IGraphics{
         guiGraphics.blit(texture, x, y, width, height, 0, 0, 1, 1, 1, 1);
     }
 
-    default void fill(GuiGraphics guiGraphics, int x, int y, int width, int height, int color) {
+    default void IFill(GuiGraphics guiGraphics, int x, int y, int width, int height, int color) {
         guiGraphics.fill(x, y, width, height, color);
     }
 
@@ -285,7 +285,7 @@ public interface IGraphics{
         GuiComponent.blit(matrices, x, y, width, height, 0, 0, 1, 1, 1, 1);
     }
 
-	default void fill(PoseStack matrices, int x, int y, int width, int height, int color) {
+	default void IFill(PoseStack matrices, int x, int y, int width, int height, int color) {
 		GuiComponent.fill(matrices, x, y, width, height, color);
 	}
 

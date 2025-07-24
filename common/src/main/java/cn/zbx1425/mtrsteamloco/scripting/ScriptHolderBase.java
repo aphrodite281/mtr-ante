@@ -177,12 +177,11 @@ public abstract class ScriptHolderBase {
                 ScriptResourceUtil.readString(entry.getKey());
 
             ScriptResourceUtil.executeScript(context, scriptContent, entry.getKey());
-        }
 
-        
-        for (String fn : functionNames) {
-            registerFunction(fn);
-            registerFunction(fn + contextTypeName);
+            for (String fn : functionNames) {
+                registerFunction(fn);
+                registerFunction(fn + contextTypeName);
+            }
         }
     }
 
@@ -244,8 +243,9 @@ public abstract class ScriptHolderBase {
     private void registerFunction(String name) {
         Value func = globalBindings.getMember(name);
         if (func != null && func.canExecute()) {
-            functions.computeIfAbsent(name, k -> new ArrayList<>(1))
+            functions.computeIfAbsent(name, k -> new ArrayList<>())
                      .add(func);
+            eval("delete " + name + ";");
         }
     }
 
@@ -259,7 +259,8 @@ public abstract class ScriptHolderBase {
 
         return SCRIPT_THREAD.submit(() -> {
             long start = System.nanoTime();
-            try {                
+            try {            
+                TimingUtil.prepareForScript(scriptCtx);    
                 Object[] allArgs = new Object[3 + args.length];
                 allArgs[0] = scriptCtx;
                 allArgs[1] = scriptCtx.state != null ? scriptCtx.state : ProxyObject.fromMap(new HashMap<>());

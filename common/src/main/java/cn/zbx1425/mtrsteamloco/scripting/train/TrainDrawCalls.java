@@ -60,7 +60,7 @@ public class TrainDrawCalls extends AbstractDrawCalls {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
         for (PlaySoundCall playSoundCall : carSoundLists[car]) {
-            playSoundCall.commit(level, worldPose);
+            playSoundCall.commit(level, basePose);
         }
     }
 

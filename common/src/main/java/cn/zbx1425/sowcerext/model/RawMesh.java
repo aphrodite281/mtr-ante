@@ -365,7 +365,7 @@ public class RawMesh {
         }
     }
 
-    public void writeBlazeBuffer(FaceList vertexConsumer, Matrix4f matrix, int color, int light, DrawContext drawContext) {
+    public void writeBlazeBuffer(FaceList vertexConsumer, Matrix4f matrix, int color, int light, int overlay, DrawContext drawContext) {
         drawContext.recordBlazeAction(faces.size());
         for (Face face : faces) {
             assert face.vertices.length == 3;
@@ -377,7 +377,7 @@ public class RawMesh {
                 transformedVertices[i].u = this.vertices.get(face.vertices[i]).u;
                 transformedVertices[i].v = this.vertices.get(face.vertices[i]).v;
             }
-            vertexConsumer.addFace(transformedVertices, color, light);
+            vertexConsumer.addFace(transformedVertices, color, light, overlay);
         }
     }
 

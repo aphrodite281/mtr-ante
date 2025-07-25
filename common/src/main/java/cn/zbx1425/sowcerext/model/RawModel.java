@@ -185,12 +185,13 @@ public class RawModel {
         }
     }
 
-    public void writeBlazeBuffer(BufferSourceProxy vertexConsumers, Matrix4f matrix, int light, DrawContext drawContext) {
+    public void writeBlazeBuffer(BufferSourceProxy vertexConsumers, Matrix4f matrix, int light, int overlay, DrawContext drawContext) {
         if (meshList.isEmpty()) return;
         for (Map.Entry<MaterialProp, RawMesh> entry : meshList.entrySet()) {
             RenderType renderType = entry.getKey().getBlazeRenderType();
             int resultColor = entry.getKey().attrState.color != null ? entry.getKey().attrState.color : 0xFFFFFFFF;
             int resultLight = entry.getKey().attrState.lightmapUV != null ? entry.getKey().attrState.lightmapUV : light;
+            int resultOverlay = entry.getKey().attrState.overlayUV != null ? AttrUtil.exchangeLightmapUVBits(entry.getKey().attrState.overlayUV) : overlay;
 
             /*
             if (Objects.equals(entry.getKey().shaderName, "rendertype_entity_translucent_cull") && (resultColor & 0xFF) != 0xFF) {
@@ -207,7 +208,7 @@ public class RawModel {
             }*/
 
             entry.getValue().writeBlazeBuffer(vertexConsumers.getBuffer(renderType, entry.getKey().translucent),
-                    resultMatrix, resultColor, resultLight, drawContext);
+                    resultMatrix, resultColor, resultLight, resultOverlay, drawContext);
         }
     }
 

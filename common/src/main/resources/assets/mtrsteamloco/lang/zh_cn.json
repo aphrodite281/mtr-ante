@@ -10,6 +10,7 @@
     "item.mtrsteamloco.displacement_tool": "位移工具",
     "item.mtrsteamloco.rail_path_editor": "铁轨路径编辑器",
     "item.mtrsteamloco.route_path_creator": "路线路径创建器",
+    "itemGroup.mtrsteamloco.eye_candy": "装饰物件",
     "train.mtrsteamloco.d51": "日本国铁 D51 型蒸汽机车",
     "train.mtrsteamloco.dk3": "DK3 (北京地铁二号线涂装)",
     "train.mtrsteamloco.dk3_mini": "DK3 (北京地铁二号线涂装, 迷你)",
@@ -151,5 +152,6 @@
     "gui.mtrsteamloco.rail_path_creator.success.path": "添加路径成功，当前是第 %s 段路径",
     "gui.mtrsteamloco.rail_path_creator.success.pos": "选取节点成功",
     "gui.mtrsteamloco.route_path_creator.action_screen.title": "路线路径创建器行动",
-    "gui.mtrsteamloco.route_path_creator.action_screen.illegal_path": "当前路径不符合以下要求，无法创建路线: \n1. 起点、终点必须是站台\n2. 不能在起点、终点折返\n3. 至少有起点和终点"
+    "gui.mtrsteamloco.route_path_creator.action_screen.illegal_path": "当前路径不符合以下要求，无法创建路线: \n1. 起点、终点必须是站台\n2. 不能在起点、终点折返\n3. 至少有起点和终点",
+    "group.mtrsteamloco.builtin": "ANTE 内置"
 }

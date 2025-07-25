@@ -19,6 +19,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import cn.zbx1425.mtrsteamloco.item.CompoundCreator;
+import  net.minecraft.world.item.CreativeModeTab;
+import mtr.Registry;
+import net.minecraft.world.item.ItemStack;
 
 import java.net.URISyntaxException;
 import java.time.ZoneId;
@@ -56,6 +59,7 @@ public class Main {
 					BlockEyeCandy.BlockEntityEyeCandy::new,
 					BLOCK_EYE_CANDY.get()
 			));
+	public static final RegistryObject<Item> ITEM_EYE_CANDY = new RegistryObject<>(() -> new BlockItemEyeCandy(BLOCK_EYE_CANDY.get()));
 	
 	public static final RegistryObject<Block> BLOCK_DIRECT_NODE = new RegistryObject<>(BlockDirectNode::new);
 	public static final RegistryObject<BlockEntityType<BlockDirectNode.BlockEntityDirectNode>>
@@ -71,6 +75,7 @@ public class Main {
 	public static final RegistryObject<ItemWithCreativeTabBase> DISPLACEMENT_TOOL = new RegistryObject<>(() -> new DisplacementTool());
 	public static final RegistryObject<ItemWithCreativeTabBase> RAIL_PATH_EDITOR = new RegistryObject<>(() -> new RailPathEditor());
 	public static final RegistryObject<ItemWithCreativeTabBase> ROUTE_PATH_CREATOR = new RegistryObject<>(() -> new RoutePathCreator());
+	public static final CreativeModeTab EYE_CANDY_TAB = Registry.getCreativeModeTab(new ResourceLocation(MOD_ID, "eye_candy"), () -> new ItemStack(ITEM_EYE_CANDY.get())).get();
 
 	public static final SoundEvent SOUND_EVENT_BELL = RegistryUtilities.createSoundEvent(new ResourceLocation("mtrsteamloco:bell"));
 
@@ -81,7 +86,8 @@ public class Main {
 				+ DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault()).format(BuildConfig.BUILD_TIME));
 		if (enableRegistry) {
 			registries.registerBlockAndItem("departure_bell", BLOCK_DEPARTURE_BELL, CreativeModeTabs.RAILWAY_FACILITIES);
-			registries.registerBlockAndItem("eye_candy", BLOCK_EYE_CANDY, CreativeModeTabs.STATION_BUILDING_BLOCKS);
+			registries.registerBlock("eye_candy", BLOCK_EYE_CANDY);
+			registries.registerItem("eye_candy", ITEM_EYE_CANDY, EYE_CANDY_TAB);
 			registries.registerBlockEntityType("eye_candy", BLOCK_ENTITY_TYPE_EYE_CANDY);
 
 			registries.registerBlock("direct_node", BLOCK_DIRECT_NODE);

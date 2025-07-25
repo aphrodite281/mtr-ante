@@ -31,7 +31,8 @@
     "VehicleRidingClientMixin",
     "CameraMixin",
     "SidingScreenMixin",
-    "RenderTrainsAccessor"
+    "RenderTrainsAccessor",
+    "ItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

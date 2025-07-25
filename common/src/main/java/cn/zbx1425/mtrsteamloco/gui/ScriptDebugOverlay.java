@@ -29,6 +29,7 @@ import java.util.Map;
 public class ScriptDebugOverlay {
 
     public static final OrderedMap<String, Object> STATIC = new OrderedMap<>();
+    // cn.zbx1425.mtrsteamloco.gui.ScriptDebugOverlay.STATIC.put(, );
 
 #if MC_VERSION >= "12000"
     public synchronized static void render(GuiGraphics vdStuff) {

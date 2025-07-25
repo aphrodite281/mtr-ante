@@ -40,6 +40,10 @@ public final class ShadersModHandler {
         return internalHandler.isRenderingShadowPass();
     }
 
+    public static boolean isShaderPackInUse() {
+        return internalHandler.isShaderPackInUse();
+    }
+
     private interface InternalHandler {
         default boolean isShaderPackInUse() {
             return false;

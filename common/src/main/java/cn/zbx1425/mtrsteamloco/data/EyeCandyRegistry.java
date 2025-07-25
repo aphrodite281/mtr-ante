@@ -25,6 +25,7 @@ import org.apache.commons.io.IOUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import cn.zbx1425.mtrsteamloco.BuildConfig;
+import cn.zbx1425.sowcer.math.Matrix4f;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +34,7 @@ import java.util.*;
 
 public class EyeCandyRegistry {
 
-    public static final Map<String, EyeCandyProperties> ELEMENTS = new HashMap<>();
+    public static final Map<String, EyeCandyProperties> ELEMENTS = new LinkedHashMap<>();
     public static final Map<String, EyeCandyProperties> PATH_MAP = new HashMap<>();
     public static Tree.Root<EyeCandyProperties> TREE = new Tree.Root<>("block.mtrsteamloco.eye_candy");
 
@@ -139,6 +140,17 @@ public class EyeCandyRegistry {
 
             cluster = MainClient.modelManager.uploadVertArrays(rawModel);
         }
+        ModelCluster itemModelCluster = null;
+        if (obj.has("itemModel")) {
+            RawModel rawModel = MainClient.modelManager.loadRawModel(resourceManager,
+                    new ResourceLocation(obj.get("itemModel").getAsString()), MainClient.atlasManager).copy();
+
+            rawModel.sourceLocation = new ResourceLocation(rawModel.sourceLocation.toString() + "/" + key);
+
+            itemModelCluster = MainClient.modelManager.uploadVertArrays(rawModel);
+        } else {
+            itemModelCluster = cluster;
+        }
         ScriptHolderBase script = null;
         if (obj.has("scriptFiles")) {
             script = new ScriptHolderClient();
@@ -167,7 +179,7 @@ public class EyeCandyRegistry {
         if (cluster == null && script == null) {
             throw new IllegalArgumentException("Invalid eye-candy json: " + key);
         } else {
-            return new EyeCandyProperties(key, Text.translatable(obj.get("name").getAsString()), cluster, script, shape, collisionShape, fixedMatrix, lightLevel, isTicketBarrier, isEntrance, asPlatform, group);
+            return new EyeCandyProperties(key, Text.translatable(obj.get("name").getAsString()), cluster, itemModelCluster, script, shape, collisionShape, fixedMatrix, lightLevel, isTicketBarrier, isEntrance, asPlatform, group);
         }
     }
 }

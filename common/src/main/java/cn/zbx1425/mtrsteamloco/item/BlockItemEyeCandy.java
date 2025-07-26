@@ -46,7 +46,7 @@ public class BlockItemEyeCandy extends BlockItem {
             }
         }
     }
-#if MC_VERSION <= "11903"
+#if MC_VERSION <= "11902"
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == Main.EYE_CANDY_TAB) {

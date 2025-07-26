@@ -86,7 +86,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
     @Inject(method = "render", cancellable = true, at = @At(value = "HEAD"))
-#if MC_VERSION <= "11904"
+#if MC_VERSION <= "11903"
     public void onRender(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
 #else
     public void onRender(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {

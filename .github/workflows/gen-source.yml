@@ -21,11 +21,8 @@ jobs:
           fetch-depth: 0
       - name: Gen Source
         run: ./gradlew genSource -PbuildVersion="${{ matrix.minecraft }}"
-      - name: ls
-        shell: cmd
-        run: tree /f "C:\Users"
       - name: Upload Source
         uses: actions/upload-artifact@v4
         with:
           name: source-${{ matrix.minecraft }}
-          path: C:\Users
+          path: C:\Users\runneradmin\.gradle\caches\fabric-loom\minecraftMaven\net\minecraft\minecraft-merged\*\*.jar

@@ -1,0 +1,26 @@
+name: GenSource
+
+on: workflow_dispatch
+
+jobs:
+  gen_source:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        minecraft: [ 1.17.1, 1.18.2, 1.19.2, 1.19.3, 1.19.4, 1.20.1 ]
+    steps:
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'graalvm'
+          java-version: '17.0.12'
+      - name: Gen Source
+        run: ./gradlew genSource -PbuildVersion="${{ matrix.minecraft }}"
+      - name: ls
+        run: ls -R C:\Users
+      - name: Upload Source
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-${{ matrix.minecraft }}
+          path: C:\Users\

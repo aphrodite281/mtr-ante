@@ -91,25 +91,25 @@ task setupLibrary() {
 		download {
 			src "${url}mtr-common.jar"
 			dest "checkouts/${minecraft_version}/mtr-common.jar"
-			overwrite true
+			// overwrite true
 		}
 
 		download {
 			src "${url}mtr-fabric.jar"
 			dest "checkouts/${minecraft_version}/mtr-fabric.jar"
-			overwrite true
+			// overwrite true
 		}
 
 		download {
 			src "${url}mtr-forge.jar"
 			dest "checkouts/${minecraft_version}/mtr-forge.jar"
-			overwrite true
+			// overwrite true
 		}
 		
 		download {
 			src "${url}files.zip"
 			dest "checkouts/${minecraft_version}/files.zip"
-			overwrite true
+			// overwrite true
 		}
 	}
 }

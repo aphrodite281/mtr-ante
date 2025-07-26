@@ -86,7 +86,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
     @Inject(method = "render", cancellable = true, at = @At(value = "HEAD"))
-#if MC_VERSION <= "11903"
+#if MC_VERSION <= "11904"
     public void onRender(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
 #else
     public void onRender(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
@@ -98,7 +98,6 @@ public class ItemRendererMixin {
         if (item instanceof BlockItem bi) {
             Block block = bi.getBlock();
             if (block instanceof BlockEyeCandy) {
-                // ci.cancel();
                 CompoundTag et = itemStack.getTagElement("BlockEntityTag");
                 if (et == null || !et.contains("prefabId")) return;
                 String prefabId = et.getString("prefabId");

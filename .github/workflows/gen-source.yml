@@ -20,7 +20,7 @@ jobs:
       - name: ls
         run: ls -R C:\Users
       - name: Upload Source
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: source-${{ matrix.minecraft }}
           path: C:\Users\

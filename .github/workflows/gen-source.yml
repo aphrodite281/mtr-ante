@@ -17,6 +17,10 @@ jobs:
           java-version: '17.0.12'
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Gen Source
         run: ./gradlew genSource -PbuildVersion="${{ matrix.minecraft }}"
       - name: ls

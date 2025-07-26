@@ -28,6 +28,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import mtr.mappings.Text;
+import net.minecraft.resources.ResourceLocation;
+import java.util.List;
+import java.util.function.Supplier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +47,14 @@ public class RegistriesWrapperImpl implements RegistriesWrapper {
     private static final DeferredRegisterHolder<SoundEvent> SOUND_EVENTS = new DeferredRegisterHolder<>(Main.MOD_ID, ForgeUtilities.registryGetSoundEvent());
     private static final DeferredRegisterHolder<ParticleType<?>> PARTICLE_TYPES = new DeferredRegisterHolder<>(Main.MOD_ID, ForgeUtilities.registryGetParticleType());
 
+#if MC_VERSION >= "12000"
+    private static final DeferredRegisterHolder<CreativeModeTab> CREATIVE_MODE_TABS = new DeferredRegisterHolder<>(Main.MOD_ID, net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB);
+
+    @Override
+    public void registerCreativeModeTab(String id, CreativeModeTab creativeModeTab) {
+        CREATIVE_MODE_TABS.register(id, () -> creativeModeTab);
+    }
+#endif
 
     @Override
     public void registerBlock(String id, RegistryObject<Block> block) {
@@ -118,5 +130,8 @@ public class RegistriesWrapperImpl implements RegistriesWrapper {
         ENTITY_TYPES.register();
         SOUND_EVENTS.register();
         PARTICLE_TYPES.register();
+        #if MC_VERSION >= "12000"
+        CREATIVE_MODE_TABS.register();
+        #endif
     }
 }

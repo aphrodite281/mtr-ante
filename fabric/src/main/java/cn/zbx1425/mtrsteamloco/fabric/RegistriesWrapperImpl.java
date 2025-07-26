@@ -20,11 +20,23 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import mtr.mappings.Text;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class RegistriesWrapperImpl implements RegistriesWrapper {
+
+#if MC_VERSION >= "12000"
+    @Override
+    public void registerCreativeModeTab(String id, CreativeModeTab creativeModeTab) {
+        net.minecraft.core.Registry.register(net.minecraft.core.registries.BuiltInRegistries.CREATIVE_MODE_TAB, new ResourceLocation(Main.MOD_ID, id), creativeModeTab);
+    }
+#endif
 
     @Override
     public void registerBlock(String id, RegistryObject<Block> block) {

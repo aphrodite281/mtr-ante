@@ -44,7 +44,7 @@ configure(subprojects) {
 			officialMojangMappings()
 			parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
 		}
-		implementation files("../checkouts/mtr-common.jar")
+		implementation files("../checkouts/${minecraft_version}/mtr-common.jar")
 		implementation "org.msgpack:msgpack-core:${rootProject.messagepack_version}"
 
 		compileOnly("org.graalvm.polyglot:polyglot:${graaljsVersion}")
@@ -90,24 +90,25 @@ task setupLibrary() {
 	doFirst {
 		download {
 			src "${url}mtr-common.jar"
-			dest "checkouts/mtr-common.jar"
+			dest "checkouts/${minecraft_version}/mtr-common.jar"
 			overwrite true
 		}
 
 		download {
 			src "${url}mtr-fabric.jar"
-			dest "checkouts/mtr-fabric.jar"
+			dest "checkouts/${minecraft_version}/mtr-fabric.jar"
 			overwrite true
 		}
 
 		download {
 			src "${url}mtr-forge.jar"
-			dest "checkouts/mtr-forge.jar"
+			dest "checkouts/${minecraft_version}/mtr-forge.jar"
 			overwrite true
 		}
+		
 		download {
 			src "${url}files.zip"
-			dest "checkouts/files.zip"
+			dest "checkouts/${minecraft_version}/files.zip"
 			overwrite true
 		}
 	}
@@ -115,9 +116,10 @@ task setupLibrary() {
 
 build {
 	doFirst {
+
 		copy {
 			// outputs.upToDateWhen { false }
-			from(zipTree("checkouts/files.zip")) { eachFile { file -> file.relativePath = new RelativePath(true, file.relativePath.segments.drop(1) as String[]) } }
+			from(zipTree("checkouts/${minecraft_version}/files.zip")) { eachFile { file -> file.relativePath = new RelativePath(true, file.relativePath.segments.drop(1) as String[]) } }
 			into "common/src/main/java/cn/zbx1425/mtrsteamloco/mappings"
 			filter(ReplaceTokens, tokens: ["package": "cn.zbx1425.mtrsteamloco.mappings; import mtr.mappings.*"])
 		}
@@ -131,16 +133,17 @@ build {
 		}
 
 		ant.delete(dir: "common/src/main/java/cn/zbx1425/mtrsteamloco/mappings")
+		ant.delete(dir: "forge/build/libs")
 	}
 	copy {
 		outputs.upToDateWhen { false }
-		from "checkouts/mtr-fabric.jar"
+		from "checkouts/${minecraft_version}/mtr-fabric.jar"
 		into "fabric/run/mods"
 	}
 
 	copy {
 		outputs.upToDateWhen { false }
-		from "checkouts/mtr-forge.jar"
+		from "checkouts/${minecraft_version}/mtr-forge.jar"
 		into "forge/run/mods"
 	}
 

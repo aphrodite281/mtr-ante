@@ -18,7 +18,6 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
@@ -68,6 +67,11 @@ import cn.zbx1425.sowcer.math.Matrix4f;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import cn.zbx1425.mtrsteamloco.render.ShadersModHandler;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+#if MC_VERSION <= "11904"
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+#else
+import net.minecraft.world.item.ItemDisplayContext;
+#endif
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,7 +86,11 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
     @Inject(method = "render", cancellable = true, at = @At(value = "HEAD"))
+#if MC_VERSION <= "11904"
     public void onRender(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
+#else
+    public void onRender(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
+#endif
         if (itemStack.isEmpty()) {
             return;
         }
@@ -103,7 +111,11 @@ public class ItemRendererMixin {
                         Matrix4f matrix = new Matrix4f(new Matrix4f(poseStack.last().pose()));
                         matrix.translate(0, -0.5f, 0);
                         matrix.mul(properties.itemTransform);
+                    #if MC_VERSION <= "11903"
                         if (transformType == ItemTransforms.TransformType.GUI) {
+                    #else 
+                        if (transformType == ItemDisplayContext.GUI) {
+                    #endif
                             if (ShadersModHandler.isShaderPackInUse()) MainClient.drawContext.drawWithBlaze = true;
                             MainClient.drawScheduler.drawAlone(cluster, matrix, combinedLight, combinedOverlay, new BufferSourceProxy(buffer), MainClient.drawContext);
                         } else {

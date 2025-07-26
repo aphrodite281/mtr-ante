@@ -46,15 +46,16 @@ public class BlockItemEyeCandy extends BlockItem {
             }
         }
     }
-
+#if MC_VERSION <= "11903"
     @Override
     public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
         if (category == Main.EYE_CANDY_TAB) {
             Client.fillItemCategory(items);
         }
     }
+#endif
 
-    private static class Client {
+    public static class Client {
         public static void fillItemCategory(NonNullList<ItemStack> items) {
             items.add(new ItemStack(Main.ITEM_EYE_CANDY.get()));
             for (EyeCandyProperties prop : EyeCandyRegistry.ELEMENTS.values()) {

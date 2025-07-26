@@ -3,7 +3,7 @@ name: GenSource
 on: workflow_dispatch
 
 jobs:
-  gen_source:
+  GenSource:
     runs-on: windows-2025
     strategy:
       fail-fast: false

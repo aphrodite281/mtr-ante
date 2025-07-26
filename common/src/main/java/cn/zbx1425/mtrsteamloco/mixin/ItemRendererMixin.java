@@ -67,7 +67,7 @@ import cn.zbx1425.sowcer.math.Matrix4f;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import cn.zbx1425.mtrsteamloco.render.ShadersModHandler;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-#if MC_VERSION <= "11904"
+#if MC_VERSION <= "11903"
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 #else
 import net.minecraft.world.item.ItemDisplayContext;
@@ -86,7 +86,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
     @Inject(method = "render", cancellable = true, at = @At(value = "HEAD"))
-#if MC_VERSION <= "11904"
+#if MC_VERSION <= "11903"
     public void onRender(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
 #else
     public void onRender(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {

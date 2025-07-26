@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   gen_source:
-    runs-on: ubuntu-latest
+    runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
@@ -19,14 +19,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Make gradle wrapper executable
-        run: chmod +x ./gradlew
       - name: Gen Source
         run: ./gradlew genSource -PbuildVersion="${{ matrix.minecraft }}"
       - name: ls
-        run: ls -R C:\Users
+        shell: cmd
+        run: tree /f "C:\Users"
       - name: Upload Source
         uses: actions/upload-artifact@v4
         with:
           name: source-${{ matrix.minecraft }}
-          path: C:\Users\
+          path: C:\Users

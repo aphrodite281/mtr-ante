@@ -6,6 +6,7 @@ import cn.zbx1425.sowcer.shader.ShaderManager;
 import cn.zbx1425.sowcer.util.GlStateTracker;
 import cn.zbx1425.sowcer.util.DrawContext;
 import cn.zbx1425.sowcerext.model.ModelCluster;
+import cn.zbx1425.sowcerext.model.RawModel;
 import cn.zbx1425.sowcerext.model.integration.BufferSourceProxy;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,45 +20,57 @@ public class DrawScheduler {
     public final BatchManager batchManager = new BatchManager();
     public final ShaderManager shaderManager = new ShaderManager();
 
-    private final List<ClusterDrawCall> drawCalls = new LinkedList<>();
+    private final List<ClusterDrawCall> clusterDrawCalls = new LinkedList<>();
+    private final List<BlazeDrawCall> blazeDrawCalls = new LinkedList<>();
 
     public void reloadShaders(ResourceManager resourceManager) throws IOException {
         shaderManager.reloadShaders(resourceManager);
     }
 
     public void enqueue(ModelCluster model, Matrix4f pose, int light) {
-        drawCalls.add(new ClusterDrawCall(model, pose, light));
+        clusterDrawCalls.add(new ClusterDrawCall(model, pose, light));
     }
 
     public void enqueue(ModelCluster model, Matrix4f pose, int light, int overlay) {
-        drawCalls.add(new ClusterDrawCall(model, pose, light, overlay));
+        clusterDrawCalls.add(new ClusterDrawCall(model, pose, light, overlay));
+    }
+
+    public void enqueue(RawModel model, Matrix4f pose, int light) {
+        blazeDrawCalls.add(new BlazeDrawCall(model, pose, light));
+    }
+
+    public void enqueue(RawModel model, Matrix4f pose, int light, int overlay) {
+        blazeDrawCalls.add(new BlazeDrawCall(model, pose, light, overlay));
     }
 
     public void commit(BufferSourceProxy vertexConsumers, DrawContext drawContext) {
         if (!drawContext.drawWithBlaze && !shaderManager.isReady()) return;
-        if (drawCalls.isEmpty()) return;
+        if (clusterDrawCalls.isEmpty()) return;
         if (drawContext.drawWithBlaze) {
-            for (ClusterDrawCall drawCall : drawCalls)
+            for (ClusterDrawCall drawCall : clusterDrawCalls)
                 drawCall.model.enqueueOpaqueBlaze(vertexConsumers, drawCall.pose, drawCall.light, drawCall.overlay, drawContext);
         } else {
-            for (ClusterDrawCall drawCall : drawCalls) {
+            for (ClusterDrawCall drawCall : clusterDrawCalls) {
                 drawCall.model.enqueueOpaqueGl(batchManager, drawCall.pose, drawCall.light, drawCall.overlay, drawContext);
             }
         }
         if (drawContext.drawWithBlaze || drawContext.sortTranslucentFaces) {
-            for (ClusterDrawCall drawCall : drawCalls)
+            for (ClusterDrawCall drawCall : clusterDrawCalls)
                 drawCall.model.enqueueTranslucentBlaze(vertexConsumers, drawCall.pose, drawCall.light, drawCall.overlay, drawContext);
         } else {
-            for (ClusterDrawCall drawCall : drawCalls) {
+            for (ClusterDrawCall drawCall : clusterDrawCalls) {
                 drawCall.model.enqueueTranslucentGl(batchManager, drawCall.pose, drawCall.light, drawCall.overlay, drawContext);
             }
+        }
+        for (BlazeDrawCall drawCall : blazeDrawCalls) {
+            drawCall.model.writeBlazeBuffer(vertexConsumers, drawCall.pose, drawCall.light, drawCall.overlay, drawContext);
         }
         if (!drawContext.drawWithBlaze) {
             GlStateTracker.capture();
             commitRaw(drawContext);
             GlStateTracker.restore();
         }
-        drawCalls.clear();
+        clusterDrawCalls.clear();
     }
 
     public void commitRaw(DrawContext drawContext) {
@@ -103,6 +116,27 @@ public class DrawScheduler {
         }
 
         public ClusterDrawCall(ModelCluster model, Matrix4f pose, int light, int overlay) {
+            this.model = model;
+            this.pose = pose;
+            this.light = light;
+            this.overlay = overlay;
+        }
+    }
+
+    private static class BlazeDrawCall {
+        public RawModel model;
+        public Matrix4f pose;
+        public int light;
+        public int overlay;
+
+        public BlazeDrawCall(RawModel model, Matrix4f pose, int light) {
+            this.model = model;
+            this.pose = pose;
+            this.light = light;
+            this.overlay = OverlayTexture.NO_OVERLAY;
+        }
+
+        public BlazeDrawCall(RawModel model, Matrix4f pose, int light, int overlay) {
             this.model = model;
             this.pose = pose;
             this.light = light;

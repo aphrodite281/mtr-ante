@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import cn.zbx1425.mtrsteamloco.Main;
 import net.minecraft.world.entity.player.Player;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cn.zbx1425.mtrsteamloco.scripting.util.*;
 import cn.zbx1425.sowcer.math.*;
 import cn.zbx1425.mtrsteamloco.data.ShapeSerializer;
@@ -29,6 +30,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.lang.reflect.Method;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class ScriptHolderBase {
 
@@ -211,8 +214,9 @@ public abstract class ScriptHolderBase {
     protected void appendImporter() {
         eval(PRETREATMENT);
         inject("SIDE", side);
-        inject("CONFIG_INFO", new Gson().toJson(config));
-        eval("CONFIG_INFO = JSON.parse(CONFIG_INFO);");
+        String configInfo = new GsonBuilder().disableHtmlEscaping().create().toJson(config);
+        configInfo = configInfo.replace("\"", "\\\"");
+        eval("CONFIG_INFO = JSON.parse(`" + configInfo + "`);");
         inject("MOD_ENV", Main.class.getPackageName().split("\\.")[0]);
 
         inject(ScriptResourceUtil.class, "includeScript", "include");

@@ -57,11 +57,11 @@ public class ScriptResourceUtil {
 
         scriptLocationStack.push(identifier);
 
-        Source source = Source.newBuilder("js", readString(identifier), identifier.getPath())
-                .mimeType("application/javascript")
-                .cached(true)
-                .build();
-                
+        Source source = Source.newBuilder("js", script, identifier.getPath())
+            .mimeType("application/javascript")
+            .cached(true)
+            .build();
+            
         ctx.eval(source);
 
         scriptLocationStack.pop();
@@ -76,6 +76,11 @@ public class ScriptResourceUtil {
             identifier = (ResourceLocation) pathOrIdentifier;
         } else {
             identifier = idRelative(pathOrIdentifier.toString());
+        }
+
+        if (!hasResource(identifier)) {
+            Main.LOGGER.warn("File not found in include: at " + scriptLocationStack.peek().toString() + "for input " + pathOrIdentifier.toString() + " resolved to " + identifier.toString());
+            return;
         }
         
         executeScript(activeContext, readString(identifier), identifier);

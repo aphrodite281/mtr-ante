@@ -102,6 +102,7 @@ public class BatchManager {
         }
 
         public void draw() {
+            if (vertArray.id == 0) return;
             vertArray.bind();
             if (enqueueProp.attrState != null) enqueueProp.attrState.applyGlobal();
             if (vertArray.materialProp.attrState != null) vertArray.materialProp.attrState.applyGlobal();

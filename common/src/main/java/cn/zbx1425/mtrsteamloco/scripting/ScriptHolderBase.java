@@ -96,35 +96,47 @@ public abstract class ScriptHolderBase {
                 .allowMapAccess(true)
                 .allowAccessInheritance(true)
                 .allowBigIntegerNumberAccess(true)
-                // .targetTypeMapping(
-                //     Double.class,
-                //     Integer.class,
-                //     value -> true,
-                //     value -> (int) Math.round(value)
-                // )
+                .targetTypeMapping(
+                    Double.class,
+                    Double.class,
+                    value -> true,
+                    value -> value,
+                    HostAccess.TargetMappingPrecedence.HIGHEST
+                )
                 .targetTypeMapping(
                     Double.class,
                     Float.class,
                     value -> true,
-                    value -> value.floatValue()
+                    value -> value.floatValue(),
+                    HostAccess.TargetMappingPrecedence.HIGH
                 )
                 .targetTypeMapping(
                     Double.class,
                     Long.class,
                     value -> true,
-                    value -> Math.round(value)
+                    value -> Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
+                )
+                .targetTypeMapping(
+                    Double.class,
+                    Integer.class,
+                    value -> true,
+                    value -> (int) Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
                 )
                 .targetTypeMapping(
                     Double.class,
                     Short.class,
                     value -> true,
-                    value -> (short) Math.round(value)
+                    value -> (short) Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
                 )
                 .targetTypeMapping(
                     Double.class,
                     Byte.class,
                     value -> true,
-                    value -> (byte) Math.round(value)
+                    value -> (byte) Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
                 )
                 // .targetTypeMapping(
                 //     Double.class,

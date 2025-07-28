@@ -57,7 +57,7 @@ public class ScriptResourceUtil {
 
         scriptLocationStack.push(identifier);
 
-        Source source = Source.newBuilder("js", script, identifier.getPath())
+        Source source = Source.newBuilder("js", script, identifier.toString())
             .mimeType("application/javascript")
             .cached(true)
             .build();

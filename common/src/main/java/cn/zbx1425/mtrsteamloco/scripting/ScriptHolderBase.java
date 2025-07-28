@@ -96,12 +96,12 @@ public abstract class ScriptHolderBase {
                 .allowMapAccess(true)
                 .allowAccessInheritance(true)
                 .allowBigIntegerNumberAccess(true)
-                .targetTypeMapping(
-                    Double.class,
-                    Integer.class,
-                    value -> true,
-                    value -> (int) Math.round(value)
-                )
+                // .targetTypeMapping(
+                //     Double.class,
+                //     Integer.class,
+                //     value -> true,
+                //     value -> (int) Math.round(value)
+                // )
                 .targetTypeMapping(
                     Double.class,
                     Float.class,

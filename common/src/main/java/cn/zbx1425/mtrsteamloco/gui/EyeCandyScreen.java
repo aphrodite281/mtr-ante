@@ -6,6 +6,8 @@ import cn.zbx1425.mtrsteamloco.block.BlockEyeCandy.BlockEntityEyeCandy;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyProperties;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyRegistry;
 import cn.zbx1425.mtrsteamloco.network.PacketUpdateBlockEntity;
+import cn.zbx1425.mtrsteamloco.network.PacketUpdateHoldingItem;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import mtr.client.IDrawing;
@@ -20,6 +22,9 @@ import net.minecraft.client.gui.GuiGraphics;
 #endif
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import cn.zbx1425.mtrsteamloco.scripting.eyecandy.EyeCandyScriptContext;
@@ -35,8 +40,11 @@ import cn.zbx1425.mtrsteamloco.ClientConfig;
 import me.shedaniel.clothconfig2.gui.entries.*;
 import net.minecraft.client.gui.components.Button;
 import cn.zbx1425.mtrsteamloco.gui.entries.*;
+import cn.zbx1425.mtrsteamloco.item.BlockItemEyeCandy;
+
 import com.mojang.blaze3d.platform.Window;
 import cn.zbx1425.mtrsteamloco.data.ConfigResponder;
+import net.minecraft.world.InteractionHand;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -46,12 +54,26 @@ import java.util.function.Function;
 
 public class EyeCandyScreen {
 
+    public static Screen createScreen(InteractionHand hand, Screen parent) {
+        ItemStack itemStack = Minecraft.getInstance().player.getItemInHand(hand);
+        if (itemStack.isEmpty() || !(itemStack.getItem() instanceof BlockItemEyeCandy)) {
+            return parent;
+        }
+        VirtualEyeCandy virtualEyeCandy = new VirtualEyeCandy(() -> Minecraft.getInstance().player.getItemInHand(hand).getOrCreateTagElement("BlockEntityTag"), hand);
+        return createScreen(virtualEyeCandy, parent);
+    }
+
     public static Screen createScreen(BlockPos blockPos, Screen parent) {
         Optional<BlockEntityEyeCandy> opt = getBlockEntity(blockPos);
         BlockEntityEyeCandy blockEntity = opt.orElse(null);
         if (blockEntity == null) {
-            return null;
+            return parent;
         }
+
+        return createScreen(blockEntity, parent);
+    }
+
+    public static Screen createScreen(BlockEntityEyeCandy blockEntity, Screen parent) {
 
         List<Consumer<BlockEntityEyeCandy>> update = new ArrayList<>();// updateBlockEntityCallbacks;
 
@@ -79,7 +101,7 @@ public class EyeCandyScreen {
 
         common.addEntry(ButtonListEntry.createCenteredInstance(
             Text.translatable("gui.mtrsteamloco.eye_candy.present", properties.name.getString()),
-            btn -> Minecraft.getInstance().setScreen(createSelectScreen(blockEntity, () -> createScreen(blockPos, parent)))));
+            btn -> Minecraft.getInstance().setScreen(createSelectScreen(blockEntity, () -> createScreen(blockEntity, parent)))));
 
         common.addEntry(entryBuilder
                 .startBooleanToggle(
@@ -133,7 +155,7 @@ public class EyeCandyScreen {
             common.addEntry(new SimpleButtonListEntry(
                 tr("adjust_settings_and_reset_pose"), 
                 Text.translatable("gui.mtrsteamloco.adjust_settings"),
-                btn -> Minecraft.getInstance().setScreen(createAdjustScreen(blockPos, () -> createScreen(blockPos, parent))),
+                btn -> Minecraft.getInstance().setScreen(createAdjustScreen(() -> createScreen(blockEntity, parent))),
                 entryBuilder.getResetButtonKey(), 
                 btn -> {
                     blockEntity.translateX = 0;
@@ -164,7 +186,7 @@ public class EyeCandyScreen {
             addScale(entries, common, entryBuilder, 8, blockEntity);
         }
 
-        List<AbstractConfigListEntry> customEntrys = ConfigResponder.getEntrysFromMaps(blockEntity.getCustomConfigs(), blockEntity.getCustomResponders(), entryBuilder, () -> createScreen(blockPos, parent));
+        List<AbstractConfigListEntry> customEntrys = ConfigResponder.getEntrysFromMaps(blockEntity.getCustomConfigs(), blockEntity.getCustomResponders(), entryBuilder, () -> createScreen(blockEntity, parent));
         for (AbstractConfigListEntry entry : customEntrys) {
             common.addEntry(entry);
         }
@@ -172,7 +194,7 @@ public class EyeCandyScreen {
         return builder.build();
     }
 
-    private static Screen createAdjustScreen(BlockPos blockPos, Supplier<Screen> parent) {
+    private static Screen createAdjustScreen(Supplier<Screen> parent) {
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(new FakeScreen(parent))
                 .setTitle(Text.translatable("gui.mtrsteamloco.adjust_settings"))
@@ -187,7 +209,7 @@ public class EyeCandyScreen {
         );
 
         List<AbstractConfigListEntry> entries = new ArrayList<>();
-        ClientConfig.eyecandyScreenGroup.getListEntries(entries, entryBuilder, () -> createAdjustScreen(blockPos, parent));
+        ClientConfig.eyecandyScreenGroup.getListEntries(entries, entryBuilder, () -> createAdjustScreen(parent));
 
         for (AbstractConfigListEntry entry : entries) {
             common.addEntry(entry);
@@ -359,5 +381,23 @@ public class EyeCandyScreen {
 
     private static Component tr(String key) {
         return Text.translatable("gui.mtrsteamloco.eye_candy." + key);
+    }
+
+    private static class VirtualEyeCandy extends BlockEyeCandy.BlockEntityEyeCandy {
+        private InteractionHand hand;
+        private Supplier<CompoundTag> tagSupplier;
+
+        public VirtualEyeCandy(Supplier<CompoundTag> tagSupplier, InteractionHand hand) {
+            super(new BlockPos(0, -1145141919, 0), null);
+            this.hand = hand;
+            readCompoundTag(tagSupplier.get());
+            this.tagSupplier = tagSupplier;
+        }
+
+        @Override
+        public void sendUpdateC2S() {
+            writeCompoundTag(tagSupplier.get());
+            PacketUpdateHoldingItem.sendUpdateC2S(hand);
+        }
     }
 }

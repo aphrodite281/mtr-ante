@@ -252,7 +252,7 @@ public abstract class TrainMixin implements TrainExtraSupplier{
 			IBlockPlatformClass = Class.forName("team.dovecotmc.metropolis.block.interfaces.IBlockPlatform");
 			Main.LOGGER.info("Loaded metropolis IBlockPlatformClass");
 		} catch (ClassNotFoundException e) {
-			Main.LOGGER.error("Failed to load metropolis IBlockPlatformClass");
+			Main.LOGGER.info("Failed to load metropolis IBlockPlatformClass");
 		}
 	}
 

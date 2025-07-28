@@ -20,6 +20,8 @@ import net.minecraft.core.NonNullList;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyRegistry;
 import cn.zbx1425.mtrsteamloco.Main;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyProperties;
+import cn.zbx1425.mtrsteamloco.gui.EyeCandyScreen;
+import net.minecraft.client.Minecraft;
 
 import java.util.function.Function;
 import java.util.List;
@@ -28,6 +30,19 @@ public class BlockItemEyeCandy extends BlockItem {
 
     public BlockItemEyeCandy(Block block)  {
 		super(block, RegistryUtilities.createItemProperties(() -> Main.EYE_CANDY_TAB));
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        if (level.isClientSide) {
+            openEyeCandyScreen(usedHand);
+        }
+        ItemStack itemStack = player.getItemInHand(usedHand);
+        return InteractionResultHolder.success(itemStack);
+    }
+
+    private static void openEyeCandyScreen(InteractionHand hand) {
+        Minecraft.getInstance().setScreen(EyeCandyScreen.createScreen(hand, null));
     }
 
     @Override

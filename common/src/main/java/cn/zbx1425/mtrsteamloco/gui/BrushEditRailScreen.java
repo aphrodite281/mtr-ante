@@ -75,6 +75,7 @@ import me.shedaniel.clothconfig2.api.Tooltip;
 import me.shedaniel.math.Point;
 import cn.zbx1425.mtrsteamloco.network.util.DoubleFloatMapSerializer;
 import cn.zbx1425.mtrsteamloco.gui.entries.*;
+import net.minecraft.world.InteractionHand;
 import cn.zbx1425.mtrsteamloco.network.PacketReplaceRailNode;
 
 import java.util.List;
@@ -447,20 +448,34 @@ public class BrushEditRailScreen {
 
     public static CompoundTag getBrushTag() {
         if (Minecraft.getInstance().player == null) return null;
-        ItemStack brushItem = Minecraft.getInstance().player.getMainHandItem();
-        if (!brushItem.is(mtr.Items.BRUSH.get())) return null;
-        CompoundTag nteTag = brushItem.getTagElement("NTERailBrush");
+        ItemStack mainHandItem = Minecraft.getInstance().player.getMainHandItem();
+        ItemStack offHandItem = Minecraft.getInstance().player.getOffhandItem();
+        CompoundTag nteTag = null;
+        if (mainHandItem.is(mtr.Items.BRUSH.get())) {
+            nteTag = mainHandItem.getTagElement("NTERailBrush");
+        } else if (offHandItem.is(mtr.Items.BRUSH.get())) {
+            nteTag = offHandItem.getTagElement("NTERailBrush");
+        }
         return nteTag;
     }
 
     public static void updateBrushTag(Consumer<CompoundTag> modifier) {
         if (Minecraft.getInstance().player == null) return;
-        ItemStack brushItem = Minecraft.getInstance().player.getMainHandItem();
-        if (!brushItem.is(mtr.Items.BRUSH.get())) return;
-        CompoundTag nteTag = brushItem.getOrCreateTagElement("NTERailBrush");
+        ItemStack mainHandItem = Minecraft.getInstance().player.getMainHandItem();
+        ItemStack offHandItem = Minecraft.getInstance().player.getOffhandItem();
+        CompoundTag nteTag = null;
+        InteractionHand hand = null;
+        if (mainHandItem.is(mtr.Items.BRUSH.get())) {
+            nteTag = mainHandItem.getOrCreateTagElement("NTERailBrush");
+            hand = InteractionHand.MAIN_HAND;
+        } else if (offHandItem.is(mtr.Items.BRUSH.get())) {
+            nteTag = offHandItem.getOrCreateTagElement("NTERailBrush");
+            hand = InteractionHand.OFF_HAND;
+        }
+        if (nteTag == null) return;
         modifier.accept(nteTag);
         applyBrushToPickedRail(nteTag, false);
-        PacketUpdateHoldingItem.sendUpdateC2S();
+        PacketUpdateHoldingItem.sendUpdateC2S(hand);
     }
     
     @Environment(EnvType.CLIENT)

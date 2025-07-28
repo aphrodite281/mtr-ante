@@ -131,6 +131,8 @@
     "gui.mtrsteamloco.direct_node.unbind": "解除绑定",
     "gui.mtrsteamloco.select_screen": "%s\n点击查看更多信息",
     "gui.mtrsteamloco.select_screen.group_select": "组选择", 
+    "gui.mtrsteamloco.select_screen.merge": "合并",
+    "tooltip.mtrsteamloco.select_screen.info": "点击查看更多信息",
     "gui.mtrsteamloco.select_screen.element_select": "元素选择: %s", 
     "gui.mtrsteamloco.route_path_creator.error_current": "§c当前节点不可用",
     "gui.mtrsteamloco.route_path_creator.error_current": "§4旧节点不可用",

@@ -94,7 +94,7 @@ public abstract class RailChunkBase implements Closeable {
 
     public static void uploadAll() {
         long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < 3 && !UPLOAD_QUEUE.isEmpty()) {
+        while (System.currentTimeMillis() - start < 1 && !UPLOAD_QUEUE.isEmpty()) {
             UPLOAD_QUEUE.poll().run();
         }
     }

@@ -318,8 +318,8 @@ public abstract class ScriptHolderBase {
     }
 
     public void tryCallDisposeFunctionAsync(AbstractScriptContext scriptCtx) {
-        scriptCtx.disposed = true;
         tryCallFunctionAsync("dispose", scriptCtx, () -> scriptCtx.created = false, false);
+        scriptCtx.disposed = true;
     }
 
     public void tryCallUseFunctionAsync(AbstractScriptContext scriptCtx, Player player) {

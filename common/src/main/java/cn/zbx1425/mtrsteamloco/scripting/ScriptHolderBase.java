@@ -319,7 +319,6 @@ public abstract class ScriptHolderBase {
 
     public void tryCallDisposeFunctionAsync(AbstractScriptContext scriptCtx) {
         tryCallFunctionAsync("dispose", scriptCtx, () -> scriptCtx.created = false, false);
-        System.out.println("Script disposed: " + Integer.toHexString(scriptCtx.hashCode()));
         scriptCtx.disposed = true;
     }
 

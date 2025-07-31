@@ -32,7 +32,8 @@
     "CameraMixin",
     "SidingScreenMixin",
     "RenderTrainsAccessor",
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "ModelBakeryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

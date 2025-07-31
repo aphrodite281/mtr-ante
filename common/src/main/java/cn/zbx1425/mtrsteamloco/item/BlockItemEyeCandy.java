@@ -21,9 +21,11 @@ import cn.zbx1425.mtrsteamloco.data.EyeCandyRegistry;
 import cn.zbx1425.mtrsteamloco.Main;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyProperties;
 import cn.zbx1425.mtrsteamloco.gui.EyeCandyScreen;
+import net.minecraft.core.BlockPos;
 import net.minecraft.client.Minecraft;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.List;
 
 public class BlockItemEyeCandy extends BlockItem {
@@ -71,13 +73,30 @@ public class BlockItemEyeCandy extends BlockItem {
 #endif
 
     public static class Client {
-        public static void fillItemCategory(NonNullList<ItemStack> items) {
+        public static void fillItemCategory(List<ItemStack> items) {
             items.add(new ItemStack(Main.ITEM_EYE_CANDY.get()));
             for (EyeCandyProperties prop : EyeCandyRegistry.ELEMENTS.values()) {
                 ItemStack stack = new ItemStack(Main.ITEM_EYE_CANDY.get());
                 CompoundTag tag = stack.getOrCreateTagElement("BlockEntityTag");
-                tag.putString("prefabId", prop.key);
+                VirtualEyeCandy virtualEyeCandy = new VirtualEyeCandy(() -> stack.getOrCreateTagElement("BlockEntityTag"));
+                virtualEyeCandy.setPrefabId(prop.key);
+                virtualEyeCandy.sendUpdateC2S();
                 items.add(stack);
+            }
+        }
+
+        private static class VirtualEyeCandy extends BlockEyeCandy.BlockEntityEyeCandy {
+            private Supplier<CompoundTag> tagSupplier;
+
+            public VirtualEyeCandy(Supplier<CompoundTag> tagSupplier) {
+                super(new BlockPos(0, -1145141919, 0), null);
+                readCompoundTag(tagSupplier.get());
+                this.tagSupplier = tagSupplier;
+            }
+
+            @Override
+            public void sendUpdateC2S() {
+                writeCompoundTag(tagSupplier.get());
             }
         }
     }

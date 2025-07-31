@@ -64,11 +64,13 @@ import cn.zbx1425.sowcerext.reuse.DrawScheduler;
 import cn.zbx1425.sowcerext.model.integration.BufferSourceProxy;
 import cn.zbx1425.mtrsteamloco.MainClient;
 import cn.zbx1425.sowcer.math.Matrix4f;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import cn.zbx1425.mtrsteamloco.render.ShadersModHandler;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 #if MC_VERSION <= "11903"
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransforms.*;
 #else
 import net.minecraft.world.item.ItemDisplayContext;
 #endif
@@ -85,9 +87,22 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
+    @Shadow private void renderModelLists(BakedModel model, ItemStack stack, int combinedLight, int combinedOverlay, PoseStack matrixStack, VertexConsumer buffer) {
+        throw new AssertionError();
+    }
+
+    @Shadow 
+#if MC_VERSION <= "11903"
+    private void render(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model) {
+#else 
+    private void render(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model) {
+#endif
+        throw new AssertionError();
+    }
+
     @Inject(method = "render", cancellable = true, at = @At(value = "HEAD"))
 #if MC_VERSION <= "11903"
-    public void onRender(ItemStack itemStack, ItemTransforms.TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
+    public void onRender(ItemStack itemStack, TransformType transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
 #else
     public void onRender(ItemStack itemStack, ItemDisplayContext transformType, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, BakedModel model, CallbackInfo ci) {
 #endif
@@ -103,7 +118,21 @@ public class ItemRendererMixin {
                 String prefabId = et.getString("prefabId");
                 if (EyeCandyRegistry.ELEMENTS.containsKey(prefabId)) {
                     EyeCandyProperties properties = EyeCandyRegistry.ELEMENTS.get(prefabId);
-                    if (properties.itemModel != null) {
+                    if (properties.itemBakedModel != null) {
+                    #if MC_VERSION <= "11903"
+                        boolean bl22 = transformType == ItemTransforms.TransformType.GUI || transformType == ItemTransforms.TransformType.GROUND || transformType == ItemTransforms.TransformType.FIXED;
+                    #else
+                        boolean bl22 = transformType == ItemDisplayContext.GUI || transformType == ItemDisplayContext.GROUND || transformType == ItemDisplayContext.FIXED;
+                    #endif
+                        RenderType renderType = ItemBlockRenderTypes.getRenderType(itemStack, bl22);
+                        VertexConsumer vertexConsumer = bl22 ? ItemRenderer.getFoilBufferDirect(buffer, renderType, true, itemStack.hasFoil()) : ItemRenderer.getFoilBuffer(buffer, renderType, true, itemStack.hasFoil());
+                        poseStack.pushPose();
+                        properties.itemBakedModel.getTransforms().getTransform(transformType).apply(leftHand, poseStack);
+                        poseStack.translate(-0.5f, -0.5f, -0.5f);
+                        renderModelLists(properties.itemBakedModel, itemStack, combinedLight, combinedOverlay, poseStack, vertexConsumer);
+                        poseStack.popPose();
+                        ci.cancel();
+                    } else if (properties.itemModel != null) {
                         ModelCluster cluster = properties.itemModel;
                         poseStack.pushPose();
                         model.getTransforms().getTransform(transformType).apply(leftHand, poseStack);
@@ -111,7 +140,7 @@ public class ItemRendererMixin {
                         matrix.translate(0, -0.5f, 0);
                         matrix.mul(properties.itemTransform);
                     #if MC_VERSION <= "11903"
-                        if (transformType == ItemTransforms.TransformType.GUI) {
+                        if (transformType == TransformType.GUI) {
                     #else 
                         if (transformType == ItemDisplayContext.GUI) {
                     #endif

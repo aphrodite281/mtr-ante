@@ -91,18 +91,20 @@ public class ScriptResourceUtil {
         StringBuilder sb = new StringBuilder();
         sb.append("[ANTE-JS] ");
         for (Object object : objects) {
-            sb.append(object.toString());
+            sb.append(object == null ? "null" : object.toString());
             sb.append(" ");
         }
         Main.LOGGER.info(sb.toString().trim());
     }
 
     public static ResourceManager manager() {
-        return MtrModelRegistryUtil.resourceManager;
+        // return MtrModelRegistryUtil.resourceManager;
+        return Minecraft.getInstance().getResourceManager();
     }
 
     public static ResourceManager mgr() {
-        return MtrModelRegistryUtil.resourceManager;
+        // return MtrModelRegistryUtil.resourceManager;
+        return Minecraft.getInstance().getResourceManager();
     }
 
     public static ResourceLocation identifier(String textForm) {

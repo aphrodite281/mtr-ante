@@ -49,7 +49,7 @@ public class ScriptDebugOverlay {
             contexts.computeIfAbsent(entry.getValue(), k -> new java.util.ArrayList<>()).add(entry.getKey());
         }
 
-        int y = 0;
+        int y = 0, maxy = Minecraft.getInstance().getWindow().getGuiScaledHeight();
         Font font = Minecraft.getInstance().font;
         int lineHeight = Mth.ceil(font.lineHeight * 1.2f);
 
@@ -57,8 +57,8 @@ public class ScriptDebugOverlay {
             y = drawText(vdStuff, font, entry.getKey() + ": " + entry.getValue(), 20, y, 0xFFFFFFFF);
         }
 
-        boolean outOfBounds = false;
         for (Map.Entry<ScriptHolderBase, List<AbstractScriptContext>> entry : contexts.entrySet()) {
+            if (y >= maxy) break;
             ScriptHolderBase holder = entry.getKey();
             if (holder.failTime > 0) {
                 y = drawText(vdStuff, font, holder.name + " FAILED", 0, y, 0xFFFF0000);
@@ -69,11 +69,13 @@ public class ScriptDebugOverlay {
                 y = drawText(vdStuff, font, holder.name, 0, y, 0xFFAAAAFF);
             }
             for (AbstractScriptContext context : entry.getValue()) {
+                if (y >= maxy) break;
                 y = drawText(vdStuff, font,
                     String.format("#%08X (%.4f ms)", context.hashCode(), context.lastExecuteDuration / 1e6),
                     10, y, 0xFFCCCCFF);
                 List<Map.Entry<String, Object>> debugInfos = context.getDebugInfo().entryList();
                 for (Map.Entry<String, Object> debugInfo : debugInfos) {
+                    if (y >= maxy) break;
                     Object value = debugInfo.getValue();
                     if (value instanceof GraphicsTexture) {
                         GraphicsTexture texture = (GraphicsTexture) value;
@@ -87,14 +89,8 @@ public class ScriptDebugOverlay {
                         y = drawText(vdStuff, font, debugInfo.getKey() + ": " + debugInfo.getValue(), 20, y, 0xFFFFFFFF);
                     }
                     y += Mth.ceil(font.lineHeight * 0.2f);
-                    if (y > Minecraft.getInstance().getWindow().getGuiScaledHeight()) {
-                        outOfBounds = true;
-                        break;
-                    }
                 }
-                if (outOfBounds) break;
             }
-            if (outOfBounds) break;
         }
 
         matrices.popPose();

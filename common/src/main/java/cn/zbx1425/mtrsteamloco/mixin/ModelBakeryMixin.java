@@ -10,7 +10,6 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import net.minecraft.server.packs.resources.ResourceManager;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.logging.LogUtils;
 import com.mojang.math.Transformation;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;

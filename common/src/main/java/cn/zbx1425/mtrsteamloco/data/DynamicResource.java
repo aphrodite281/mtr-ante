@@ -10,7 +10,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import java.io.ByteArrayInputStream;
 import net.minecraft.server.packs.AbstractPackResources;
-#if MC_VERSION >= "11900"
+#if MC_VERSION >= "11903"
 import net.minecraft.server.packs.resources.IoSupplier;
 #endif
 
@@ -76,7 +76,7 @@ public class DynamicResource {
             resources.computeIfAbsent(packType, k -> new HashMap<>()).put(loc, funGetStream);
             namespaces.computeIfAbsent(packType, k -> new HashSet<>()).add(loc.getNamespace());
         }
-    #if MC_VERSION < "11900"
+    #if MC_VERSION < "11903"
         @Override
         public InputStream getRootResource(String fileName) {
             return null;
@@ -112,6 +112,11 @@ public class DynamicResource {
             Map<ResourceLocation, IoSupplier<InputStream>> map = resources.get(packType);
             if (map == null) return false;
             return map.containsKey(loc);
+        }
+
+        @Override
+        public String getName() {
+            return name;
         }
     
     #else
@@ -171,7 +176,7 @@ public class DynamicResource {
         }
     }
 
-#if MC_VERSION < "11900"
+#if MC_VERSION < "11903"
     @FunctionalInterface
     public static interface IoSupplier<T> {
         T get() throws IOException;

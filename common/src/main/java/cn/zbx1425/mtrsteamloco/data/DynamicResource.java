@@ -109,8 +109,7 @@ public class DynamicResource {
         }
       #else
         @Override
-        public Collection<ResourceLocation> getResources(PackType type, String namespace, String path, int maxDepth, Predicate<ResourceLocation> filter) {
-            String[] strings;
+        public Collection<ResourceLocation> getResources(PackType type, String namespace, String path, Predicate<ResourceLocation> filter) {
             String lpath;
             Map<ResourceLocation, IoSupplier<InputStream>> map = resources.get(type);
             if (map == null) return new ArrayList<>();
@@ -118,7 +117,7 @@ public class DynamicResource {
             for (ResourceLocation loc : map.keySet()) {
                 if (!loc.getNamespace().equals(namespace)) continue;
 
-                if (!(lpath = loc.getPath()).startsWith(path) || (strings = lpath.split("/")).length < maxDepth + 1 || !filter.test(loc)) continue;
+                if (!(lpath = loc.getPath()).startsWith(path) || !filter.test(loc)) continue;
                 list.add(new ResourceLocation(namespace, lpath));
             }
             return list;

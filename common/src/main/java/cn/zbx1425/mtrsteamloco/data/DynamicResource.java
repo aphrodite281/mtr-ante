@@ -91,6 +91,7 @@ public class DynamicResource {
             return map.get(loc).get();
         }
 
+      #if MC_VERSION < "11902"
         @Override
         public Collection<ResourceLocation> getResources(PackType type, String namespace, String path, int maxDepth, Predicate<String> filter) {
             String[] strings;
@@ -106,6 +107,23 @@ public class DynamicResource {
             }
             return list;
         }
+      #else
+        @Override
+        public Collection<ResourceLocation> getResources(PackType type, String namespace, String path, int maxDepth, Predicate<ResourceLocation> filter) {
+            String[] strings;
+            String lpath;
+            Map<ResourceLocation, IoSupplier<InputStream>> map = resources.get(type);
+            if (map == null) return new ArrayList<>();
+            List<ResourceLocation> list = new ArrayList<>();
+            for (ResourceLocation loc : map.keySet()) {
+                if (!loc.getNamespace().equals(namespace)) continue;
+
+                if (!(lpath = loc.getPath()).startsWith(path) || (strings = lpath.split("/")).length < maxDepth + 1 || !filter.test(loc)) continue;
+                list.add(new ResourceLocation(namespace, lpath));
+            }
+            return list;
+        }
+      #endif
 
         @Override
         public boolean hasResource(PackType packType, ResourceLocation loc) {

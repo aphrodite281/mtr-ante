@@ -34,5 +34,5 @@
 		"minecraft": "${minecraft_version}",
 		"mtr": ">=${mtr_min_version}"
 	},
-	"accessWidener" : "mtrsteamloco.accesswidener"
+	"accessWidener" : "mtrsteamloco_filtered.accesswidener"
 }

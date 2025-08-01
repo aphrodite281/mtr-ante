@@ -16,6 +16,8 @@ ext {
 }
 
 apply from: "build_dep_ver.gradle"
+// 应用AccessWidener处理脚本
+apply from: "process_access_widener.gradle"
 
 rootProject.ext.assetExcludeFont = rootProject.properties.containsKey("assetExcludeFont")
 
@@ -245,3 +247,4 @@ tasks.withType(JavaCompile) {
     outputs.cacheIf { true }
     options.incremental = true;
 }
+

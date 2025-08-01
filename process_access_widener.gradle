@@ -1,0 +1,62 @@
+def processAccessWidener() {
+    def inputFile = file("common/src/main/resources/mtrsteamloco.accesswidener")
+    def outputFile = file("common/src/main/resources/mtrsteamloco_filtered.accesswidener")
+    
+    def mcVersion = project.ext.minecraft_version_int as Integer
+    
+    println "Processing accessWidener for Minecraft version: ${mcVersion} "
+    
+    def outputLines = []
+    def skipping = false
+    
+    inputFile.eachLine { line ->
+        def shouldIncludeLine = true
+        if (line.startsWith("if")) {
+            if (line.contains("==")) {
+                def version = line.split("==")[1].trim() as Integer
+                skipping = version != mcVersion
+                shouldIncludeLine = false;
+            } else if (line.contains(">=")) {
+                def version = line.split(">=")[1].trim() as Integer
+                skipping = mcVersion < version
+                shouldIncludeLine = false;
+            } else if (line.contains("<=")) {
+                def version = line.split(">=")[1].trim() as Integer
+                skipping = mcVersion > version
+                shouldIncludeLine = false;
+            } else if (line.contains("<")) {
+                def version = line.split("<")[1].trim() as Integer
+                skipping = mcVersion >= version
+                shouldIncludeLine = false;
+            } else if (line.contains(">")) {
+                def version = line.split(">")[1].trim() as Integer
+                skipping = mcVersion <= version
+                shouldIncludeLine = false;
+            } else if (line.contains("!=")) {
+                def version = line.split("!=")[1].trim() as Integer
+                skipping = mcVersion == version
+                shouldIncludeLine = false;
+            } 
+        } else if (line.startsWith("else")) {
+            skipping = !skipping
+            shouldIncludeLine = false;
+        } else if (line.startsWith("endif")) {
+            skipping = false
+            shouldIncludeLine = false;
+        }
+
+        if (shouldIncludeLine && !skipping) {
+            outputLines.add(line)
+        }
+    }
+    
+    outputFile.withWriter { writer ->
+        outputLines.each { line ->
+            writer.writeLine(line)
+        }
+    }
+    
+    println "Processed accessWidener file. Original lines: ${inputFile.readLines().size()}, Filtered lines: ${outputLines.size()}"
+}
+
+processAccessWidener()

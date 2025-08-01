@@ -8,16 +8,9 @@ accessible class net/minecraft/client/renderer/RenderType$CompositeState
 accessible class net/minecraft/client/renderer/RenderType$CompositeRenderType
 accessible field net/minecraft/client/renderer/RenderType$CompositeRenderType state Lnet/minecraft/client/renderer/RenderType$CompositeState;
 
-if >=11802
-accessible field net/minecraft/server/packs/resources/MultiPackResourceManager namespacedManagers Ljava/util/Map;
-mutable field net/minecraft/server/packs/resources/MultiPackResourceManager packs Ljava/util/List;
-accessible field net/minecraft/server/packs/resources/MultiPackResourceManager packs Ljava/util/List;
-accessible field net/minecraft/server/packs/resources/ReloadableResourceManager resources Lnet/minecraft/server/packs/resources/CloseableResourceManager;
-else
 accessible field net/minecraft/server/packs/resources/SimpleReloadableResourceManager namespacedPacks Ljava/util/Map;
 accessible field net/minecraft/server/packs/resources/SimpleReloadableResourceManager packs Ljava/util/List;
 accessible field net/minecraft/server/packs/resources/ReloadableResourceManager resources Lnet/minecraft/server/packs/resources/CloseableResourceManager;
-endif
 
 
 # accessible	method	net/minecraft/client/gui/Font	renderText	(Ljava/lang/String;FFIZLcom/mojang/math/Matrix4f;Lnet/minecraft/client/renderer/MultiBufferSource;ZII)F

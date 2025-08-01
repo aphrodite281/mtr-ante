@@ -16,7 +16,6 @@ accessible field net/minecraft/server/packs/resources/ReloadableResourceManager 
 else
 accessible field net/minecraft/server/packs/resources/SimpleReloadableResourceManager namespacedPacks Ljava/util/Map;
 accessible field net/minecraft/server/packs/resources/SimpleReloadableResourceManager packs Ljava/util/List;
-accessible field net/minecraft/server/packs/resources/ReloadableResourceManager resources Lnet/minecraft/server/packs/resources/CloseableResourceManager;
 endif
 
 

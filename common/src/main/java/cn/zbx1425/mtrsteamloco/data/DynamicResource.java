@@ -3,7 +3,6 @@ package cn.zbx1425.mtrsteamloco.data;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.FallbackResourceManager;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
@@ -13,6 +12,12 @@ import net.minecraft.server.packs.AbstractPackResources;
 #if MC_VERSION >= "11903"
 import net.minecraft.server.packs.resources.IoSupplier;
 #endif
+#if MC_VERSION <= "11701"
+import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
+#else
+import net.minecraft.server.packs.resources.MultiPackResourceManager;
+#endif
+
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -29,6 +34,8 @@ import java.util.HashSet;
 import java.io.IOException;
 
 public class DynamicResource {
+
+#if MC_VERSION >= "11800"
     private static MultiPackResourceManager MPRM = null;
     private static DynamicPack DYNAMIC_PACK = null;
     private static Set<String> ADDED_NAMESPACES = new HashSet<>();
@@ -61,6 +68,34 @@ public class DynamicResource {
         }
         ADDED_NAMESPACES = new HashSet<>(DYNAMIC_PACK.getNamespaces(PackType.CLIENT_RESOURCES));
     }
+#else
+    private static SimpleReloadableResourceManager SRRM = null;
+    private static DynamicPack DYNAMIC_PACK = null;
+    private static Set<String> ADDED_NAMESPACES = new HashSet<>();
+
+    public static void addResourcesClient(ResourceLocation loc, IoSupplier<InputStream> funGetStream) {
+        SimpleReloadableResourceManager srrm = (SimpleReloadableResourceManager) (Object) ((ReloadableResourceManager) (Object) Minecraft.getInstance().getResourceManager()).resources;
+        if (SRRM == null || SRRM != srrm) {
+            SRRM = srrm;
+            if (DYNAMIC_PACK != null && SRRM.packs.contains(DYNAMIC_PACK)) {
+                SRRM.packs.remove(DYNAMIC_PACK);
+            }
+            DYNAMIC_PACK = new DynamicPack("ANTE Virtual Dynamic Pack", "{\"pack\":{\"pack_format\":8,\"description\":\"ANTE Virtual Dynamic Pack\"}}");
+
+            SRRM.packs.add(DYNAMIC_PACK);
+            ADDED_NAMESPACES = new HashSet<>();
+        }
+        DYNAMIC_PACK.addResoure(PackType.CLIENT_RESOURCES, loc, funGetStream);
+        Set<String> current = new HashSet<>(DYNAMIC_PACK.getNamespaces(PackType.CLIENT_RESOURCES));
+        current.removeAll(ADDED_NAMESPACES);
+        for (String ns : current) {
+            if (!ns.isEmpty()) {
+                MPRM.namespacedPacks.computeIfAbsent(ns, k -> new FallbackResourceManager(PackType.CLIENT_RESOURCES, k)).add(DYNAMIC_PACK);
+            }
+        }
+        ADDED_NAMESPACES = new HashSet<>(DYNAMIC_PACK.getNamespaces(PackType.CLIENT_RESOURCES));
+    }
+#endif
 
     private static class DynamicPack implements PackResources {
         private final String name, pack_mcmeta;

@@ -74,7 +74,7 @@ public class DynamicResource {
     private static Set<String> ADDED_NAMESPACES = new HashSet<>();
 
     public static void addResourcesClient(ResourceLocation loc, IoSupplier<InputStream> funGetStream) {
-        SimpleReloadableResourceManager srrm = (SimpleReloadableResourceManager) (Object) ((ReloadableResourceManager) (Object) Minecraft.getInstance().getResourceManager()).resources;
+        SimpleReloadableResourceManager srrm = (SimpleReloadableResourceManager) (Object) Minecraft.getInstance().getResourceManager();
         if (SRRM == null || SRRM != srrm) {
             SRRM = srrm;
             if (DYNAMIC_PACK != null && SRRM.packs.contains(DYNAMIC_PACK)) {
@@ -90,7 +90,7 @@ public class DynamicResource {
         current.removeAll(ADDED_NAMESPACES);
         for (String ns : current) {
             if (!ns.isEmpty()) {
-                MPRM.namespacedPacks.computeIfAbsent(ns, k -> new FallbackResourceManager(PackType.CLIENT_RESOURCES, k)).add(DYNAMIC_PACK);
+                SRRM.namespacedPacks.computeIfAbsent(ns, k -> new FallbackResourceManager(PackType.CLIENT_RESOURCES, k)).add(DYNAMIC_PACK);
             }
         }
         ADDED_NAMESPACES = new HashSet<>(DYNAMIC_PACK.getNamespaces(PackType.CLIENT_RESOURCES));

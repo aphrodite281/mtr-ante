@@ -74,7 +74,7 @@ public abstract class ScriptHolderBase {
         boolean trust = false;
 
         context = Context.newBuilder("js")  
-            .sandbox(trust ? SandboxPolicy.TRUSTED : SandboxPolicy.CONSTRAINED)
+            .sandbox(SandboxPolicy.TRUSTED)
             .allowPolyglotAccess(trust ? PolyglotAccess.ALL : PolyglotAccess.NONE)
             .allowNativeAccess(false)
             .option("engine.WarnInterpreterOnly", "false")
@@ -180,16 +180,18 @@ public abstract class ScriptHolderBase {
                 // )
                 .build()
             )
-            .option("--js.syntax-extensions", "true")
-            .option("--js.script-engine-global-scope-import", "true")
+            .option("js.syntax-extensions", "true")
+            .option("js.script-engine-global-scope-import", "true")
             .option("js.ecmascript-version", "latest")
             .option("js.foreign-object-prototype", "true")
             .option("log.file", "./logs/latest.log")
-            .option("--js.strict", "true")
-            .option("--js.disable-eval ", trust ? "false" : "true")
-            .option("--js.error-cause", "true")
-            .option("--js.operator-overloading", "true")
-            .option("--js.profile-time", "true")
+            .option("js.strict", "true")
+            .option("js.disable-eval", trust ? "false" : "true")
+            .option("js.error-cause", "true")
+            .option("js.operator-overloading", "true")
+            .option("js.profile-time", "true")
+            .option("js.nashorn-compat", "true")
+            .option("engine.SpawnIsolate", "true")
             .build();
 
         globalBindings = context.getBindings("js");    
@@ -225,7 +227,7 @@ public abstract class ScriptHolderBase {
         context.eval("js", "var " + alias + " = Java.type('" + clazz.getName() + "');");
     }
 
-    protected void inject(String key, Object value) {
+    protected void inject(String key, String value) {
         context.eval("js", "var " + key + " = '" + value + "';");
     }
 

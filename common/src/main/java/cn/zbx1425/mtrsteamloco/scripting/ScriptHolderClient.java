@@ -87,9 +87,9 @@ public class ScriptHolderClient extends ScriptHolderBase {
                 Class<?> classToLoadClass = Class.forName("cn.ussshenzhou.madparticle." + classToLoad);
                 inject(classToLoadClass, classToLoad.substring(classToLoad.lastIndexOf(".") + 1));
             }
-            inject("foundMadParticle", true);
+            inject("foundMadParticle", "true");
         } catch (ClassNotFoundException ignored) {
-            inject("foundMadParticle", false);
+            inject("foundMadParticle", "false");
             // Main.LOGGER.warn("MadParticle", ignored);
         }
 

@@ -74,6 +74,7 @@ public abstract class ScriptHolderBase {
         boolean trust = false;
 
         context = Context.newBuilder("js")  
+            .sandbox(trust ? SandboxPolicy.TRUSTED : SandboxPolicy.ISOLATED)
             .allowPolyglotAccess(trust ? PolyglotAccess.ALL : PolyglotAccess.NONE)
             .allowNativeAccess(false)
             .option("engine.WarnInterpreterOnly", "false")
@@ -85,7 +86,6 @@ public abstract class ScriptHolderBase {
             .allowEnvironmentAccess(trust ? EnvironmentAccess.INHERIT : EnvironmentAccess.NONE)  
             .allowExperimentalOptions(true)  
             .allowInnerContextOptions(trust ? true : false)  
-            .sandbox(trust ? SandboxPolicy.TRUSTED : SandboxPolicy.UNTRUSTED)
             .allowValueSharing(true)
             .allowHostAccess(
                 HostAccess.newBuilder()

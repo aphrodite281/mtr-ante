@@ -9,6 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.player.Player;
 import cn.zbx1425.mtrsteamloco.scripting.util.TimingUtil;
+import mtr.mappings.Text;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class RenderUtil {
 
@@ -67,10 +70,10 @@ public class RenderUtil {
     }
 
     public static void displayStatusMessage(String msg) {
-#if DEBUG
-        Minecraft.getInstance().player.displayClientMessage(Text.literal(
-            String.format("[%s] %s", LocalTime.now().withNano(0).format(DateTimeFormatter.ISO_LOCAL_TIME), msg)
-        ), false);
-#endif
+        if (Minecraft.getInstance().player == null) System.out.println(msg);
+        else
+            Minecraft.getInstance().player.displayClientMessage(Text.literal(
+                String.format("[%s] %s", LocalTime.now().withNano(0).format(DateTimeFormatter.ISO_LOCAL_TIME), msg)
+            ), false);
     }
 }

@@ -22,6 +22,8 @@ import cn.zbx1425.mtrsteamloco.Main;
 import cn.zbx1425.mtrsteamloco.data.EyeCandyProperties;
 import cn.zbx1425.mtrsteamloco.gui.EyeCandyScreen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.client.Minecraft;
 
 import java.util.function.Function;
@@ -32,6 +34,12 @@ public class BlockItemEyeCandy extends BlockItem {
 
     public BlockItemEyeCandy(Block block)  {
 		super(block, RegistryUtilities.createItemProperties(() -> Main.EYE_CANDY_TAB));
+    }
+
+    @Override
+    public InteractionResult place(BlockPlaceContext blockPlaceContext) {
+        System.out.println("BlockItemEyeCandy:place" + blockPlaceContext.getLevel().isClientSide);
+        return super.place(blockPlaceContext);
     }
 
     @Override

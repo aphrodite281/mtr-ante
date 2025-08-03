@@ -35,6 +35,7 @@ import cn.zbx1425.sowcerext.model.RawMesh;
 import cn.zbx1425.sowcerext.model.Vertex;
 import cn.zbx1425.sowcerext.model.integration.RawMeshBuilder;
 import cn.zbx1425.sowcer.math.Matrix4f;
+import cn.zbx1425.mtrsteamloco.data.RelativePosition.*;
 
 import static java.lang.Math.*;
 import java.io.IOException;
@@ -293,11 +294,12 @@ public class EyeCandyRegistry {
         boolean isTicketBarrier = obj.has("isTicketBarrier") ? obj.get("isTicketBarrier").getAsBoolean() : false;
         boolean isEntrance = obj.has("isEntrance") ? obj.get("isEntrance").getAsBoolean() : false;
         boolean asPlatform = obj.has("asPlatform") ? obj.get("asPlatform").getAsBoolean() : false;
+        Combination combination = Combination.decode(obj.has("combination") ? obj.get("combination").getAsString() : ""); 
         group = obj.has("group") ? obj.get("group").getAsString() : group;
         if (cluster == null && script == null) {
             throw new IllegalArgumentException("Invalid eye-candy json: " + key);
         } else {
-            return new EyeCandyProperties(key, Text.translatable(obj.get("name").getAsString()), cluster, itemModelCluster, itemTransform, itemBakedModel, script, shape, collisionShape, fixedMatrix, lightLevel, isTicketBarrier, isEntrance, asPlatform, group);
+            return new EyeCandyProperties(key, Text.translatable(obj.get("name").getAsString()), cluster, itemModelCluster, itemTransform, itemBakedModel, script, shape, collisionShape, fixedMatrix, lightLevel, isTicketBarrier, isEntrance, asPlatform, group, combination);
         }
     }
 }

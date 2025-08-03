@@ -1,10 +1,8 @@
-def processAccessWidener() {
-    def inputFile = file("common/src/main/resources/mtrsteamloco.accesswidener")
-    def outputFile = file("common/src/main/resources/mtrsteamloco_filtered.accesswidener")
+def processAccessWidener(inputFile, outputFile) {
+    // def outputFile = File.createTempFile("mtrsteamloco_filtered", ".accesswidener")
+    outputFile.deleteOnExit()
     
-    def mcVersion = project.ext.minecraft_version_int as Integer
-    
-    println "Processing accessWidener for Minecraft version: ${mcVersion} "
+    def mcVersion = project.rootProject.ext.minecraft_version_int as Integer
     
     def outputLines = []
     def skipping = false
@@ -56,7 +54,10 @@ def processAccessWidener() {
         }
     }
     
-    println "Processed accessWidener file. Original lines: ${inputFile.readLines().size()}, Filtered lines: ${outputLines.size()}"
+    // println "Processed accessWidener file. Original lines: ${inputFile.readLines().size()}, Filtered lines: ${outputLines.size()}"
+    return outputFile
 }
 
-processAccessWidener()
+ext {
+    processAccessWidener = this.&processAccessWidener
+}

@@ -16,8 +16,6 @@ ext {
 }
 
 apply from: "build_dep_ver.gradle"
-// 应用AccessWidener处理脚本
-apply from: "process_access_widener.gradle"
 
 rootProject.ext.assetExcludeFont = rootProject.properties.containsKey("assetExcludeFont")
 
@@ -177,6 +175,7 @@ configure(allprojects) {
 		maven { url = "https://maven.parchmentmc.org/" }
 		maven { url "https://maven.shedaniel.me"}
 		maven { url "https://repo1.maven.org/maven2/" }
+		maven { url "https://nexus.velocitypowered.com/repository/maven-public/" }
 	}
 
 	tasks.withType(JavaCompile) {
@@ -196,6 +195,9 @@ configure(allprojects) {
 		}
 
         options.compilerArgs += ['-Xplugin:Manifold', '-AMC_VERSION=' + minecraft_version_int]
+		if (project.hasProperty("debug") && project.property('debug').toBoolean()) {
+			options.compilerArgs += ['-ADEBUG=true']
+		}
 	}
 }
 

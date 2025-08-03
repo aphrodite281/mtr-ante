@@ -235,6 +235,7 @@ public class BlockEyeCandy extends BlockDirectionalMapper implements EntityBlock
         public boolean isTicketBarrier = false;
         public boolean isEntrance = false;
 
+
         public BlockEntityEyeCandy(BlockPos pos, BlockState state) {
             super(Main.BLOCK_ENTITY_TYPE_EYE_CANDY.get(), pos, state);
             customConfigs = new HashMap<>();

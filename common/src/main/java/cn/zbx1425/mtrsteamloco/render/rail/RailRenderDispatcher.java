@@ -34,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import cn.zbx1425.mtrsteamloco.data.RailModelProperties;
 import cn.zbx1425.mtrsteamloco.gui.DirectNodeScreen;
 import cn.zbx1425.mtrsteamloco.Main;
+import cn.zbx1425.mtrsteamloco.render.RenderUtil;
 
 import java.util.*;
 
@@ -168,16 +169,17 @@ public class RailRenderDispatcher {
         // }
         railChunkList.sort(Comparator.comparingDouble(chunk -> chunk.getCameraDistManhattanXZ(cameraBlockPos)));
 
-        int buffersRebuilt = 0;
         Frustum cullingFrustum = ((LevelRendererAccessor)Minecraft.getInstance().levelRenderer).getCullingFrustum();
         ShaderProp shaderProp = new ShaderProp().setViewMatrix(viewMatrix);
 
-        int maxRailDistance = MTRClient.isReplayMod() ? 64 * 16 : (UtilitiesClient.getRenderDistance() + 1) * 16;
+        int maxRailDistance = MTRClient.isReplayMod() ? 64 * 16 : (UtilitiesClient.getRenderDistance() + 3) * 16;
         boolean isOutsideRenderDistance = false;
+
+        RailChunkBase.upload();
 
         for (Iterator<RailChunkBase> it = railChunkList.iterator(); it.hasNext(); ) {
             RailChunkBase chunk = it.next();
-            if (chunk.containingRails.isEmpty()) {
+            if (chunk.containingRails.isEmpty() && chunk.containingRailsWriting.isEmpty()) {
                 chunk.close();
                 it.remove();
                 railChunkMap.get(chunk.modelKey).remove(chunk.chunkId);
@@ -188,21 +190,14 @@ public class RailRenderDispatcher {
                 isOutsideRenderDistance = true;
                 continue;
             }
-            if (chunk.isDirty || !chunk.bufferBuilt) {
-#if DEBUG
-                    chunk.rebuildBuffer(level);
-                    RenderUtil.displayStatusMessage("Rebuilt: " + chunk.getChunkPos().toString());
-#else
-                if (MTRClient.isReplayMod() || buffersRebuilt < 1) chunk.rebuildBuffer(level); // One per frame
-#endif
-                buffersRebuilt++;
+            if (!chunk.bufferBuilding && (chunk.isDirty || !chunk.bufferBuilt)) {
+                chunk.rebuildBuffer(level);
+                // RenderUtil.displayStatusMessage("Rebuilt: " + chunk.getChunkPos().toString());
             }
             if (chunk.bufferBuilt && cullingFrustum.isVisible(chunk.boundingBox)) {
                 chunk.enqueue(batchManager, shaderProp);
             }
-        }
-        
-        RailChunkBase.uploadAll();
+        }        
     }
 
     public void drawRailNodes(Level level, DrawScheduler drawScheduler, Matrix4f viewMatrix) {

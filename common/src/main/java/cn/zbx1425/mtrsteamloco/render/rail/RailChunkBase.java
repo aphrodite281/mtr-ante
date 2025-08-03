@@ -31,6 +31,7 @@ public abstract class RailChunkBase implements Closeable {
     public Long chunkId;
     public AABB boundingBox;
     public HashMap<BakedRail, ArrayList<Matrix4f>> containingRails = new HashMap<>();
+    public HashMap<BakedRail, ArrayList<Matrix4f>> containingRailsWriting = new HashMap<>();
 
     public final String modelKey;
 
@@ -39,6 +40,7 @@ public abstract class RailChunkBase implements Closeable {
 
     public boolean isDirty = false;
     public boolean bufferBuilt = false;
+    public boolean bufferBuilding = false;
     public double cameraDistManhattanXZ = 0;
 
     public RailChunkBase(long chunkId, String modelKey) {
@@ -77,25 +79,31 @@ public abstract class RailChunkBase implements Closeable {
     }
 
     public void addRail(BakedRail rail) {
-        containingRails.put(rail, rail.coveredChunks.get(chunkId));
+        containingRailsWriting.put(rail, rail.coveredChunks.get(chunkId));
         isDirty = true;
     }
 
     public void removeRail(BakedRail rail) {
-        containingRails.remove(rail);
+        containingRailsWriting.remove(rail);
         isDirty = true;
     }
 
     public void rebuildBuffer(Level world) {
+        bufferBuilding = true;
         isDirty = false;
         bufferBuilt = true;
+        containingRails.clear();
+        containingRails.putAll(containingRailsWriting);
     }
     public abstract void enqueue(BatchManager batchManager, ShaderProp shaderProp);
 
-    public static void uploadAll() {
-        long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < 1 && !UPLOAD_QUEUE.isEmpty()) {
-            UPLOAD_QUEUE.poll().run();
+    // private static long lastUploadTime = 0L;
+    public static void upload() {
+        if (!UPLOAD_QUEUE.isEmpty()) {
+            // if (lastUploadTime < System.currentTimeMillis() - 100) {
+                UPLOAD_QUEUE.poll().run();
+                // lastUploadTime = System.currentTimeMillis();
+            // }
         }
     }
 

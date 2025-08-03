@@ -2,6 +2,8 @@ plugins {
 	id "com.github.johnrengelman.shadow"
 }
 
+apply from: "../process_access_widener.gradle"
+
 dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
 	modApi "${rootProject.architectury_id}:architectury:${rootProject.architectury_version}"
@@ -18,5 +20,5 @@ loom {
 	mixin {
 		defaultRefmapName = "mixins.mtrsteamloco.refmap.json"
 	}
-	accessWidenerPath = file("./src/main/resources/mtrsteamloco_filtered.accesswidener")
+	accessWidenerPath = processAccessWidener(file("./src/main/resources/mtrsteamloco.accesswidener"), file("./src/main/resources/mtrsteamloco_filtered.accesswidener"))
 }

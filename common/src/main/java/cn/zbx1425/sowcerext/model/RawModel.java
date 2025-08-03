@@ -19,7 +19,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
+import cn.zbx1425.sowcer.model.Mesh;
 import java.util.function.Function;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RawModel {
 
@@ -46,6 +50,22 @@ public class RawModel {
             model.meshList.add(mesh.upload(mapping));
         }
         return model;
+    }
+
+    public Supplier<Model> uploadAsync(VertAttrMapping mapping) { 
+        Model model = new Model();
+        Set<Runnable> uploadTasks = new HashSet<>();
+        for (RawMesh mesh : meshList.values()) {
+            if (mesh.faces.isEmpty()) continue;
+            Supplier<Mesh> meshSupplier = mesh.uploadAsync(mapping);
+            uploadTasks.add(() -> {
+                model.meshList.add(meshSupplier.get());
+            });
+        }
+        return () -> {
+            for (Runnable task : uploadTasks) task.run();
+            return model;
+        };
     }
 
     public void append(RawMesh nextMesh) {

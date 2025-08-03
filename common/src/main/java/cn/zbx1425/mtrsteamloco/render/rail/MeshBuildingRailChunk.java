@@ -26,8 +26,10 @@ import net.minecraft.world.level.LightLayer;
 import cn.zbx1425.sowcerext.reuse.DrawScheduler;
 import net.minecraft.world.phys.Vec3;
 import cn.zbx1425.sowcer.batch.MaterialProp;
+import cn.zbx1425.mtrsteamloco.render.RenderUtil;
 import cn.zbx1425.mtrsteamloco.ClientConfig;
 
+import java.util.function.Supplier;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -67,11 +69,13 @@ public class MeshBuildingRailChunk extends RailChunkBase {
             RawModel combinedModel = ClientConfig.enableRailDeform ? transformModelDeform(world) : transformModel(world);
             checkBoundingBox();
             
-            if (vertArrays != null) vertArrays.close();
-            if (uploadedCombinedModel != null) uploadedCombinedModel.close();
+            Supplier<Model> supplier = combinedModel.uploadAsync(RAIL_MAPPING);
             UPLOAD_QUEUE.offer(() -> {
-                uploadedCombinedModel = combinedModel.upload(RAIL_MAPPING);
+                if (uploadedCombinedModel != null) uploadedCombinedModel.close();
+                if (vertArrays != null) vertArrays.close();
+                uploadedCombinedModel = supplier.get();
                 vertArrays = VertArrays.createAll(uploadedCombinedModel, RAIL_MAPPING, null);
+                bufferBuilding = false;
             });
         });
     }

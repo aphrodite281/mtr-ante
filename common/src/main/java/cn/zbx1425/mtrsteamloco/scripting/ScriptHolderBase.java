@@ -23,6 +23,7 @@ import org.graalvm.polyglot.SandboxPolicy;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyExecutable;
+import org.graalvm.polyglot.PolyglotAccess;
 import org.graalvm.polyglot.proxy.ProxyObject;
 
 import java.io.IOException;
@@ -70,19 +71,22 @@ public abstract class ScriptHolderBase {
         this.key = key;
         this.functionNames = functionNames;
 
+        boolean trust = false;
+
         context = Context.newBuilder("js")  
+            .allowPolyglotAccess(trust ? PolyglotAccess.ALL : PolyglotAccess.NONE)
             .allowNativeAccess(false)
             .option("engine.WarnInterpreterOnly", "false")
             .allowCreateThread(true)  
             .allowCreateProcess(true)
             .allowHostClassLoading(true)  
             .allowHostClassLookup(className -> true)  
-            .allowNativeAccess(true)  
-            .allowIO(IOAccess.ALL)  
-            .allowEnvironmentAccess(EnvironmentAccess.INHERIT)  
+            .allowIO(trust ? IOAccess.ALL : IOAccess.NONE)  
+            .allowEnvironmentAccess(trust ? EnvironmentAccess.INHERIT : EnvironmentAccess.NONE)  
             .allowExperimentalOptions(true)  
-            .allowInnerContextOptions(true)  
-            .sandbox(SandboxPolicy.TRUSTED)
+            .allowInnerContextOptions(trust ? true : false)  
+            .sandbox(trust ? SandboxPolicy.TRUSTED : SandboxPolicy.UNTRUSTED)
+            .allowValueSharing(true)
             .allowHostAccess(
                 HostAccess.newBuilder()
                 .allowPublicAccess(true)
@@ -176,10 +180,16 @@ public abstract class ScriptHolderBase {
                 // )
                 .build()
             )
-            .option("js.nashorn-compat", "true")
+            .option("--js.syntax-extensions", "true")
+            .option("--js.script-engine-global-scope-import", "true")
             .option("js.ecmascript-version", "latest")
             .option("js.foreign-object-prototype", "true")
             .option("log.file", "./logs/latest.log")
+            .option("--js.strict", "true")
+            .option("--js.disable-eval ", trust ? "false" : "true")
+            .option("--js.error-cause", "true")
+            .option("--js.operator-overloading", "true")
+            .option("--js.profile-time", "true")
             .build();
 
         globalBindings = context.getBindings("js");    

@@ -8,8 +8,9 @@ accessible class net/minecraft/client/renderer/RenderType$CompositeState
 accessible class net/minecraft/client/renderer/RenderType$CompositeRenderType
 accessible field net/minecraft/client/renderer/RenderType$CompositeRenderType state Lnet/minecraft/client/renderer/RenderType$CompositeState;
 
-accessible field net/minecraft/server/packs/resources/SimpleReloadableResourceManager namespacedPacks Ljava/util/Map;
-accessible field net/minecraft/server/packs/resources/SimpleReloadableResourceManager packs Ljava/util/List;
+accessible field net/minecraft/server/packs/resources/MultiPackResourceManager namespacedManagers Ljava/util/Map;
+mutable field net/minecraft/server/packs/resources/MultiPackResourceManager packs Ljava/util/List;
+accessible field net/minecraft/server/packs/resources/MultiPackResourceManager packs Ljava/util/List;
 accessible field net/minecraft/server/packs/resources/ReloadableResourceManager resources Lnet/minecraft/server/packs/resources/CloseableResourceManager;
 
 

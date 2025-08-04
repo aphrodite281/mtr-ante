@@ -25,6 +25,8 @@ import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyExecutable;
 import org.graalvm.polyglot.PolyglotAccess;
 import org.graalvm.polyglot.proxy.ProxyObject;
+import org.graalvm.polyglot.io.FileSystem;
+import org.graalvm.polyglot.io.FileSystem.Selector;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,6 +35,7 @@ import java.util.function.Consumer;
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.nio.file.Path;
 
 public abstract class ScriptHolderBase {
 
@@ -60,6 +63,10 @@ public abstract class ScriptHolderBase {
         this.side = side;
     }
 
+    private static final Set<String> ALLOWED_PACKAGES = Set.of(
+        "java.awt", "java.util"
+    );
+
     public void load(
         String name, String contextTypeName, ResourceManager resourceManager, 
         Map<ResourceLocation, String> scripts, JsonObject config, String key, 
@@ -73,19 +80,111 @@ public abstract class ScriptHolderBase {
 
         boolean trust = false;
 
+        final FileSystem defFileSystem = FileSystem.newDefaultFileSystem();
+        final Path basicFolder = Path.of("./ante/script_data/").toAbsolutePath().normalize();
+
+        context = Context.newBuilder("js")  
+            .allowNativeAccess(false)
+            .option("engine.WarnInterpreterOnly", "false")
+            .allowCreateThread(true)  
+            .allowCreateProcess(false)
+            .allowHostClassLoading(true)  
+            .allowHostClassLookup(trust ? className -> true : className -> {
+                for (String allowedPackage : ALLOWED_PACKAGES) {
+                    if (className.startsWith(allowedPackage)) {
+                        return true;
+                    }
+                }
+                return false;
+            })
+            .allowIO(IOAccess.newBuilder().fileSystem(FileSystem.newCompositeFileSystem(defFileSystem, Selector.of(defFileSystem, path -> {
+                if (path.isAbsolute()) {
+                    return path.normalize().startsWith(basicFolder);
+                } else {
+                    return basicFolder.resolve(path).normalize().startsWith(basicFolder);
+                }
+            }))).build())  
+            .allowEnvironmentAccess(EnvironmentAccess.INHERIT)  
+            .allowExperimentalOptions(true)  
+            .allowInnerContextOptions(true)  
+            .sandbox(SandboxPolicy.TRUSTED)
+            .allowHostAccess(
+                HostAccess.newBuilder()
+                .allowPublicAccess(true)
+                .allowAllImplementations(true)
+                .allowAllClassImplementations(true)
+                .allowArrayAccess(true)
+                .allowListAccess(true)
+                .allowBufferAccess(true)
+                .allowIterableAccess(true)
+                .allowIteratorAccess(true)
+                .allowMapAccess(true)
+                .allowAccessInheritance(true)
+                .allowBigIntegerNumberAccess(true)
+                .targetTypeMapping(
+                    Double.class,
+                    Double.class,
+                    value -> true,
+                    value -> value,
+                    HostAccess.TargetMappingPrecedence.HIGHEST
+                )
+                .targetTypeMapping(
+                    Double.class,
+                    Float.class,
+                    value -> true,
+                    value -> value.floatValue(),
+                    HostAccess.TargetMappingPrecedence.HIGH
+                )
+                .targetTypeMapping(
+                    Double.class,
+                    Long.class,
+                    value -> true,
+                    value -> Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
+                )
+                .targetTypeMapping(
+                    Double.class,
+                    Integer.class,
+                    value -> true,
+                    value -> (int) Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
+                )
+                .targetTypeMapping(
+                    Double.class,
+                    Short.class,
+                    value -> true,
+                    value -> (short) Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
+                )
+                .targetTypeMapping(
+                    Double.class,
+                    Byte.class,
+                    value -> true,
+                    value -> (byte) Math.round(value),
+                    HostAccess.TargetMappingPrecedence.LOW
+                )
+                .build()
+            )
+            .option("js.nashorn-compat", "true")
+            .option("js.ecmascript-version", "latest")
+            .option("js.foreign-object-prototype", "true")
+            .option("log.file", "./logs/latest.log")
+            .build();
+
+        if (false) {
         context = Context.newBuilder("js")  
             .sandbox(SandboxPolicy.TRUSTED)
-            .allowPolyglotAccess(trust ? PolyglotAccess.ALL : PolyglotAccess.NONE)
-            .allowNativeAccess(false)
+            .allowPolyglotAccess(true ? PolyglotAccess.ALL : PolyglotAccess.NONE)
+            .allowNativeAccess(true)
             .option("engine.WarnInterpreterOnly", "false")
             .allowCreateThread(true)  
             .allowCreateProcess(true)
             .allowHostClassLoading(true)  
             .allowHostClassLookup(className -> true)  
             .allowIO(trust ? IOAccess.ALL : IOAccess.NONE)  
-            .allowEnvironmentAccess(trust ? EnvironmentAccess.INHERIT : EnvironmentAccess.NONE)  
+            .allowEnvironmentAccess(true ? EnvironmentAccess.INHERIT : EnvironmentAccess.NONE)  
             .allowExperimentalOptions(true)  
-            .allowInnerContextOptions(trust ? true : false)  
+            .allowInnerContextOptions(true)  
             .allowValueSharing(true)
             .allowHostAccess(
                 HostAccess.newBuilder()
@@ -180,7 +279,7 @@ public abstract class ScriptHolderBase {
                 // )
                 .build()
             )
-            .option("js.syntax-extensions", "true")
+            // .option("js.syntax-extensions", "true")
             .option("js.script-engine-global-scope-import", "true")
             .option("js.ecmascript-version", "latest")
             .option("js.foreign-object-prototype", "true")
@@ -191,8 +290,8 @@ public abstract class ScriptHolderBase {
             .option("js.operator-overloading", "true")
             .option("js.profile-time", "true")
             .option("js.nashorn-compat", "true")
-            .option("engine.SpawnIsolate", "true")
             .build();
+        }
 
         globalBindings = context.getBindings("js");    
         

@@ -28,8 +28,6 @@ configurations {
 }
 
 dependencies {
-	// implementation "com.github.stuxuhai:jpinyin:1.1.7"
-	shadowCommon("com.github.stuxuhai:jpinyin:1.1.7")
 	forge "net.minecraftforge:forge:${rootProject.forge_version}"
 	modApi "${rootProject.architectury_id}:architectury-forge:${rootProject.architectury_version}"
 
@@ -71,7 +69,6 @@ shadowJar {
 
 	relocate 'de.javagl', 'vendor.cn.zbx1425.sowcerext.de.javagl'
 	relocate 'com.github.stuxuhai', 'vendor.cn.zbx1425.mtrsteamloco.com.github.stuxuhai'
-	// relocate 'org.mozilla', 'vendor.cn.zbx1425.mtrsteamloco.org.mozilla'
 
 	from project.configurations.clothConfigJar.files.collect {
 		return zipTree(it).matching { filter ->
@@ -85,8 +82,6 @@ shadowJar {
 	}
 
 	relocate "me.shedaniel", "cn.zbx1425.mtrsteamloco.vendor.me.shedaniel"
-	// relocate 'org.graalvm', 'cn.zbx1425.mtrsteamloco.vendor.org.graalvm'
-	// relocate 'com.oracle', 'cn.zbx1425.mtrsteamloco.vendor.com.oracle'
 
 	configurations = [project.configurations.shadowCommon]
 	archiveClassifier = "dev-shadow"

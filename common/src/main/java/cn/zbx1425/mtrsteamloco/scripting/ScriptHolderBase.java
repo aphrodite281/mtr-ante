@@ -57,6 +57,8 @@ public abstract class ScriptHolderBase {
     private String key;
     private String[] functionNames;
 
+    private final boolean[] loading = new boolean[] { true };
+
     protected static final String PRETREATMENT = "load(\"nashorn:mozilla_compat.js\");";
 
     public ScriptHolderBase(String side) {
@@ -64,7 +66,7 @@ public abstract class ScriptHolderBase {
     }
 
     private static final Set<String> ALLOWED_PACKAGES = Set.of(
-        "java.awt", "java.util"
+        "java.awt", "java.util", "mtr"
     );
 
     public void load(
@@ -90,6 +92,7 @@ public abstract class ScriptHolderBase {
             .allowCreateProcess(false)
             .allowHostClassLoading(true)  
             .allowHostClassLookup(trust ? className -> true : className -> {
+                if (loading[0]) return true;
                 for (String allowedPackage : ALLOWED_PACKAGES) {
                     if (className.startsWith(allowedPackage)) {
                         return true;
@@ -309,6 +312,8 @@ public abstract class ScriptHolderBase {
                 registerFunction(fn + contextTypeName);
             }
         }
+
+        loading[0] = false;
     }
 
     public void reload(ResourceManager resourceManager) throws Exception {
